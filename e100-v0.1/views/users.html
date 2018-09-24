@@ -14,16 +14,52 @@
 
 <table>
     <tr>
-        <th>编号</th>
-        <th>姓名</th>
-        <th>年龄</th>
+        <th>timestamp</th>
+        <th>car_VIN</th>
+        <th>registration_time</th>
+        <th>vehicle_type</th>
+        <th>energy_storing_type</th>
+        <th>drive_motor_type</th>
+        <th>drive_motor_rated_power</th>
+        <th>drive_motor_rated_rpm</th>
+        <th>drive_motor_rated_torque</th>
+        <th>drive_motor_number</th>
+        <th>drive_motor_position</th>
+        <th>drive_motor_cooling_method</th>
+        <th>e_car_endurance_mileage</th>
+        <th>e_car_top_speed</th>
+        <th>power_battery_number</th>
+        <th>power_battery_info_0</th>
+        <th>power_battery_info_1</th>
+        <th>power_battery_info_2</th>
+        <th>power_battery_info_3</th>
+        <th>extra_field</th>
         <th>操作</th>
     </tr>
     {% for item in datas %}
     <tr>
-        <td>{{item.id}}</td>
-        <td>{{item.name}}</td>
-        <td>{{item.age}}</td>
+           
+        <td>{{item.timestamp}}</td>
+        <td>{{item.car_VIN}}</td>
+        <td>{{item.registration_time}}</td>
+        <td>{{item.vehicle_type}}</td>
+        <td>{{item.energy_storing_type}}</td>
+        <td>{{item.drive_motor_type}}</td>
+        <td>{{item.drive_motor_rated_power}}</td>
+        <td>{{item.drive_motor_rated_rpm}}</td>
+        <td>{{item.drive_motor_rated_torque}}</td>
+        <td>{{item.drive_motor_number}}</td>
+        <td>{{item.drive_motor_position}}</td>
+        <td>{{item.drive_motor_cooling_method}}</td>
+        <td>{{item.e_car_endurance_mileage}}</td>
+        <td>{{item.e_car_top_speed}}</td>
+        <td>{{item.power_battery_number}}</td>
+        <td>{{item.power_battery_info_0}}</td>
+        <td>{{item.power_battery_info_1}}</td>
+        <td>{{item.power_battery_info_2}}</td>
+        <td>{{item.power_battery_info_3}}</td>
+        <td>{{item.extra_field}}</td>
+
         <td><a href="/users/del/{{item.id}}">删除</a></td>
         <td><a href="/users/toUpdate/{{item.id}}">修改</a></td>
     </tr>
