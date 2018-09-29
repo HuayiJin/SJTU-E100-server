@@ -5,41 +5,38 @@
     <title>{{title}}</title>
 </head>
 <body>
-<form action="/users/search" method="post">
+<form action="/users/TEST/search" method="post">
     姓名：<input type="text" name="s_name" value="{{s_name}}"><br>
     年龄：<input type="text" name="s_age" value="{{s_age}}"><br>
     <input type="submit" value="查询">
-    <td><a href="/users/add">新增</a></td>
+    <td><a href="/users/TEST/add">新增</a></td>
 </form>
 
 <table>
     <tr>
-        <th>timestamp</th>
-        <th>car_VIN</th>
-        <th>registration_time</th>
-        <th>vehicle_type</th>
-        <th>energy_storing_type</th>
-        <th>drive_motor_type</th>
-        <th>drive_motor_rated_power</th>
-        <th>drive_motor_rated_rpm</th>
-        <th>drive_motor_rated_torque</th>
-        <th>drive_motor_number</th>
-        <th>drive_motor_position</th>
-        <th>drive_motor_cooling_method</th>
-        <th>e_car_endurance_mileage</th>
-        <th>e_car_top_speed</th>
-        <th>power_battery_number</th>
-        <th>power_battery_info_0</th>
-        <th>power_battery_info_1</th>
-        <th>power_battery_info_2</th>
-        <th>power_battery_info_3</th>
-        <th>extra_field</th>
+        <th>车辆VIN</th>
+        <th>注册时间</th>
+        <th>车辆类型</th>
+        <th>储能装置种类</th>
+        <th>驱动电机类型</th>
+        <th>电机额定功率</th>
+        <th>电机额定转速</th>
+        <th>电机额定转矩</th>
+        <th>电机安装数量</th>
+        <th>电机布置位置</th>
+        <th>电机冷却方式</th>
+        <th>电动汽车续航里程</th>
+        <th>电动汽车最高时速</th>
+        <th>电池包数量</th>
+        <th>0号电池包信息</th>
+        <th>1号电池包信息</th>
+        <th>2号电池包信息</th>
+        <th>3号电池包信息</th>
+        <th>额外字段</th>
         <th>操作</th>
     </tr>
     {% for item in datas %}
     <tr>
-           
-        <td>{{item.timestamp}}</td>
         <td>{{item.car_VIN}}</td>
         <td>{{item.registration_time}}</td>
         <td>{{item.vehicle_type}}</td>
@@ -60,8 +57,8 @@
         <td>{{item.power_battery_info_3}}</td>
         <td>{{item.extra_field}}</td>
 
-        <td><a href="/users/del/{{item.id}}">删除</a></td>
-        <td><a href="/users/toUpdate/{{item.id}}">修改</a></td>
+        <td><a href="/users/TEST/del/{{item.id}}">删除</a></td>
+        <td><a href="/users/TEST/update/{{item.id}}">修改</a></td>
     </tr>
     {% endfor %}
 </table>

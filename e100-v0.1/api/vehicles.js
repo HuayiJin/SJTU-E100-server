@@ -22,12 +22,53 @@ exports.getVehicles = function (req, res, next) {
 exports.getAddpage = function (req, res) {
     res.render('add.html');
 };
-exports.addUser = function (req, res) {  
+
+exports.addUser = function (req, res) {
     db.query(sqlquery.addUser(req.body), function (err, rows) {
         if (err) {
             res.end('新增失败：' + err);
         } else {
-            res.redirect('/users');
+            res.redirect('/users/TEST');
+        }
+    })
+};
+
+exports.addRuntime = function (req, res) {  
+    db.query(sqlquery.addRuntime(req.body), function (err, rows) {
+        if (err) {
+            res.end('新增失败：' + err);
+        } else {
+            res.redirect('/users/TEST');
+        }
+    })
+};
+
+exports.addBattery = function (req, res) {  
+    db.query(sqlquery.addBattery(req.body), function (err, rows) {
+        if (err) {
+            res.end('新增失败：' + err);
+        } else {
+            res.redirect('/users/TEST');
+        }
+    })
+};
+
+exports.addAlert = function (req, res) {  
+    db.query(sqlquery.addAlert(req.body), function (err, rows) {
+        if (err) {
+            res.end('新增失败：' + err);
+        } else {
+            res.redirect('/users/TEST');
+        }
+    })
+};
+
+exports.addOther = function (req, res) {  
+    db.query(sqlquery.addOther(req.body), function (err, rows) {
+        if (err) {
+            res.end('新增失败：' + err);
+        } else {
+            res.redirect('/users/TEST');
         }
     })
 };
@@ -42,7 +83,7 @@ exports.deleteUser = function (req, res) {
         if (err) {
             res.end('删除失败：' + err)
         } else {
-            res.redirect('/users')
+            res.redirect('/users/TEST')
         }
     });
 }

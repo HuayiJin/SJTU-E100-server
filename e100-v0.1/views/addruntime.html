@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新增页面</title>
+</head>
+<body>
+<form action="/users/TEST/add/runtime" method="post">
+    车辆VIN:<input type='text' name="car_VID"><br>             
+    启动时间:<input type='text' name="car_start_end_time"><br>             
+    累计行驶里程:<input type='text' name="cumulative_mileage"><br>             
+    定位状态:<input type='text' name="location_status"><br>             
+    经度:<input type='text' name="longitude"><br>             
+    纬度:<input type='text' name="latitude"><br>             
+    速度:<input type='text' name="velocity"><br>             
+    方向:<input type='text' name="direction"><br>             
+    电机控制器温度:<input type='text' name="motor_controller_temperature"><br>             
+    驱动电机转速:<input type='text' name="drive_motor_rpm"><br>             
+    驱动电机温度:<input type='text' name="drive_motor_temperature"><br>             
+    电机母线电流:<input type='text' name="motor_bus_current"><br>             
+    加速踏板行程:<input type='text' name="accelerator_pedal_stroke"><br>             
+    制动踏板状态:<input type='text' name="brake_pedal_status"><br>             
+    动力系统就绪:<input type='text' name="power_system_ready"><br>             
+    紧急下电请求:<input type='text' name="emergency_poweroff_request"><br>  
+    <input type="submit" value="提交">
+</form>
+</body>
+</html>

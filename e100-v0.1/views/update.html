@@ -5,10 +5,10 @@
     <title>修改页面</title>
 </head>
 <body>
-<form action="/users/update" method="post">
+<form action="/users/TEST/update" method="post">
     <input type="hidden" value="{{datas[0].id}}" name="id">
-    姓名：<input type="text" name="name" value="{{datas[0].name}}"><br>
-    年龄：<input type="text" name="age" value="{{datas[0].age}}"><br>
+    时间：<input type="text" name="time" value="{{datas[0].time}}"><br>
+    车辆VIN：<input type="text" name="car_VIN" value="{{datas[0].car_VIN}}"><br>
     <input type="submit" value="提交">
 </form>
 </body>
