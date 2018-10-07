@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8"> 
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />  
 	<title>Bootstrap 实例 - 标签页（Tab）插件</title>
 	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
-	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 
@@ -20,25 +21,68 @@
 </ul>
 <div id="myTabContent" class="tab-content">
 	<div class="tab-pane fade in active" id="register">
-		<form action="">
-		<input type="radio" name="sex" value="male">按VIN查找
-			<select id="mySelect">
-			<option>输入VIN</option>
-			</select><br>
-		<input type="radio" name="sex" value="female">按车牌查找
-			<form action="">
-				<input type="button" value="Hello world!">
-			</form>
-		</form>
+		<form action="/users/search">
+            <input type="radio" name="searchtype" value="byVIN" checked="checked">
+			<b>按VIN查找</b>
+			<input list="VINs" name="car_VIN">
+			<datalist id="VINs">
+			  <option value="Internet Explorer">
+			  <option value="Firefox">
+			  <option value="Chrome">
+			  <option value="Opera">
+			  <option value="Safari">
+			</datalist><br>
+                
+            <input type="radio" name="searchtype" value="bynumber">
+			<b>按车牌号查找</b>
+			<input list="Nums" name="car_NUM">
+			<datalist id="Nums">
+			  <option value="Internet Explorer">s
+			  <option value="Firefox">
+			  <option value="Chrome">
+			  <option value="Opera">
+			  <option value="Safari">
+			</datalist><br>
+            
+            选择时间段: <input type="datetime-local" name="bdaytime">~
+            <input type="datetime-local" name="bdaytime"><br>
+            <input type="submit" value="查找">
+        </form>
 	</div>
 	<div class="tab-pane fade" id="rtdata">
-		<p>iOS 是一个由苹果公司开发和发布的手机操作系统。最初是于 2007 年首次发布 iPhone、iPod Touch 和 Apple 
-			TV。iOS 派生自 OS X，它们共享 Darwin 基础。OS X 操作系统是用在苹果电脑上，iOS 是苹果的移动版本。</p>
+		<iframe src="https://cloud.sgmw.com.cn" width="1200" height="800" frameborder="0">
+            <p>您的浏览器不支持  iframe 标签。</p>
+        </iframe>
 	</div>
 	<div class="tab-pane fade" id="histroy">
-		<p>jMeter 是一款开源的测试软件。它是 100% 纯 Java 应用程序，用于负载和性能测试。</p>
+        <form action="">
+            <input type="radio" name="searchtype" value="byVIN" checked="checked">
+			<b>按VIN查找</b>
+			<input list="VINs" name="car_VIN">
+			<datalist id="VINs">
+			  <option value="Internet Explorer">
+			  <option value="Firefox">
+			  <option value="Chrome">
+			  <option value="Opera">
+			  <option value="Safari">
+			</datalist><br>
+                
+            <input type="radio" name="searchtype" value="bynumber">
+			<b>按车牌号查找</b>
+			<input list="Nums" name="car_NUM">
+			<datalist id="Nums">
+			  <option value="Internet Explorer">
+			  <option value="Firefox">
+			  <option value="Chrome">
+			  <option value="Opera">
+			  <option value="Safari">
+			</datalist><br>
+            
+            选择时间段: <input type="datetime-local" name="bdaytime">~
+            <input type="datetime-local" name="bdaytime"><br>
+            <input type="submit" value="查找">
+        </form>
 	</div>
 </div>
-
 </body>
 </html>

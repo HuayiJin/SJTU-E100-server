@@ -144,15 +144,18 @@ exports.updateVehicle = function(car_vin, timestamp, col, value){
     return updatesql;
 }
 
-exports.searchVehicle = function(car_vin, timestamp){
-    var searchsql = "select * from CAR_REGISTER_TEST"
-    if (car_vin) {
-        searchsql += " and name='" + name + "' ";
-    }
-    if (timestamp) {
-        searchsql += " and age=" + age + " ";
-    }
-    searchsql = searchsql.replace(/and/,"where");
+exports.searchVehiclebyVIN = function(car_vin, start, end){
+    var searchsql = "select * from CAR_REGISTER_TEST WHERE `car_VIN`='" + car_vin
+    + "' and`timestamp`>'" + start
+    + "' and`timestamp`<'" + end + "'";
     return searchsql;
 }
-
+/*
+*not complete yet
+*/
+exports.searchVehiclebyNUM = function(car_num, start, end){
+    var searchsql = "select * from CAR_REGISTER_TEST WHERE `car_VIN`='" + car_num
+    + "' and`timestamp`>'" + start
+    + "' and`timestamp`<'" + end + "'";
+    return searchsql;
+}
