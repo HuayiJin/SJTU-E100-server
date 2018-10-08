@@ -7,6 +7,17 @@
 	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	 <script type="text/javascript">
+        function f1(param) {
+            for (var i = 1; i <= 4; i++) {
+                var id = document.getElementById("d" + i);
+                id.style.display = "none";
+                if (i === param) {
+                    id.style.display = "block";
+                }
+            }
+        }
+    </script>
 </head>
 <body>
 
@@ -21,7 +32,7 @@
 </ul>
 <div id="myTabContent" class="tab-content">
 	<div class="tab-pane fade in active" id="register">
-		<form action="/users/search">
+		<form action="/users/search/register">
             <input type="radio" name="searchtype" value="byVIN" checked="checked">
 			<b>按VIN查找</b>
 			<input list="VINs" name="car_VIN">
@@ -43,9 +54,6 @@
 			  <option value="Opera">
 			  <option value="Safari">
 			</datalist><br>
-            
-            选择时间段: <input type="datetime-local" name="bdaytime">~
-            <input type="datetime-local" name="bdaytime"><br>
             <input type="submit" value="查找">
         </form>
 	</div>
@@ -55,7 +63,8 @@
         </iframe>
 	</div>
 	<div class="tab-pane fade" id="histroy">
-        <form action="">
+        <div>
+		<form action="">
             <input type="radio" name="searchtype" value="byVIN" checked="checked">
 			<b>按VIN查找</b>
 			<input list="VINs" name="car_VIN">
@@ -82,6 +91,17 @@
             <input type="datetime-local" name="bdaytime"><br>
             <input type="submit" value="查找">
         </form>
+		</div>
+		<div>
+			<input type="button" value="按钮1" onclick="f1(1);">
+			<input type="button" value="按钮2" onclick="f1(2);">
+			<input type="button" value="按钮3" onclick="f1(3);">
+			<input type="button" value="按钮4" onclick="f1(4);">
+			<div id="d1" class="c1">111111111</div>
+			<div id="d2" class="c1" style="display:none">22222222</div>
+			<div id="d3" class="c1" style="display:none">33333333</div>
+			<div id="d4" class="c1" style="display:none">44444444</div>
+		</div>
 	</div>
 </div>
 </body>

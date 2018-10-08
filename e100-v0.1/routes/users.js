@@ -65,7 +65,14 @@ router.post(PATH + TESTPATH + '/update', vehicles.updateVehicle);
 /**
  * 查询
  */
-router.get(PATH + '/search', vehicles.searchVehicle);
-router.get(PATH + TESTPATH + '/search', vehicles.searchVehicle);
+router.get(PATH + '/search/register', vehicles.searchVehicleRegister);
+router.get(PATH + '/search/runtime', vehicles.searchVehicleRuntime);
+router.get(PATH + '/search/battery', vehicles.searchVehicleBattery);
+router.get(PATH + '/search/alert', vehicles.searchVehicleAlert);
+
+router.get(PATH + TESTPATH + '/search/register', vehicles.searchVehicleRegister);
+router.get(PATH + TESTPATH + '/search/history', vehicles.searchVehicleRuntime);
+router.get(PATH + TESTPATH + '/search/history', vehicles.searchVehicleBattery);
+router.get(PATH + TESTPATH + '/search/history', vehicles.searchVehicleAlert);
 
 module.exports = router;
