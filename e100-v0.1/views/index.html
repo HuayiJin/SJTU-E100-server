@@ -1,108 +1,228 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />  
-	<title>Bootstrap 实例 - 标签页（Tab）插件</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<title>SJTU-E100-TEST</title>
 	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	 <script type="text/javascript">
-        function f1(param) {
-            for (var i = 1; i <= 4; i++) {
-                var id = document.getElementById("d" + i);
-                id.style.display = "none";
-                if (i === param) {
-                    id.style.display = "block";
-                }
-            }
-        }
-    </script>
-</head>
-<body>
+	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script>
+		function submitdata() {
 
-<ul id="myTab" class="nav nav-tabs">
-	<li class="active">
-		<a href="#register" data-toggle="tab">
-			 注册信息
-		</a>
-	</li>
-	<li><a href="#rtdata" data-toggle="tab">实时信息</a></li>
-	<li><a href="#histroy" data-toggle="tab">历史信息</a></li>
-</ul>
-<div id="myTabContent" class="tab-content">
-	<div class="tab-pane fade in active" id="register">
-		<form action="/users/search/register">
-            <input type="radio" name="searchtype" value="byVIN" checked="checked">
-			<b>按VIN查找</b>
-			<input list="VINs" name="car_VIN">
-			<datalist id="VINs">
-			  <option value="Internet Explorer">
-			  <option value="Firefox">
-			  <option value="Chrome">
-			  <option value="Opera">
-			  <option value="Safari">
-			</datalist><br>
-                
-            <input type="radio" name="searchtype" value="bynumber">
-			<b>按车牌号查找</b>
-			<input list="Nums" name="car_NUM">
-			<datalist id="Nums">
-			  <option value="Internet Explorer">s
-			  <option value="Firefox">
-			  <option value="Chrome">
-			  <option value="Opera">
-			  <option value="Safari">
-			</datalist><br>
-            <input type="submit" value="查找">
-        </form>
-	</div>
-	<div class="tab-pane fade" id="rtdata">
-		<iframe src="https://cloud.sgmw.com.cn" width="1200" height="800" frameborder="0">
-            <p>您的浏览器不支持  iframe 标签。</p>
-        </iframe>
-	</div>
-	<div class="tab-pane fade" id="histroy">
-        <div>
-		<form action="">
-            <input type="radio" name="searchtype" value="byVIN" checked="checked">
-			<b>按VIN查找</b>
-			<input list="VINs" name="car_VIN">
-			<datalist id="VINs">
-			  <option value="Internet Explorer">
-			  <option value="Firefox">
-			  <option value="Chrome">
-			  <option value="Opera">
-			  <option value="Safari">
-			</datalist><br>
-                
-            <input type="radio" name="searchtype" value="bynumber">
-			<b>按车牌号查找</b>
-			<input list="Nums" name="car_NUM">
-			<datalist id="Nums">
-			  <option value="Internet Explorer">
-			  <option value="Firefox">
-			  <option value="Chrome">
-			  <option value="Opera">
-			  <option value="Safari">
-			</datalist><br>
-            
-            选择时间段: <input type="datetime-local" name="bdaytime">~
-            <input type="datetime-local" name="bdaytime"><br>
-            <input type="submit" value="查找">
-        </form>
+		}
+	</script>
+	<style>
+			table,td,th
+			{
+				border:1px solid black;
+			}
+			table
+			{
+				width:100%;
+			}
+			th
+			{
+				height:50px;
+			}
+			td
+			{
+				text-align:left;
+			}
+			</style>
+</head>
+
+<body>
+	<div id="container">
+		<div id="header">
+			<h1 style="margin-bottom:0;">SJTU-E100-TEST</h1>
 		</div>
-		<div>
-			<input type="button" value="按钮1" onclick="f1(1);">
-			<input type="button" value="按钮2" onclick="f1(2);">
-			<input type="button" value="按钮3" onclick="f1(3);">
-			<input type="button" value="按钮4" onclick="f1(4);">
-			<div id="d1" class="c1">111111111</div>
-			<div id="d2" class="c1" style="display:none">22222222</div>
-			<div id="d3" class="c1" style="display:none">33333333</div>
-			<div id="d4" class="c1" style="display:none">44444444</div>
+		<ul id="myTab" class="nav nav-tabs">
+			<li class="active">
+				<a href="#register" data-toggle="tab">
+					注册信息
+				</a>
+			</li>
+			<li><a href="#rtdata" data-toggle="tab">实时信息</a></li>
+			<li class="dropdown">
+				<a href="#history" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown">历史信息
+					<b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
+					<li><a href="#runtime" tabindex="-1" data-toggle="tab">车辆历史数据</a></li>
+					<li><a href="#battery" tabindex="-1" data-toggle="tab">电池历史数据</a></li>
+					<li><a href="#alert" tabindex="-1" data-toggle="tab">告警历史数据</a></li>
+				</ul>
+			</li>
+		</ul>
+
+		<div id="myTabContent" class="tab-content">
+			<div class="tab-pane fade in active" id="register">
+				<div id="search" style="width:1400px;height:100px;float:left;">
+					<form action="/users/search/register">
+						<input type="radio" name="searchtype" value="byVIN" checked="checked">
+						<b>按VIN查找</b>
+						<input list="VINs" name="car_VIN">
+						<datalist id="VINs">
+							<option value="Internet Explorer">
+						</datalist><br>
+
+						<input type="radio" name="searchtype" value="bynumber">
+						<b>按车牌号查找</b>
+						<input list="Nums" name="car_NUM">
+						<datalist id="Nums">
+							<option value="Internet Explorer">s
+						</datalist><br>
+						<input type="submit" value="查找">
+					</form>
+				</div>
+				<div id="content" style="width:1400px;height:100px;background-color:#EEEEEE;float:left;">
+					<!--
+					结果放这里
+				-->
+					<table>
+						<tr>
+							<th>车辆VIN&nbsp;</th>
+							<th>注册时间&nbsp;</th>
+							<th>车辆类型&nbsp;</th>
+							<th>储能装置种类&nbsp;</th>
+							<th>驱动电机类型&nbsp;</th>
+							<th>电机额定功率&nbsp;</th>
+							<th>电机额定转速&nbsp;</th>
+							<th>电机额定转矩&nbsp;</th>
+							<th>电机安装数量&nbsp;</th>
+							<th>电机布置位置&nbsp;</th>
+							<th>电机冷却方式&nbsp;</th>
+							<th>电动汽车续航里程&nbsp;</th>
+							<th>电动汽车最高时速&nbsp;</th>
+						</tr>
+						{% for item in datas %}
+						<tr>
+							<td>{{item.car_VIN}}</td>
+							<td>{{item.registration_time}}</td>
+							<td>{{item.vehicle_type}}</td>
+							<td>{{item.energy_storing_type}}</td>
+							<td>{{item.drive_motor_type}}</td>
+							<td>{{item.drive_motor_rated_power}}</td>
+							<td>{{item.drive_motor_rated_rpm}}</td>
+							<td>{{item.drive_motor_rated_torque}}</td>
+							<td>{{item.drive_motor_number}}</td>
+							<td>{{item.drive_motor_position}}</td>
+							<td>{{item.drive_motor_cooling_method}}</td>
+							<td>{{item.e_car_endurance_mileage}}</td>
+							<td>{{item.e_car_top_speed}}</td>
+						</tr>
+						{% endfor %}
+					</table>
+				</div>
+				<div id="content" style="width:1400px;height:100px;background-color:#EEEEEE;float:left;">
+					<table>
+						<tr>
+							<th>电池包数量&nbsp;</th>
+							<th>0号电池包信息&nbsp;</th>
+							<th>1号电池包信息&nbsp;</th>
+							<th>2号电池包信息&nbsp;</th>
+							<th>3号电池包信息&nbsp;</th>
+							<th>额外字段&nbsp;</th>
+							<th>操作&nbsp;</th>
+						</tr>
+						{% for item in datas %}
+						<tr>
+							<td>{{item.power_battery_number}}</td>
+							<td>{{item.power_battery_info_0}}</td>
+							<td>{{item.power_battery_info_1}}</td>
+							<td>{{item.power_battery_info_2}}</td>
+							<td>{{item.power_battery_info_3}}</td>
+							<td>{{item.extra_field}}</td>
+							<td><a href="/users/TEST/del/{{item.id}}">删除</a></td>
+							<td><a href="/users/TEST/update/{{item.id}}">修改</a></td>
+						</tr>
+						{% endfor %}
+					</table>
+				</div>
+			</div>
+			<div class="tab-pane fade" id="rtdata">
+				<iframe src="https://cloud.sgmw.com.cn" height="800" width="1200" frameborder="0">
+					<p>您的浏览器不支持 iframe 标签。</p>
+				</iframe>
+			</div>
+			<div class="tab-pane fade" id="runtime">
+				<div>
+					<h1>车辆历史数据</h1>
+					<form action="/users/search/runtime">
+						<input type="radio" name="searchtype" value="byVIN" checked="checked">
+						<b>按VIN查找</b>
+						<input list="VINs" name="car_VIN">
+						<datalist id="VINs">
+							<option value="Internet Explorer">
+						</datalist><br>
+
+						<input type="radio" name="searchtype" value="bynumber">
+						<b>按车牌号查找</b>
+						<input list="Nums" name="car_NUM">
+						<datalist id="Nums">
+							<option value="Internet Explorer">
+						</datalist><br>
+
+						选择时间段: <input type="datetime-local" name="bdaytime">~
+						<input type="datetime-local" name="bdaytime"><br>
+						<input type="submit" value="查找">
+					</form>
+				</div>
+			</div>
+			<div class="tab-pane fade" id="battery">
+				<div>
+					<h1>电池历史数据</h1>
+					<form action="">
+						<input type="radio" name="searchtype" value="byVIN" checked="checked">
+						<b>按VIN查找</b>
+						<input list="VINs" name="car_VIN">
+						<datalist id="VINs">
+							<option value="Internet Explorer">
+						</datalist><br>
+
+						<input type="radio" name="searchtype" value="bynumber">
+						<b>按车牌号查找</b>
+						<input list="Nums" name="car_NUM">
+						<datalist id="Nums">
+							<option value="Internet Explorer">
+						</datalist><br>
+
+						选择时间段: <input type="datetime-local" name="bdaytime">~
+						<input type="datetime-local" name="bdaytime"><br>
+						<input type="submit" value="查找">
+					</form>
+				</div>
+			</div>
+			<div class="tab-pane fade" id="alert">
+				<div>
+					<h1>告警历史数据</h1>
+					<form action="">
+						<input type="radio" name="searchtype" value="byVIN" checked="checked">
+						<b>按VIN查找</b>
+						<input list="VINs" name="car_VIN">
+						<datalist id="VINs">
+							<option value="Internet Explorer">
+						</datalist><br>
+
+						<input type="radio" name="searchtype" value="bynumber">
+						<b>按车牌号查找</b>
+						<input list="Nums" name="car_NUM">
+						<datalist id="Nums">
+							<option value="Internet Explorer">
+						</datalist><br>
+
+						选择时间段: <input type="datetime-local" name="bdaytime">~
+						<input type="datetime-local" name="bdaytime"><br>
+						<input type="submit" value="查找">
+					</form>
+				</div>
+				<div id="alerttable">
+				</div>
+			</div>
 		</div>
 	</div>
-</div>
 </body>
+
 </html>

@@ -7,10 +7,10 @@ exports.searchRegister = function (req, cb1, cb2) {
         var car_num = req.query.car_NUM;
 
         if (searchtype == 'byVIN' && car_vin != null) {
-            return cb1(car_vin, timestart, timeend);
+            return cb1(car_vin);
         }
         else if (searchtype == 'bynumber' && car_num != null) {
-            return cb2(car_num, timestart, timeend);
+            return cb2(car_num);
         } else {
             console.log("please input car VIN");
             res.end("please input car VIN");

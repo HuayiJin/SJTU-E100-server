@@ -130,7 +130,7 @@ exports.searchVehicleRegister = function (req, res) {
             res.end("查询失败：", err)
         } else {
             console.log(rows);
-            res.render("users.html", { title: 'Expresstitle', datas: rows });
+            res.render("index.html", {datas: rows });
         }
     });
 }
@@ -145,7 +145,7 @@ exports.searchVehicleRuntime = function (req, res) {
             res.end("查询失败：", err)
         } else {
             console.log(rows);
-            res.render("users.html", { title: 'Expresstitle', datas: rows });
+            res.render("index.html", {datas: rows });
         }
     });
 }
