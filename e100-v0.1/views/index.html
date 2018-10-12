@@ -9,8 +9,73 @@
 	<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
 	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script>
-		function submitdata() {
+		function Submit_reg()
+		{
+			var xmlhttp;
+			xmlhttp=new XMLHttpRequest();
+			xmlhttp.onreadystatechange=function()
+			{
+				if (xmlhttp.readyState==4 && xmlhttp.status==200)
+				{
+					console.log(xmlhttp.responseText)
+					document.getElementById("content").innerHTML=xmlhttp.responseText;
+				}
+			}
+			var searchtype = document.getElementsByName("searchtype_reg");
+			if(searchtype[0].checked){
+				xmlhttp.open("GET","/users/search/register?" 
+				+ "searchtype=" + searchtype[0].value
+				+ "&car_VIN=" + document.getElementById("car_VIN_reg").value ,true);
+			}else if(searchtype[1].checked){
+				xmlhttp.open("GET","/users/search/register?" 
+				+ "searchtype=" + searchtype[1].value
+				+ "&car_NUM=" + document.getElementById("car_NUM_reg").value ,true);
+			}
 
+			xmlhttp.send();
+		}
+		function Submit_rt(route)
+		{
+			var i=0;
+			switch(route)
+			{
+			case 'runtime':
+				i=0;break;
+			case 'battery':
+				i=2;break;
+			case 'alert':
+				i=4;break;
+			case 'other':
+				i=6;break;
+			}
+			console.log(route);
+			var xmlhttp;
+			xmlhttp=new XMLHttpRequest();
+			xmlhttp.onreadystatechange=function()
+			{
+				if (xmlhttp.readyState==4 && xmlhttp.status==200)
+				{
+					console.log(xmlhttp.responseText)
+					//document.getElementById("content").innerHTML=xmlhttp.responseText;
+				}
+			}
+			var searchtype = document.getElementsByName("searchtype_rt");
+			var vinid = "car_VIN_rt" + i.toString()
+			var numid = "car_NUM_rt" + (i+1).toString()
+			var time = document.getElementsByName("bdaytime")
+			console.log(time[i].value)
+			if(searchtype[i].checked){
+				xmlhttp.open("GET","/users/search/" + route 
+				+ "?searchtype=" + searchtype[0].value
+				+ "&car_VIN=" + document.getElementById(vinid).value 
+				+ "bdaytime=" + time[i].value,true);
+			}else if(searchtype[i+1].checked){
+				xmlhttp.open("GET","/users/search/" + route
+				+ "?searchtype=" + searchtype[1].value
+				+ "&car_NUM=" + document.getElementById(numid).value
+				+ "bdaytime=" + time[i+1].value,true);			}
+
+			xmlhttp.send();
 		}
 	</script>
 	<style>
@@ -53,6 +118,7 @@
 					<li><a href="#runtime" tabindex="-1" data-toggle="tab">车辆历史数据</a></li>
 					<li><a href="#battery" tabindex="-1" data-toggle="tab">电池历史数据</a></li>
 					<li><a href="#alert" tabindex="-1" data-toggle="tab">告警历史数据</a></li>
+					<li><a href="#other" tabindex="-1" data-toggle="tab">其他历史数据</a></li>
 				</ul>
 			</li>
 		</ul>
@@ -61,20 +127,20 @@
 			<div class="tab-pane fade in active" id="register">
 				<div id="search" style="width:1400px;height:100px;float:left;">
 					<form action="/users/search/register">
-						<input type="radio" name="searchtype" value="byVIN" checked="checked">
+						<input type="radio" name="searchtype_reg" value="byVIN" id="1">
 						<b>按VIN查找</b>
-						<input list="VINs" name="car_VIN">
+						<input list="VINs" id="car_VIN_reg">
 						<datalist id="VINs">
 							<option value="Internet Explorer">
 						</datalist><br>
 
-						<input type="radio" name="searchtype" value="bynumber">
+						<input type="radio" name="searchtype_reg" value="bynumber" id="2">
 						<b>按车牌号查找</b>
-						<input list="Nums" name="car_NUM">
+						<input list="Nums" id="car_NUM_reg">
 						<datalist id="Nums">
 							<option value="Internet Explorer">s
 						</datalist><br>
-						<input type="submit" value="查找">
+						<input type="button" value="点我" onclick="Submit_reg()">
 					</form>
 				</div>
 				<div id="content" style="width:1400px;height:100px;background-color:#EEEEEE;float:left;">
@@ -151,23 +217,24 @@
 				<div>
 					<h1>车辆历史数据</h1>
 					<form action="/users/search/runtime">
-						<input type="radio" name="searchtype" value="byVIN" checked="checked">
+						<input type="radio" name="searchtype_rt" value="byVIN" checked="checked">
 						<b>按VIN查找</b>
-						<input list="VINs" name="car_VIN">
+						<input list="VINs" id="car_VIN_rt0">
 						<datalist id="VINs">
 							<option value="Internet Explorer">
 						</datalist><br>
 
-						<input type="radio" name="searchtype" value="bynumber">
+						<input type="radio" name="searchtype_rt" value="bynumber">
 						<b>按车牌号查找</b>
-						<input list="Nums" name="car_NUM">
+						<input list="Nums" id="car_NUM_rt1">
 						<datalist id="Nums">
 							<option value="Internet Explorer">
 						</datalist><br>
 
-						选择时间段: <input type="datetime-local" name="bdaytime">~
+						选择时间段: 
+						<input type="datetime-local" name="bdaytime" >~
 						<input type="datetime-local" name="bdaytime"><br>
-						<input type="submit" value="查找">
+						<input type="button" value="点我" onclick="Submit_rt('runtime')">
 					</form>
 				</div>
 			</div>
@@ -175,23 +242,23 @@
 				<div>
 					<h1>电池历史数据</h1>
 					<form action="">
-						<input type="radio" name="searchtype" value="byVIN" checked="checked">
+						<input type="radio" name="searchtype_rt" value="byVIN" checked="checked">
 						<b>按VIN查找</b>
-						<input list="VINs" name="car_VIN">
+						<input list="VINs" id="car_VIN_rt2">
 						<datalist id="VINs">
 							<option value="Internet Explorer">
 						</datalist><br>
 
-						<input type="radio" name="searchtype" value="bynumber">
+						<input type="radio" name="searchtype_rt" value="bynumber">
 						<b>按车牌号查找</b>
-						<input list="Nums" name="car_NUM">
+						<input list="Nums" id="car_NUM_rt3">
 						<datalist id="Nums">
 							<option value="Internet Explorer">
 						</datalist><br>
 
 						选择时间段: <input type="datetime-local" name="bdaytime">~
 						<input type="datetime-local" name="bdaytime"><br>
-						<input type="submit" value="查找">
+						<input type="button" value="点我" onclick="Submit_rt('battery')">
 					</form>
 				</div>
 			</div>
@@ -199,26 +266,52 @@
 				<div>
 					<h1>告警历史数据</h1>
 					<form action="">
-						<input type="radio" name="searchtype" value="byVIN" checked="checked">
+						<input type="radio" name="searchtype_rt" value="byVIN" checked="checked">
 						<b>按VIN查找</b>
-						<input list="VINs" name="car_VIN">
+						<input list="VINs" id="car_VIN_rt4">
 						<datalist id="VINs">
 							<option value="Internet Explorer">
 						</datalist><br>
 
-						<input type="radio" name="searchtype" value="bynumber">
+						<input type="radio" name="searchtype_rt" value="bynumber">
 						<b>按车牌号查找</b>
-						<input list="Nums" name="car_NUM">
+						<input list="Nums" id="car_NUM_rt5">
 						<datalist id="Nums">
 							<option value="Internet Explorer">
 						</datalist><br>
 
 						选择时间段: <input type="datetime-local" name="bdaytime">~
 						<input type="datetime-local" name="bdaytime"><br>
-						<input type="submit" value="查找">
+						<input type="button" value="点我" onclick="Submit_rt('alert')">
 					</form>
 				</div>
 				<div id="alerttable">
+				</div>
+			</div>
+			<div class="tab-pane fade" id="other">
+				<div>
+					<h1>告警历史数据</h1>
+					<form action="">
+						<input type="radio" name="searchtype_rt" value="byVIN" checked="checked">
+						<b>按VIN查找</b>
+						<input list="VINs" id="car_VIN_rt6">
+						<datalist id="VINs">
+							<option value="Internet Explorer">
+						</datalist><br>
+
+						<input type="radio" name="searchtype_rt" value="bynumber">
+						<b>按车牌号查找</b>
+						<input list="Nums" id="car_NUM_rt7">
+						<datalist id="Nums">
+							<option value="Internet Explorer">
+						</datalist><br>
+
+						选择时间段: <input type="datetime-local" name="bdaytime">~
+						<input type="datetime-local" name="bdaytime"><br>
+						<input type="button" value="点我" onclick="Submit_rt('other')">
+					</form>
+				</div>
+				<div id="othertable">
 				</div>
 			</div>
 		</div>
