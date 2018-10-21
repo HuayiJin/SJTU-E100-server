@@ -1,3 +1,7 @@
+# rawdata and output data
+inputproc/rawdata/
+inputproc/utf8data/
+
 # Logs
 logs
 *.log

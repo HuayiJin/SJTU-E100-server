@@ -1,8 +1,45 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+table,td,th
+{
+  border:1px solid black;
 }
-
-a {
-  color: #00B7FF;
+table
+{
+  width:100%;
+}
+th
+{
+  height:50px;
+}
+td
+{
+  text-align:left;
+}
+div{
+  margin: auto;
+  background-color: black;
+}
+.center {
+  margin: auto;
+  text-align:center;
+  width: 500px;
+  height: 500px;
+  color:red;
+}
+#sgmw {
+  background-color: lightgray;
+  margin: auto;
+}
+#sgmwframe{
+  margin: auto;
+  width: 50%;
+}
+.regleft{
+  background-color: blue;
+  width: 500px;
+  height: 500px;
+}
+.regright{
+  background-color: green;
+  width: 500px;
+  height: 500px;
 }
