@@ -129,7 +129,7 @@ exports.searchVehicleRegister = function (req, res) {
         if (err) {
             res.end("查询失败：", err)
         } else {
-            console.log(resdata);
+            //console.log(resdata);
             res.status(200).send(resdata);
         }
     });
@@ -139,12 +139,12 @@ exports.searchVehicleRuntime = function (req, res) {
     console.log(req.query);
     var localsql = safetycheck.searchHistory(req, sqlquery.searchVehiclebyVIN_Runtime, sqlquery.searchVehiclebyNUM_Runtime);
     console.log('localsql is ' + localsql);
-
     db.query(localsql, function (err, resdata) {
         if (err) {
+            console.log(err)
             res.end("查询失败：", err)
         } else {
-            console.log(resdata);
+            //console.log(resdata);
             res.status(200).send(resdata);
         }
     });
@@ -159,7 +159,7 @@ exports.searchVehicleBattery = function (req, res) {
         if (err) {
             res.end("查询失败：", err)
         } else {
-            console.log(resdata);
+            //console.log(resdata);
             res.status(200).send(resdata);
         }
     });
@@ -174,7 +174,22 @@ exports.searchVehicleAlert = function (req, res) {
         if (err) {
             res.end("查询失败：", err)
         } else {
-            console.log(resdata);
+            //console.log(resdata);
+            res.status(200).send(resdata);
+        }
+    });
+}
+
+exports.searchVehicleOther = function (req, res) {
+    console.log(req.query);
+    var localsql = safetycheck.searchHistory(req, sqlquery.searchVehiclebyVIN_Other, sqlquery.searchVehiclebyNUM_Other);
+    console.log('localsql is ' + localsql);
+
+    db.query(localsql, function (err, resdata) {
+        if (err) {
+            res.end("查询失败：", err)
+        } else {
+            //console.log(resdata);
             res.status(200).send(resdata);
         }
     });

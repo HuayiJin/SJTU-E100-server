@@ -2,7 +2,6 @@
 <html>
 
 <head>
-
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	<title>SJTU-E100-TEST</title>
@@ -18,71 +17,115 @@
 	<script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
 
 	<script type="text/javascript" src="submit.js"></script>
-	<style>
-		table,td,th
-		{
-		border:0px solid black;
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=M0Pi0G5matEh4ZUSMTHaSB0EmlgQaOYM"></script>
+
+	<style type="text/css">
+		body,
+		html {
+			width: 100%;
+			height: 100%;
+			margin: 0;
+			font-family: "微软雅黑";
 		}
-		table
-		{
-		width:100%;
+
+		#allmap {
+			height: 500px;
+			width: 100%;
 		}
-		th
-		{
-		height:35px;
-		font-size:20px;
+
+		#r-result {
+			width: 100%;
 		}
-		td
-		{
-		text-align:left;
+
+		table,
+		td,
+		th {
+			border: 0px solid black;
 		}
-		div{
-		margin: auto;
+
+		table {
+			width: 100%;
 		}
+
+		th {
+			height: 35px;
+			font-size: 20px;
+		}
+
+		td {
+			text-align: left;
+		}
+
+		div {
+			margin: auto;
+		}
+
 		.center {
-		margin: 10px;
-		padding: 10px;
-		text-align:center;
+			margin: 10px;
+			padding: 10px;
+			text-align: center;
 		}
+
 		#sgmw {
-		background-color: lightgray;
-		margin: auto;
+			margin: 0px;
+			text-align: center;
 		}
-		#sgmwframe{
-		margin: auto;
-		width: 90%;
+
+		#sgmwframe {
+			margin: auto;
+			width: 90%;
 		}
-		#register{
+
+		#register {
 			height: 1200px;
 		}
-		.regleft,.regright{
+
+		.regleft,
+		.regright {
 			margin: 10px;
-			width:450px;
-			height:400px;
+			width: 450px;
+			height: 400px;
 			padding: 10px;
 			display: table-cell;
 		}
-		#reginfocontainer{
-			width:900px;
+
+		#reginfocontainer {
+			width: 900px;
 			margin: auto;
 		}
-		#search{
+
+		#search {
 			height: 100px;
 		}
-		h1{
+
+		h1 {
 			margin: 10px;
 			text-align: left;
 			padding: 20px
 		}
-		h2{
+
+		h2 {
 			padding: 10px;
 			text-align: center;
 		}
-		#chartcontainer{
+
+		.chartcontainer {
 			width: 90%;
 			padding: 20px;
+			min-width: 400px;
+			height: 400px;
+		}
+
+		#allmap {
+			height: 600px;
+			width: 100%;
+		}
+
+		#r-result {
+			width: 100%;
 		}
 	</style>
+
 </head>
 
 <body>
@@ -96,6 +139,9 @@
 			</li>
 			<li>
 				<a href="#rtdata" data-toggle="tab">实时信息</a>
+			</li>
+			<li>
+				<a href="#rtmap" data-toggle="tab">历史位置信息</a>
 			</li>
 			<li class="dropdown">
 				<a href="#history" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown">历史信息
@@ -120,13 +166,15 @@
 						<input list="VINs" id="car_VIN_reg">
 						<datalist id="VINs">
 							<option value="1">
+							<option value="LK6ADCE21JB008286">
 						</datalist><br>
 
 						<input type="radio" name="searchtype_reg" value="bynumber" id="2">
 						<b>按车牌号查找</b>
 						<input list="Nums" id="car_NUM_reg">
 						<datalist id="Nums">
-							<option value="1">s
+							<option value="1">
+							<option value="LK6ADCE21JB008286">s
 						</datalist><br>
 						<input type="button" value="查询" onclick="Submit_reg()">
 					</form>
@@ -192,11 +240,42 @@
 			</div>
 			<div class="tab-pane fade" id="rtdata">
 				<div id="sgmw">
-					<iframe id="sgmwframe" src="about:black" height="800" width="1200" frameborder="0">
+					<iframe id="sgmwframe" src="https://cloud.sgmw.com.cn" height="800" width="1200" frameborder="0">
 						<p>您的浏览器不支持 iframe 标签。</p>
 					</iframe>
 				</div>
+			</div>
+			<div class="tab-pane fade" id="rtmap">
+				<div id="searchmap" class="center">
+					<h2>车辆地图数据</h2>
+					<form action="/users/search/runtime">
+						<input type="radio" name="searchtype_rt" value="byVIN" checked="checked">
+						<b>按VIN查找</b>
+						<input list="VINs" id="car_VIN_rt8">
+						<datalist id="VINs">
+							<option value="1">
+							<option value="LK6ADCE21JB008286">
+						</datalist><br>
 
+						<input type="radio" name="searchtype_rt" value="bynumber">
+						<b>按车牌号查找</b>
+						<input list="Nums" id="car_NUM_rt9">
+						<datalist id="Nums">
+							<option value="1">
+							<option value="LK6ADCE21JB008286">
+						</datalist><br>
+
+						选择时间段:
+						<input type="datetime-local" name="bdaytime" value="2018-01-01T00:00">~
+						<input type="datetime-local" name="bdaytime" value="2019-01-01T00:00"><br>
+						<input type="button" value="查询" onclick="Submit_rt('rtmap')">
+					</form>
+				</div>
+				<div id="allmap"></div>
+				<div id="r-result">
+					<input type="button" onclick="add_overlay();" value="添加覆盖物" />
+					<input type="button" onclick="remove_overlay();" value="删除覆盖物" />
+				</div>
 			</div>
 			<div class="tab-pane fade" id="runtime">
 				<div id="search2" class="center">
@@ -207,6 +286,7 @@
 						<input list="VINs" id="car_VIN_rt0">
 						<datalist id="VINs">
 							<option value="1">
+							<option value="LK6ADCE21JB008286">
 						</datalist><br>
 
 						<input type="radio" name="searchtype_rt" value="bynumber">
@@ -214,6 +294,7 @@
 						<input list="Nums" id="car_NUM_rt1">
 						<datalist id="Nums">
 							<option value="1">
+							<option value="LK6ADCE21JB008286">
 						</datalist><br>
 
 						<b>数据类型：</b>
@@ -226,12 +307,12 @@
 						</select><br>
 						选择时间段:
 						<input type="datetime-local" name="bdaytime" value="2018-01-01T00:00">~
-						<input type="datetime-local" name="bdaytime" value="2018-01-01T00:00"><br>
+						<input type="datetime-local" name="bdaytime" value="2019-01-01T00:00"><br>
 						<input type="button" value="查询" onclick="Submit_rt('runtime')">
 					</form>
 				</div>
 				<div>
-					<div id="chartcontainer" style="min-width:400px;height:400px"></div>
+					<div id="chartcontainer1" class="chartcontainer"></div>
 				</div>
 			</div>
 			<div class="tab-pane fade" id="battery">
@@ -243,6 +324,7 @@
 						<input list="VINs" id="car_VIN_rt2">
 						<datalist id="VINs">
 							<option value="1">
+							<option value="LK6ADCE21JB008286">
 						</datalist><br>
 
 						<input type="radio" name="searchtype_rt" value="bynumber">
@@ -250,6 +332,7 @@
 						<input list="Nums" id="car_NUM_rt3">
 						<datalist id="Nums">
 							<option value="1">
+							<option value="LK6ADCE21JB008286">
 						</datalist><br>
 
 						<b>数据类型：</b>
@@ -263,12 +346,12 @@
 						</select><br>
 						选择时间段:
 						<input type="datetime-local" name="bdaytime" value="2018-01-01T00:00">~
-						<input type="datetime-local" name="bdaytime" value="2018-01-01T00:00"><br>
+						<input type="datetime-local" name="bdaytime" value="2019-01-01T00:00"><br>
 						<input type="button" value="查询" onclick="Submit_rt('battery')">
 					</form>
 				</div>
 				<div>
-					<div id="chartcontainer" style="min-width:400px;height:400px"></div>
+					<div id="chartcontainer2" class="chartcontainer"></div>
 				</div>
 			</div>
 			<div class="tab-pane fade" id="alert">
@@ -280,6 +363,7 @@
 						<input list="VINs" id="car_VIN_rt4">
 						<datalist id="VINs">
 							<option value="1">
+							<option value="LK6ADCE21JB008286">
 						</datalist><br>
 
 						<input type="radio" name="searchtype_rt" value="bynumber">
@@ -287,11 +371,12 @@
 						<input list="Nums" id="car_NUM_rt5">
 						<datalist id="Nums">
 							<option value="1">
+							<option value="LK6ADCE21JB008286">
 						</datalist><br>
 
 						选择时间段:
 						<input type="datetime-local" name="bdaytime" value="2018-01-01T00:00">~
-						<input type="datetime-local" name="bdaytime" value="2018-01-01T00:00"><br>
+						<input type="datetime-local" name="bdaytime" value="2019-01-01T00:00"><br>
 						<input type="button" value="查询" onclick="Submit_rt('alert')">
 					</form>
 				</div>
@@ -300,7 +385,7 @@
 			</div>
 			<div class="tab-pane fade" id="other">
 				<div id="search5" class="center">
-					<h2>告警历史数据</h2>
+					<h2>其他历史数据</h2>
 					<form action="">
 						<input type="radio" name="searchtype_rt" value="byVIN" checked="checked">
 						<b>按VIN查找</b>
@@ -324,12 +409,12 @@
 						</select><br>
 						选择时间段:
 						<input type="datetime-local" name="bdaytime" value="2018-01-01T00:00">~
-						<input type="datetime-local" name="bdaytime" value="2018-01-01T00:00"><br>
+						<input type="datetime-local" name="bdaytime" value="2019-01-01T00:00"><br>
 						<input type="button" value="查询" onclick="Submit_rt('other')">
 					</form>
 				</div>
 				<div>
-					<div id="chartcontainer" style="min-width:400px;height:400px"></div>
+					<div id="chartcontainer4" class="chartcontainer"></div>
 				</div>
 			</div>
 		</div>
@@ -337,3 +422,296 @@
 </body>
 
 </html>
+<script>
+
+
+
+var mapdata = null;
+
+function Submit_reg() {
+    var reqdata;
+    var searchtype = document.getElementsByName("searchtype_reg");
+
+    if(searchtype[0].checked){
+        reqdata = "searchtype=" + searchtype[0].value
+        + "&car_VIN=" + document.getElementById("car_VIN_reg").value
+    }else if(searchtype[1].checked){
+        reqdata = "searchtype=" + searchtype[1].value
+        + "&car_NUM=" + document.getElementById("car_NUM_reg").value
+    }
+
+    $.ajax({
+        url: '/users/search/register', //请求的url
+        type: 'get', //请求的方式
+        data: reqdata,
+        error:function (data) {
+            alert('请求失败');
+        },
+        success:function (data) {
+            var str1=
+            "<tbody><tr><th>车辆VIN</th><td>" + data[0].car_VIN  + "</td></tr>" +
+            "<tr><th>注册时间</th><td>" + data[0].registration_time  + "</td></tr>" +
+            "<tr><th>车辆类型</th><td>" + data[0].vehicle_type  + "</td></tr>" +
+            "<tr><th>储能装置种类</th><td>" + data[0].energy_storing_type  + "</td></tr>" +
+            "<tr><th>驱动电机类型</th><td>" + data[0].drive_motor_type  + "</td></tr>" +
+            "<tr><th>电机额定功率</th><td>" + data[0].drive_motor_rated_power  + "</td></tr>" +
+            "<tr><th>电机额定转速</th><td>" + data[0].drive_motor_rated_rpm  + "</td></tr>" +
+            "<tr><th>电机额定转矩</th><td>" + data[0].drive_motor_rated_torque  + "</td></tr></tbody>" ;
+
+            var str2=
+            "<tbody><tr><th>电机安装数量</th><td>" + data[0].drive_motor_number + "</td></tr>" +
+            "<tr><th>电机布置位置</th><td>" + data[0].drive_motor_position + "</td></tr>" +
+            "<tr><th>电机冷却方式</th><td>" + data[0].drive_motor_cooling_method + "</td></tr>" +
+            "<tr><th>电动汽车续航里程</th><td>" + data[0].e_car_endurance_mileage + "</td></tr>" +
+            "<tr><th>电动汽车最高时速</th><td>" + data[0].e_car_top_speed + "</td></tr>" +
+            "<tr><th>电池包数量</th><td>" + data[0].power_battery_number + "</td></tr>" +
+            "<tr><th>电池包信息</th><td>" + data[0].power_battery_info_0 + "</td></tr>" +
+            "<tr><th>额外字段</th><td>" + data[0].extra_field + "</td></tr></tbody>";
+            
+            console.dir(data[0])
+            //清空table中的html
+            $("#regtable1").html(""); 
+            $("#regtable2").html("");
+            $("#regtable1").append(str1);
+            $("#regtable2").append(str2);
+        }
+    });
+}
+
+function Submit_rt(route) {
+    var i=0;
+    switch(route)
+    {
+    case 'runtime':
+        i=0;break;
+    case 'battery':
+        i=2;break;
+    case 'alert':
+        i=4;break;
+    case 'other':
+        i=6;break;
+    case 'rtmap':
+        i=8;break;
+    }
+    var reqdata;
+    var searchtype = document.getElementsByName("searchtype_rt");
+    var vinid = "car_VIN_rt" + i.toString()
+    var numid = "car_NUM_rt" + (i+1).toString()
+    var time = document.getElementsByName("bdaytime")
+
+    if(searchtype[i].checked){
+        reqdata = "searchtype=" + searchtype[0].value
+        + "&car_VIN=" + document.getElementById(vinid).value 
+        + "&bdaytime=" + time[i].value + "&bdaytime=" + time[i+1].value ,true
+    }else if(searchtype[i+1].checked){
+        reqdata = "searchtype=" + searchtype[1].value
+        + "&car_NUM=" + document.getElementById(numid).value
+        + "&bdaytime=" + time[i].value + "&bdaytime=" + time[i+1].value ,true
+    }
+
+    $.ajax({
+        url: '/users/search/' + (route=="rtmap"?"runtime":route), //请求的url
+        type: 'get', //请求的方式
+        data: reqdata,
+        error:function (data) {
+            alert('请求失败');
+        },
+        success:function (data) {
+            if(i>7){
+				console.log(data)
+				mappoint(data)
+				return true;
+            }
+            var type = "chartselect" + ((i/2) + 1).toString()
+            var charttype = document.getElementById(type).value 
+
+            var csv = data2csv(data,charttype)
+
+            var chartloc = "chartcontainer" + ((i/2) + 1).toString();
+            console.log(chartloc)
+            chart = Highcharts.chart(chartloc, {
+                chart: {
+                    zoomType: 'x'
+                },
+                data: {
+                    csv: csv
+                },
+                title: {
+                    text: '实时数据图'
+                },
+                subtitle: {
+                    text: document.ontouchstart === undefined ?
+                    '鼠标拖动可以进行缩放' : '手势操作进行缩放'
+                },
+                xAxis: {
+                    type: 'datetime',
+                    dateTimeLabelFormats: {
+                        millisecond: '%H:%M:%S.%L',
+                        second: '%H:%M:%S',
+                        minute: '%H:%M',
+                        hour: '%H:%M',
+                        day: '%m-%d',
+                        week: '%m-%d',
+                        month: '%Y-%m',
+                        year: '%Y'
+                    }
+                },
+                tooltip: {
+                    dateTimeLabelFormats: {
+                        millisecond: '%H:%M:%S.%L',
+                        second: '%H:%M:%S',
+                        minute: '%H:%M',
+                        hour: '%H:%M',
+                        day: '%Y-%m-%d',
+                        week: '%m-%d',
+                        month: '%Y-%m',
+                        year: '%Y'
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: charttype
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
+                plotOptions: {
+                    area: {
+                        fillColor: {
+                            linearGradient: {
+                                x1: 0,
+                                y1: 0,
+                                x2: 0,
+                                y2: 1
+                            },
+                            stops: [
+                                [0, Highcharts.getOptions().colors[0]],
+                                [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                            ]
+                        },
+                        marker: {
+                            radius: 2
+                        },
+                        lineWidth: 1,
+                        states: {
+                            hover: {
+                                lineWidth: 1
+                            }
+                        },
+                        threshold: null
+                    }
+                }
+            });
+        }
+    });
+}
+var csv2 = "Day,访问量（PV）,访问用户（UV）\n3/20/13,16970,12599\n3/21/13,17580,13094\n3/22/13,17511,13234\n3/23/13,6601,5213\n3/24/13,6158,4806\n3/25/13,17353,12639\n3/26/13,17660,12768\n3/27/13,16921,12389\n3/28/13,15964,11686\n3/29/13,12028,8891\n3/30/13,5835,4513\n3/31/13,4799,3661\n4/1/13,13037,9503\n4/2/13,16976,12666\n4/3/13,17100,12635\n4/4/13,15701,11394\n4/5/13,14378,10530\n4/6/13,5889,4521\n4/7/13,6779,5109\n4/8/13,16068,11599\n"
+
+
+function data2csv(data,type){
+    console.log(type)
+    console.dir(data)
+    typename = dictionary_en2cn[type]
+    console.log(typename)
+    var csv = "Time," + typename + " \n";
+    for(var i = 0; i < data.length; i += 1){
+        if(data[i][type] == null){
+            continue;
+        }
+        csv += data[i].timestamp + "," + data[i][type] + "\n";
+    }
+    return csv;
+}
+
+var dictionary_cn2en ={
+    "日期": "timestamp",
+    "经度": "longitude",
+    "纬度": "latitude",
+    "车辆运行模式": "vehicle_operating_mode",
+    "制动踏板位置": "brake_pedal_status",
+    "加速踏板位置": "accelerator_pedal_stroke",
+    "档位": "gear_position",
+    "钥匙状态": "key_status",
+    "驾驶模式": "driving_mode",
+    "车速": "velocity",
+    "电机状态": "motor_status",
+    "电机转矩": "motor_torque",
+    "电机转速": "drive_motor_rpm",
+    "电机控制器电流": "motor_controller_current",
+    "电机控制器电压": "motor_controller_voltage",
+    "电机温度": "drive_motor_temperature",
+    "电机控制器温度": "motor_controller_temperature",
+    "总电流": "high_voltage_battery_current",
+    "总电压": "total_battery_voltage",
+    "绝缘阻值": "insulation_resistance_value",
+    "剩余电量": "residual_energy",
+    "电池最高单体电压": "max_single_voltage",
+    "电池最低单体电压": "min_single_voltage",
+    "总行驶里程": "cumulative_mileage"
+}
+var dictionary_en2cn = {
+    "timestamp" : "日期",
+    "longitude" : "经度",
+    "latitude" : "纬度",
+    "vehicle_operating_mode" : "车辆运行模式",
+    "brake_pedal_status" : "制动踏板位置",
+    "accelerator_pedal_stroke" : "加速踏板位置",
+    "gear_position" : "档位",
+    "key_status" : "钥匙状态",
+    "driving_mode" : "驾驶模式",
+    "velocity" : "车速",
+    "motor_status" : "电机状态",
+    "motor_torque" : "电机转矩",
+    "drive_motor_rpm" : "电机转速",
+    "motor_controller_current" : "电机控制器电流",
+    "motor_controller_voltage" : "电机控制器电压",
+    "drive_motor_temperature" : "电机温度",
+    "motor_controller_temperature" : "电机控制器温度",
+    "high_voltage_battery_current" : "总电流",
+    "total_battery_voltage" : "总电压",
+    "insulation_resistance_value" : "绝缘阻值",
+    "residual_energy" : "剩余电量",
+    "max_single_voltage" : "电池最高单体电压",
+    "min_single_voltage" : "电池最低单体电压",
+    "cumulative_mileage" : "总行驶里程"
+}
+
+var map = new BMap.Map("allmap");
+map.centerAndZoom("上海",13);      // 初始化地图,用城市名设置地图中心点
+map.enableScrollWheelZoom(true);
+map.addControl(new BMap.NavigationControl());
+
+function mappoint(data){
+	var center=0;
+	var convertor = new BMap.Convertor();
+	var pointArr = [];
+
+    for(var i = 0; i < (data.length<8000?data.length:800); i += 8){
+        if(data[i].longitude == null ||data[i].latitude == null){
+            continue;
+		}
+		if(data[i].longitude > 124 ||data[i].longitude < 118 ||data[i].latitude > 35 ||data[i].longitude < 27){
+            continue;
+		}
+		var ggPoint = new BMap.Point(data[i].longitude,data[i].latitude);
+		pointArr.push(ggPoint);
+
+		//var point = new BMap.Point(data[i].longitude, data[i].latitude);
+		//var marker = new BMap.Marker(point); // 创建点
+		//map.addOverlay(marker);
+	}
+	console.dir(pointArr)
+	convertor.translate(pointArr, 1, 5, function (data){
+		console.log(data);
+		if(data.status === 0) {
+		var marker = new BMap.Marker(data.points[0]);
+		bm.addOverlay(marker);
+		var label = new BMap.Label("转换后的百度坐标（正确）",{offset:new BMap.Size(20,-10)});
+		marker.setLabel(label); //添加百度label
+		bm.setCenter(data.points[0]);
+		}
+	})
+}
+
+</script>

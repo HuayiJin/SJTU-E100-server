@@ -69,10 +69,11 @@ router.get(PATH + '/search/register', vehicles.searchVehicleRegister);
 router.get(PATH + '/search/runtime', vehicles.searchVehicleRuntime);
 router.get(PATH + '/search/battery', vehicles.searchVehicleBattery);
 router.get(PATH + '/search/alert', vehicles.searchVehicleAlert);
+router.get(PATH + '/search/other', vehicles.searchVehicleOther);
 
 router.get(PATH + TESTPATH + '/search/register', vehicles.searchVehicleRegister);
 router.get(PATH + TESTPATH + '/search/history', vehicles.searchVehicleRuntime);
 router.get(PATH + TESTPATH + '/search/history', vehicles.searchVehicleBattery);
 router.get(PATH + TESTPATH + '/search/history', vehicles.searchVehicleAlert);
-
+router.get(PATH + TESTPATH + '/search/other', vehicles.searchVehicleOther);
 module.exports = router;

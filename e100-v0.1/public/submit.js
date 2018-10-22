@@ -1,3 +1,5 @@
+var mapdata = null;
+
 function Submit_reg() {
     var reqdata;
     var searchtype = document.getElementsByName("searchtype_reg");
@@ -60,6 +62,8 @@ function Submit_rt(route) {
         i=4;break;
     case 'other':
         i=6;break;
+    case 'rtmap':
+        i=8;break;
     }
     var reqdata;
     var searchtype = document.getElementsByName("searchtype_rt");
@@ -76,102 +80,97 @@ function Submit_rt(route) {
         + "&car_NUM=" + document.getElementById(numid).value
         + "&bdaytime=" + time[i].value + "&bdaytime=" + time[i+1].value ,true
     }
-    
+
     $.ajax({
-        url: '/users/search/' + route, //请求的url
+        url: '/users/search/' + (route=="rtmap"?"runtime":route), //请求的url
         type: 'get', //请求的方式
         data: reqdata,
         error:function (data) {
             alert('请求失败');
         },
         success:function (data) {
+            if(i>7){
+                mapdata =  data;
+                baidumap();
+            }
             var type = "chartselect" + ((i/2) + 1).toString()
             var charttype = document.getElementById(type).value 
+
             var csv = data2csv(data,charttype)
 
-            chart = Highcharts.chart('chartcontainer', {
+            var chartloc = "chartcontainer" + ((i/2) + 1).toString();
+            console.log(chartloc)
+            chart = Highcharts.chart(chartloc, {
+                chart: {
+                    zoomType: 'x'
+                },
                 data: {
                     csv: csv
                 },
                 title: {
-                    text: '某网站日常访问量'
+                    text: '实时数据图'
                 },
                 subtitle: {
-                    text: '数据来源: Google Analytics'
+                    text: document.ontouchstart === undefined ?
+                    '鼠标拖动可以进行缩放' : '手势操作进行缩放'
                 },
                 xAxis: {
-                    tickInterval: 24 * 3600 * 1000, // 坐标轴刻度间隔为一天
-                    tickWidth: 0,
-                    gridLineWidth: 1,
-                    labels: {
-                        align: 'left',
-                        x: 3,
-                        y: -3
-                    },
-                    // 时间格式化字符
-                    // 默认会根据当前的刻度间隔取对应的值，即当刻度间隔为一周时，取 week 值
+                    type: 'datetime',
                     dateTimeLabelFormats: {
-                        week: '%Y-%m-%d'
+                        millisecond: '%H:%M:%S.%L',
+                        second: '%H:%M:%S',
+                        minute: '%H:%M',
+                        hour: '%H:%M',
+                        day: '%m-%d',
+                        week: '%m-%d',
+                        month: '%Y-%m',
+                        year: '%Y'
                     }
-                },
-                yAxis: [{ // 第一个 Y 轴，放置在左边（默认在坐标）
-                    title: {
-                        text: null
-                    },
-                    labels: {
-                        align: 'left',
-                        x: 3,
-                        y: 16,
-                        format: '{value:.,0f}'
-                    },
-                    showFirstLabel: false
-                }, {    // 第二个坐标轴，放置在右边
-                    linkedTo: 0,
-                    gridLineWidth: 0,
-                    opposite: true,  // 通过此参数设置坐标轴显示在对立面
-                    title: {
-                        text: null
-                    },
-                    labels: {
-                        align: 'right',
-                        x: -3,
-                        y: 16,
-                        format: '{value:.,0f}'
-                    },
-                    showFirstLabel: false
-                }],
-                legend: {
-                    align: 'left',
-                    verticalAlign: 'top',
-                    y: 20,
-                    floating: true,
-                    borderWidth: 0
                 },
                 tooltip: {
-                    shared: true,
-                    crosshairs: true,
-                    // 时间格式化字符
-                    // 默认会根据当前的数据点间隔取对应的值
-                    // 当前图表中数据点间隔为 1天，所以配置 day 值即可
                     dateTimeLabelFormats: {
-                        day: '%Y-%m-%d'
+                        millisecond: '%H:%M:%S.%L',
+                        second: '%H:%M:%S',
+                        minute: '%H:%M',
+                        hour: '%H:%M',
+                        day: '%Y-%m-%d',
+                        week: '%m-%d',
+                        month: '%Y-%m',
+                        year: '%Y'
                     }
                 },
+                yAxis: {
+                    title: {
+                        text: charttype
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
                 plotOptions: {
-                    series: {
-                        cursor: 'pointer',
-                        point: {
-                            events: {
-                                // 数据点点击事件
-                                // 其中 e 变量为事件对象，this 为当前数据点对象
-                                click: function (e) {
-                                    $('.message').html( Highcharts.dateFormat('%Y-%m-%d', this.x) + ':<br/>  访问量：' +this.y );
-                                }
-                            }
+                    area: {
+                        fillColor: {
+                            linearGradient: {
+                                x1: 0,
+                                y1: 0,
+                                x2: 0,
+                                y2: 1
+                            },
+                            stops: [
+                                [0, Highcharts.getOptions().colors[0]],
+                                [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                            ]
                         },
                         marker: {
-                            lineWidth: 1
-                        }
+                            radius: 2
+                        },
+                        lineWidth: 1,
+                        states: {
+                            hover: {
+                                lineWidth: 1
+                            }
+                        },
+                        threshold: null
                     }
                 }
             });
@@ -183,11 +182,14 @@ var csv2 = "Day,访问量（PV）,访问用户（UV）\n3/20/13,16970,12599\n3/2
 
 function data2csv(data,type){
     console.log(type)
-
+    console.dir(data)
     typename = dictionary_en2cn[type]
     console.log(typename)
     var csv = "Time," + typename + " \n";
     for(var i = 0; i < data.length; i += 1){
+        if(data[i][type] == null){
+            continue;
+        }
         csv += data[i].timestamp + "," + data[i][type] + "\n";
     }
     return csv;
@@ -244,4 +246,19 @@ var dictionary_en2cn = {
     "max_single_voltage" : "电池最高单体电压",
     "min_single_voltage" : "电池最低单体电压",
     "cumulative_mileage" : "总行驶里程"
+}
+
+function baidumap(){
+    var map = new BMap.Map("allmap");
+    var point = new BMap.Point(116.404, 39.915);
+    map.centerAndZoom(point, 15);
+
+    var marker = new BMap.Marker(new BMap.Point(116.404, 39.915)); // 创建点
+    var polyline = new BMap.Polyline([
+        new BMap.Point(116.399, 39.910),
+        new BMap.Point(116.405, 39.920),
+        new BMap.Point(116.425, 39.900)
+    ], {strokeColor:"blue", strokeWeight:2, strokeOpacity:0.5});   //创建折线
+
+    map.addOverlay(marker);
 }

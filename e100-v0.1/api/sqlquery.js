@@ -170,6 +170,14 @@ exports.searchVehiclebyVIN_Alert = function (car_vin, start, end) {
     return searchsql;
 }
 
+
+exports.searchVehiclebyVIN_Other = function (car_vin, start, end) {
+    var searchsql = "select * from OTHER_REALTIME_DATA_TEST WHERE `car_VIN`='" + car_vin
+        + "' and`timestamp`>'" + start
+        + "' and`timestamp`<'" + end + "'";
+    return searchsql;
+}
+
 /*
 *******************************
 ** below is not complete yet **
