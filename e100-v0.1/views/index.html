@@ -161,7 +161,7 @@
 				<h2>注册信息</h2>
 				<div id="search1" class="center">
 					<form action="/users/search/register">
-						<input type="radio" name="searchtype_reg" value="byVIN" id="1" checked="checked">
+						<input type="radio" name="searchtype_reg" checked="checked">
 						<b>按VIN查找</b>
 						<input list="VINs" id="car_VIN_reg">
 						<datalist id="VINs">
@@ -169,7 +169,7 @@
 							<option value="LK6ADCE21JB008286">
 						</datalist><br>
 
-						<input type="radio" name="searchtype_reg" value="bynumber" id="2">
+						<input type="radio" name="searchtype_reg">
 						<b>按车牌号查找</b>
 						<input list="Nums" id="car_NUM_reg">
 						<datalist id="Nums">
@@ -249,25 +249,25 @@
 				<div id="searchmap" class="center">
 					<h2>车辆地图数据</h2>
 					<form action="/users/search/runtime">
-						<input type="radio" name="searchtype_rt" value="byVIN" checked="checked">
+						<input type="radio" name="searchtype_rt_rtmap" checked="checked">
 						<b>按VIN查找</b>
-						<input list="VINs" id="car_VIN_rt8">
+						<input list="VINs" id="car_VIN_rt_rtmap">
 						<datalist id="VINs">
 							<option value="1">
 							<option value="LK6ADCE21JB008286">
 						</datalist><br>
 
-						<input type="radio" name="searchtype_rt" value="bynumber">
+						<input type="radio" name="searchtype_rt_rtmap">
 						<b>按车牌号查找</b>
-						<input list="Nums" id="car_NUM_rt9">
+						<input list="Nums" id="car_NUM_rt_rtmap">
 						<datalist id="Nums">
 							<option value="1">
 							<option value="LK6ADCE21JB008286">
 						</datalist><br>
 
 						选择时间段:
-						<input type="datetime-local" name="bdaytime" value="2018-01-01T00:00">~
-						<input type="datetime-local" name="bdaytime" value="2019-01-01T00:00"><br>
+						<input type="datetime-local" name="bdaytime_rtmap" value="2018-01-01T00:00">~
+						<input type="datetime-local" name="bdaytime_rtmap" value="2019-01-01T00:00"><br>
 						<input type="button" value="查询" onclick="Submit_rt('rtmap')">
 					</form>
 				</div>
@@ -281,24 +281,24 @@
 				<div id="search2" class="center">
 					<h2>车辆历史数据</h2>
 					<form action="/users/search/runtime">
-						<input type="radio" name="searchtype_rt" value="byVIN" checked="checked">
+						<input type="radio" name="searchtype_rt_runtime" checked="checked">
 						<b>按VIN查找</b>
-						<input list="VINs" id="car_VIN_rt0">
+						<input list="VINs" id="car_VIN_rt_runtime">
 						<datalist id="VINs">
 							<option value="1">
 							<option value="LK6ADCE21JB008286">
 						</datalist><br>
 
-						<input type="radio" name="searchtype_rt" value="bynumber">
+						<input type="radio" name="searchtype_rt_runtime">
 						<b>按车牌号查找</b>
-						<input list="Nums" id="car_NUM_rt1">
+						<input list="Nums" id="car_NUM_rt_runtime">
 						<datalist id="Nums">
 							<option value="1">
 							<option value="LK6ADCE21JB008286">
 						</datalist><br>
 
 						<b>数据类型：</b>
-						<select id="chartselect1" name="cars">
+						<select id="chartselect_runtime" name="cars">
 							<option value="location">位置</option>
 							<option value="velocity" selected>速度</option>
 							<option value="cumulative_mileage">总行驶里程</option>
@@ -306,37 +306,37 @@
 							<option value="drive_motor_temperature">电机温度</option>
 						</select><br>
 						选择时间段:
-						<input type="datetime-local" name="bdaytime" value="2018-01-01T00:00">~
-						<input type="datetime-local" name="bdaytime" value="2019-01-01T00:00"><br>
+						<input type="datetime-local" name="bdaytime_runtime" value="2018-01-01T00:00">~
+						<input type="datetime-local" name="bdaytime_runtime" value="2019-01-01T00:00"><br>
 						<input type="button" value="查询" onclick="Submit_rt('runtime')">
 					</form>
 				</div>
 				<div>
-					<div id="chartcontainer1" class="chartcontainer"></div>
+					<div id="chartcontainer_runtime" class="chartcontainer"></div>
 				</div>
 			</div>
 			<div class="tab-pane fade" id="battery">
 				<div id="search3" class="center">
 					<h2>电池历史数据</h2>
 					<form action="">
-						<input type="radio" name="searchtype_rt" value="byVIN" checked="checked">
+						<input type="radio" name="searchtype_rt_battery" checked="checked">
 						<b>按VIN查找</b>
-						<input list="VINs" id="car_VIN_rt2">
+						<input list="VINs" id="car_VIN_rt_battery">
 						<datalist id="VINs">
 							<option value="1">
 							<option value="LK6ADCE21JB008286">
 						</datalist><br>
 
-						<input type="radio" name="searchtype_rt" value="bynumber">
+						<input type="radio" name="searchtype_rt_battery">
 						<b>按车牌号查找</b>
-						<input list="Nums" id="car_NUM_rt3">
+						<input list="Nums" id="car_NUM_rt_battery">
 						<datalist id="Nums">
 							<option value="1">
 							<option value="LK6ADCE21JB008286">
 						</datalist><br>
 
 						<b>数据类型：</b>
-						<select id="chartselect2" name="cars">
+						<select id="chartselect_battery" name="cars">
 							<option value="residual_energy" selected>剩余电量</option>
 							<option value="high_voltage_battery_current">总电流</option>
 							<option value="total_battery_voltage">总电压</option>
@@ -345,38 +345,38 @@
 							<option value="insulation_resistance_value">绝缘阻值</option>
 						</select><br>
 						选择时间段:
-						<input type="datetime-local" name="bdaytime" value="2018-01-01T00:00">~
-						<input type="datetime-local" name="bdaytime" value="2019-01-01T00:00"><br>
+						<input type="datetime-local" name="bdaytime_battery" value="2018-01-01T00:00">~
+						<input type="datetime-local" name="bdaytime_battery" value="2019-01-01T00:00"><br>
 						<input type="button" value="查询" onclick="Submit_rt('battery')">
 					</form>
 				</div>
 				<div>
-					<div id="chartcontainer2" class="chartcontainer"></div>
+					<div id="chartcontainer_battery" class="chartcontainer"></div>
 				</div>
 			</div>
 			<div class="tab-pane fade" id="alert">
 				<div id="search4" class="center">
 					<h2>告警历史数据</h2>
 					<form action="">
-						<input type="radio" name="searchtype_rt" value="byVIN" checked="checked">
+						<input type="radio" name="searchtype_rt_alert" checked="checked">
 						<b>按VIN查找</b>
-						<input list="VINs" id="car_VIN_rt4">
+						<input list="VINs" id="car_VIN_rt_alert">
 						<datalist id="VINs">
 							<option value="1">
 							<option value="LK6ADCE21JB008286">
 						</datalist><br>
 
-						<input type="radio" name="searchtype_rt" value="bynumber">
+						<input type="radio" name="searchtype_rt_alert">
 						<b>按车牌号查找</b>
-						<input list="Nums" id="car_NUM_rt5">
+						<input list="Nums" id="car_NUM_rt_alert">
 						<datalist id="Nums">
 							<option value="1">
 							<option value="LK6ADCE21JB008286">
 						</datalist><br>
 
 						选择时间段:
-						<input type="datetime-local" name="bdaytime" value="2018-01-01T00:00">~
-						<input type="datetime-local" name="bdaytime" value="2019-01-01T00:00"><br>
+						<input type="datetime-local" name="bdaytime_alert" value="2018-01-01T00:00">~
+						<input type="datetime-local" name="bdaytime_alert" value="2019-01-01T00:00"><br>
 						<input type="button" value="查询" onclick="Submit_rt('alert')">
 					</form>
 				</div>
@@ -387,34 +387,34 @@
 				<div id="search5" class="center">
 					<h2>其他历史数据</h2>
 					<form action="">
-						<input type="radio" name="searchtype_rt" value="byVIN" checked="checked">
+						<input type="radio" name="searchtype_rt_other" checked="checked">
 						<b>按VIN查找</b>
-						<input list="VINs" id="car_VIN_rt6">
+						<input list="VINs" id="car_VIN_rt_other">
 						<datalist id="VINs">
 							<option value="1">
 						</datalist><br>
 
-						<input type="radio" name="searchtype_rt" value="bynumber">
+						<input type="radio" name="searchtype_rt_other">
 						<b>按车牌号查找</b>
-						<input list="Nums" id="car_NUM_rt7">
+						<input list="Nums" id="car_NUM_rt_other">
 						<datalist id="Nums">
 							<option value="1">
 						</datalist><br>
 
 						<b>数据类型：</b>
-						<select id="chartselect4" name="cars">
+						<select id="chartselect_other" name="cars">
 							<option value="motor_torque" selected>电机转矩</option>
 							<option value="motor_controller_current">电机控制器电流</option>
 							<option value="motor_controller_voltage">电机控制器电压</option>
 						</select><br>
 						选择时间段:
-						<input type="datetime-local" name="bdaytime" value="2018-01-01T00:00">~
-						<input type="datetime-local" name="bdaytime" value="2019-01-01T00:00"><br>
+						<input type="datetime-local" name="bdaytime_other" value="2018-01-01T00:00">~
+						<input type="datetime-local" name="bdaytime_other" value="2019-01-01T00:00"><br>
 						<input type="button" value="查询" onclick="Submit_rt('other')">
 					</form>
 				</div>
 				<div>
-					<div id="chartcontainer4" class="chartcontainer"></div>
+					<div id="chartcontainer_other" class="chartcontainer"></div>
 				</div>
 			</div>
 		</div>
@@ -425,7 +425,6 @@
 <script>
 
 
-
 var mapdata = null;
 
 function Submit_reg() {
@@ -433,11 +432,13 @@ function Submit_reg() {
     var searchtype = document.getElementsByName("searchtype_reg");
 
     if(searchtype[0].checked){
-        reqdata = "searchtype=" + searchtype[0].value
+        reqdata = "searchtype=byVIN"
         + "&car_VIN=" + document.getElementById("car_VIN_reg").value
     }else if(searchtype[1].checked){
-        reqdata = "searchtype=" + searchtype[1].value
+        reqdata = "searchtype=bynumber"
         + "&car_NUM=" + document.getElementById("car_NUM_reg").value
+    }else{
+        alert("请选择查询方式")
     }
 
     $.ajax({
@@ -479,34 +480,25 @@ function Submit_reg() {
 }
 
 function Submit_rt(route) {
-    var i=0;
-    switch(route)
-    {
-    case 'runtime':
-        i=0;break;
-    case 'battery':
-        i=2;break;
-    case 'alert':
-        i=4;break;
-    case 'other':
-        i=6;break;
-    case 'rtmap':
-        i=8;break;
-    }
     var reqdata;
-    var searchtype = document.getElementsByName("searchtype_rt");
-    var vinid = "car_VIN_rt" + i.toString()
-    var numid = "car_NUM_rt" + (i+1).toString()
-    var time = document.getElementsByName("bdaytime")
+    var searchtype = document.getElementsByName("searchtype_rt_"+route);
+    console.log(searchtype)
+    var vinid = "car_VIN_rt_" + route
+    var numid = "car_NUM_rt_" + route
+    var time = document.getElementsByName("bdaytime_"+route)
 
-    if(searchtype[i].checked){
-        reqdata = "searchtype=" + searchtype[0].value
+    console.log(route)
+    console.log(searchtype)
+    if(searchtype[0].checked){
+        reqdata = "searchtype=byVIN"
         + "&car_VIN=" + document.getElementById(vinid).value 
-        + "&bdaytime=" + time[i].value + "&bdaytime=" + time[i+1].value ,true
-    }else if(searchtype[i+1].checked){
-        reqdata = "searchtype=" + searchtype[1].value
+        + "&bdaytime=" + time[0].value + "&bdaytime=" + time[1].value ,true
+    }else if(searchtype[1].checked){
+        reqdata = "searchtype=bynumber"
         + "&car_NUM=" + document.getElementById(numid).value
-        + "&bdaytime=" + time[i].value + "&bdaytime=" + time[i+1].value ,true
+        + "&bdaytime=" + time[0].value + "&bdaytime=" + time[1].value ,true
+    }else{
+        alert("请选择查询方式")
     }
 
     $.ajax({
@@ -517,17 +509,17 @@ function Submit_rt(route) {
             alert('请求失败');
         },
         success:function (data) {
-            if(i>7){
-				console.log(data)
+            if(route == "rtmap"){
+				//console.log(data)
 				mappoint(data)
 				return true;
             }
-            var type = "chartselect" + ((i/2) + 1).toString()
+            var type = "chartselect_" + route
             var charttype = document.getElementById(type).value 
 
             var csv = data2csv(data,charttype)
 
-            var chartloc = "chartcontainer" + ((i/2) + 1).toString();
+            var chartloc = "chartcontainer_" + route;
             console.log(chartloc)
             chart = Highcharts.chart(chartloc, {
                 chart: {
@@ -610,8 +602,8 @@ var csv2 = "Day,访问量（PV）,访问用户（UV）\n3/20/13,16970,12599\n3/2
 
 
 function data2csv(data,type){
-    console.log(type)
-    console.dir(data)
+    //console.log(type)
+    //console.dir(data)
     typename = dictionary_en2cn[type]
     console.log(typename)
     var csv = "Time," + typename + " \n";
@@ -683,35 +675,35 @@ map.enableScrollWheelZoom(true);
 map.addControl(new BMap.NavigationControl());
 
 function mappoint(data){
-	var center=0;
+    console.log(data)
 	var convertor = new BMap.Convertor();
-	var pointArr = [];
+    translateCallback = function (data){
+        console.log(data.status)
+        if(data.status === 0) {
+            var marker = new BMap.Marker(data.points[0]);
+            map.addOverlay(marker);
+            map.setCenter(data.points[0]);
+        }
+    }
 
-    for(var i = 0; i < (data.length<8000?data.length:800); i += 8){
+    for(var i = 0; i < data.length; i++){
         if(data[i].longitude == null ||data[i].latitude == null){
             continue;
 		}
-		if(data[i].longitude > 124 ||data[i].longitude < 118 ||data[i].latitude > 35 ||data[i].longitude < 27){
+		if(data[i].longitude > 124 ||data[i].longitude < 118 ||data[i].latitude > 35 ||data[i].latitude < 27){
             continue;
-		}
+        }
+        
+        var pointArr = [];
 		var ggPoint = new BMap.Point(data[i].longitude,data[i].latitude);
-		pointArr.push(ggPoint);
+        pointArr.push(ggPoint);
+        var convertor = new BMap.Convertor();
+        convertor.translate(pointArr, 1, 5, translateCallback)
 
-		//var point = new BMap.Point(data[i].longitude, data[i].latitude);
+        //var point = new BMap.Point(data[i].longitude, data[i].latitude);
 		//var marker = new BMap.Marker(point); // 创建点
 		//map.addOverlay(marker);
-	}
-	console.dir(pointArr)
-	convertor.translate(pointArr, 1, 5, function (data){
-		console.log(data);
-		if(data.status === 0) {
-		var marker = new BMap.Marker(data.points[0]);
-		bm.addOverlay(marker);
-		var label = new BMap.Label("转换后的百度坐标（正确）",{offset:new BMap.Size(20,-10)});
-		marker.setLabel(label); //添加百度label
-		bm.setCenter(data.points[0]);
-		}
-	})
+    }
 }
 
 </script>

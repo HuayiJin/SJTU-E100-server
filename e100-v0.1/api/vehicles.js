@@ -144,8 +144,14 @@ exports.searchVehicleRuntime = function (req, res) {
             console.log(err)
             res.end("查询失败：", err)
         } else {
-            //console.log(resdata);
-            res.status(200).send(resdata);
+            subresdata = []
+            gap = 1
+            if(resdata.length > 220){gap = parseInt(resdata.length / 200)}
+            for (i=0; i<resdata.length; i+= gap){
+                console.log(i)
+                subresdata.push(resdata[i])
+            }
+            res.status(200).send(subresdata);
         }
     });
 }
@@ -159,8 +165,14 @@ exports.searchVehicleBattery = function (req, res) {
         if (err) {
             res.end("查询失败：", err)
         } else {
-            //console.log(resdata);
-            res.status(200).send(resdata);
+            subresdata = []
+            gap = 1
+            if(resdata.length > 220){gap = parseInt(resdata.length / 200)}
+            for (i=0; i<resdata.length; i+= gap){
+                console.log(i)
+                subresdata.push(resdata[i])
+            }
+            res.status(200).send(subresdata);
         }
     });
 }
@@ -189,8 +201,14 @@ exports.searchVehicleOther = function (req, res) {
         if (err) {
             res.end("查询失败：", err)
         } else {
-            //console.log(resdata);
-            res.status(200).send(resdata);
+            subresdata = []
+            gap = 1
+            if(resdata.length > 220){gap = parseInt(resdata.length / 200)}
+            for (i=0; i<resdata.length; i+= gap){
+                console.log(i)
+                subresdata.push(resdata[i])
+            }
+            res.status(200).send(subresdata);
         }
     });
 }
