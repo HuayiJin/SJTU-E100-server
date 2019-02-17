@@ -124,6 +124,12 @@
 		#r-result {
 			width: 100%;
 		}
+
+        .sgmw-relative{position:relative; width:1400px; height:900px} 
+        .sgmw-a{ position:absolute; width:1400px; height:900px} 
+        /* css注释说明： 背景为红色 */ 
+        .sgmw-b{ position:absolute; left:70px ; background:#FF0; width:1260px; height:80px} 
+        /* 背景为黄色 */ 
 	</style>
 
 </head>
@@ -239,11 +245,16 @@
 				</div>
 			</div>
 			<div class="tab-pane fade" id="rtdata">
-				<div id="sgmw">
-					<iframe id="sgmwframe" src="https://cloud.sgmw.com.cn" height="800" width="1200" frameborder="0">
-						<p>您的浏览器不支持 iframe 标签。</p>
-					</iframe>
-				</div>
+                <div class="sgmw-relative">
+                    <div class="sgmw-a" id="sgmw">
+                        <iframe id="sgmwframe" src="https://cloud.sgmw.com.cn" height="900" width="1400" frameborder="0">
+                            <p>您的浏览器不支持 iframe 标签。</p>
+                        </iframe>
+                    </div>
+                    <div class="sgmw-b">
+                        <img src="SJTU-ICEVIC.jpg">
+                    </div>
+                </div>
 			</div>
 			<div class="tab-pane fade" id="rtmap">
 				<div id="searchmap" class="center">
