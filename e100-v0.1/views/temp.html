@@ -1,45 +1,74 @@
-<!DOCTYPE html>
-<html>
+<div class="tab-pane fade" id="other">
+    <div id="search5" class="center">
+        <h2>其他历史数据</h2>
+        <form action="">
+            <input type="radio" name="searchtype_rt_other" checked="checked">
+            <b>按VIN查找</b>
+            <input list="VINs" id="car_VIN_rt_other">
+            <datalist id="VINs">
+                <option value="1">
+            </datalist><br>
 
-<head>
-    <title>My HTML starting page</title>
-    <meta http-equiv="pragma" content="no-cache">
-    <meta http-equiv="cache-control" content="no-cache">
-    <meta http-equiv="expires" content="0">
-    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-    <meta http-equiv="description" content="This is my page">
-    <!--
-<link rel="stylesheet" type="text/css" href="styles.css">
--->
-    <style>
-        .c1{
-width:200px;
-height:200px;
-border:red solid 1px
-}
-</style>
-    <script type="text/javascript">
-        function f1(param) {
-            for (var i = 1; i <= 4; i++) {
-                var id = document.getElementById("d" + i);
-                id.style.display = "none";
-                if (i === param) {
-                    id.style.display = "block";
-                }
-            }
-        }
-    </script>
-</head>
+            <input type="radio" name="searchtype_rt_other">
+            <b>按车牌号查找</b>
+            <input list="Nums" id="car_NUM_rt_other">
+            <datalist id="Nums">
+                <option value="1">
+            </datalist><br>
 
-<body>
-    <input type="button" value="按钮1" onclick="f1(1);">
-    <input type="button" value="按钮2" onclick="f1(2);">
-    <input type="button" value="按钮3" onclick="f1(3);">
-    <input type="button" value="按钮4" onclick="f1(4);">
-    <div id="d1" class="c1">111111111</div>
-    <div id="d2" class="c1" style="display:none">22222222</div>
-    <div id="d3" class="c1" style="display:none">33333333</div>
-    <div id="d4" class="c1" style="display:none">44444444</div>
-</body>
+            <b>数据类型：</b>
+            <select id="chartselect_other" name="cars">
+                <option value="motor_torque" selected>电机转矩</option>
+                <option value="motor_controller_current">电机控制器电流</option>
+                <option value="motor_controller_voltage">电机控制器电压</option>
+            </select><br>
+            选择时间段:
+            <input type="datetime-local" name="bdaytime_other" value="2018-01-01T00:00">~
+            <input type="datetime-local" name="bdaytime_other" value="2019-01-01T00:00"><br>
+            <input type="button" value="查询" onclick="Submit_rt('other')">
+        </form>
+    </div>
+    <div>
+        <div id="chartcontainer_other" class="chartcontainer"></div>
+    </div>
+</div>
 
-</html>
+            <div class="tab-pane fade" id="battery">
+    <div id="search3" class="center">
+        <h2>电池历史数据</h2>
+        <form action="">
+            <input type="radio" name="searchtype_rt_battery" checked="checked">
+            <b>按VIN查找</b>
+            <input list="VINs" id="car_VIN_rt_battery">
+            <datalist id="VINs">
+                <option value="1">
+                <option value="LK6ADCE21JB008286">
+            </datalist><br>
+
+            <input type="radio" name="searchtype_rt_battery">
+            <b>按车牌号查找</b>
+            <input list="Nums" id="car_NUM_rt_battery">
+            <datalist id="Nums">
+                <option value="1">
+                <option value="LK6ADCE21JB008286">
+            </datalist><br>
+
+            <b>数据类型：</b>
+            <select id="chartselect_battery" name="cars">
+                <option value="residual_energy" selected>剩余电量</option>
+                <option value="high_voltage_battery_current">总电流</option>
+                <option value="total_battery_voltage">总电压</option>
+                <option value="max_single_voltage">电池最高单体电压</option>
+                <option value="min_single_voltage">电池最低单体电压</option>
+                <option value="insulation_resistance_value">绝缘阻值</option>
+            </select><br>
+            选择时间段:
+            <input type="datetime-local" name="bdaytime_battery" value="2018-01-01T00:00">~
+            <input type="datetime-local" name="bdaytime_battery" value="2019-01-01T00:00"><br>
+            <input type="button" value="查询" onclick="Submit_rt('battery')">
+        </form>
+    </div>
+    <div>
+        <div id="chartcontainer_battery" class="chartcontainer"></div>
+    </div>
+</div>

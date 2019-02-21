@@ -16,7 +16,6 @@
 	<script src="https://img.hcharts.cn/highcharts/modules/oldie.js"></script>
 	<script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
 
-	<script type="text/javascript" src="submit.js"></script>
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=M0Pi0G5matEh4ZUSMTHaSB0EmlgQaOYM"></script>
 
 	<style type="text/css">
@@ -155,9 +154,7 @@
 				</a>
 				<ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
 					<li><a href="#runtime" tabindex="-1" data-toggle="tab">车辆历史数据</a></li>
-					<li><a href="#battery" tabindex="-1" data-toggle="tab">电池历史数据</a></li>
 					<li><a href="#alert" tabindex="-1" data-toggle="tab">告警历史数据</a></li>
-					<li><a href="#other" tabindex="-1" data-toggle="tab">其他历史数据</a></li>
 				</ul>
 			</li>
 		</ul>
@@ -284,7 +281,6 @@
 				</div>
 				<div id="allmap"></div>
 				<div id="r-result">
-					<input type="button" onclick="add_overlay();" value="添加覆盖物" />
 					<input type="button" onclick="remove_overlay();" value="删除覆盖物" />
 				</div>
 			</div>
@@ -310,11 +306,19 @@
 
 						<b>数据类型：</b>
 						<select id="chartselect_runtime" name="cars">
-							<option value="location">位置</option>
 							<option value="velocity" selected>速度</option>
 							<option value="cumulative_mileage">总行驶里程</option>
 							<option value="drive_motor_rpm">电机转速</option>
-							<option value="drive_motor_temperature">电机温度</option>
+                            <option value="drive_motor_temperature">电机温度</option>
+                            <option value="motor_torque">电机转矩</option>
+                            <option value="motor_controller_current">电机控制器电流</option>
+                            <option value="motor_controller_voltage">电机控制器电压</option>
+                            <option value="residual_energy">剩余电量</option>
+                            <option value="high_voltage_battery_current">总电流</option>
+                            <option value="total_battery_voltage">总电压</option>
+                            <option value="max_single_voltage">电池最高单体电压</option>
+                            <option value="min_single_voltage">电池最低单体电压</option>
+                            <option value="insulation_resistance_value">绝缘阻值</option>
 						</select><br>
 						选择时间段:
 						<input type="datetime-local" name="bdaytime_runtime" value="2018-01-01T00:00">~
@@ -324,45 +328,6 @@
 				</div>
 				<div>
 					<div id="chartcontainer_runtime" class="chartcontainer"></div>
-				</div>
-			</div>
-			<div class="tab-pane fade" id="battery">
-				<div id="search3" class="center">
-					<h2>电池历史数据</h2>
-					<form action="">
-						<input type="radio" name="searchtype_rt_battery" checked="checked">
-						<b>按VIN查找</b>
-						<input list="VINs" id="car_VIN_rt_battery">
-						<datalist id="VINs">
-							<option value="1">
-							<option value="LK6ADCE21JB008286">
-						</datalist><br>
-
-						<input type="radio" name="searchtype_rt_battery">
-						<b>按车牌号查找</b>
-						<input list="Nums" id="car_NUM_rt_battery">
-						<datalist id="Nums">
-							<option value="1">
-							<option value="LK6ADCE21JB008286">
-						</datalist><br>
-
-						<b>数据类型：</b>
-						<select id="chartselect_battery" name="cars">
-							<option value="residual_energy" selected>剩余电量</option>
-							<option value="high_voltage_battery_current">总电流</option>
-							<option value="total_battery_voltage">总电压</option>
-							<option value="max_single_voltage">电池最高单体电压</option>
-							<option value="min_single_voltage">电池最低单体电压</option>
-							<option value="insulation_resistance_value">绝缘阻值</option>
-						</select><br>
-						选择时间段:
-						<input type="datetime-local" name="bdaytime_battery" value="2018-01-01T00:00">~
-						<input type="datetime-local" name="bdaytime_battery" value="2019-01-01T00:00"><br>
-						<input type="button" value="查询" onclick="Submit_rt('battery')">
-					</form>
-				</div>
-				<div>
-					<div id="chartcontainer_battery" class="chartcontainer"></div>
 				</div>
 			</div>
 			<div class="tab-pane fade" id="alert">
@@ -392,40 +357,6 @@
 					</form>
 				</div>
 				<div id="alerttable">
-				</div>
-			</div>
-			<div class="tab-pane fade" id="other">
-				<div id="search5" class="center">
-					<h2>其他历史数据</h2>
-					<form action="">
-						<input type="radio" name="searchtype_rt_other" checked="checked">
-						<b>按VIN查找</b>
-						<input list="VINs" id="car_VIN_rt_other">
-						<datalist id="VINs">
-							<option value="1">
-						</datalist><br>
-
-						<input type="radio" name="searchtype_rt_other">
-						<b>按车牌号查找</b>
-						<input list="Nums" id="car_NUM_rt_other">
-						<datalist id="Nums">
-							<option value="1">
-						</datalist><br>
-
-						<b>数据类型：</b>
-						<select id="chartselect_other" name="cars">
-							<option value="motor_torque" selected>电机转矩</option>
-							<option value="motor_controller_current">电机控制器电流</option>
-							<option value="motor_controller_voltage">电机控制器电压</option>
-						</select><br>
-						选择时间段:
-						<input type="datetime-local" name="bdaytime_other" value="2018-01-01T00:00">~
-						<input type="datetime-local" name="bdaytime_other" value="2019-01-01T00:00"><br>
-						<input type="button" value="查询" onclick="Submit_rt('other')">
-					</form>
-				</div>
-				<div>
-					<div id="chartcontainer_other" class="chartcontainer"></div>
 				</div>
 			</div>
 		</div>
@@ -498,8 +429,25 @@ function Submit_rt(route) {
     var numid = "car_NUM_rt_" + route
     var time = document.getElementsByName("bdaytime_"+route)
 
-    console.log(route)
+    var searchroute;
+    if (searchtype == "电机转矩"||
+        searchtype == "电机控制器电流"||
+        searchtype == "电机控制器电压") {
+        searchroute = "other";
+    } else if (searchtype == "剩余电量"||
+        searchtype == "总电流"||
+        searchtype == "总电压"||
+        searchtype == "电池最高单体电压"||
+        searchtype == "电池最低单体电压"||
+        searchtype == "绝缘阻值") {
+        searchroute = "battery";
+    } else {
+        searchroute = route;
+    }
+
+    console.log("searchroute is "+searchroute)
     console.log(searchtype)
+    
     if(searchtype[0].checked){
         reqdata = "searchtype=byVIN"
         + "&car_VIN=" + document.getElementById(vinid).value 
@@ -513,24 +461,24 @@ function Submit_rt(route) {
     }
 
     $.ajax({
-        url: '/users/search/' + (route=="rtmap"?"runtime":route), //请求的url
+        url: '/users/search/' + (searchroute=="rtmap"?"runtime":searchroute), //请求的url
         type: 'get', //请求的方式
         data: reqdata,
         error:function (data) {
             alert('请求失败');
         },
         success:function (data) {
-            if(route == "rtmap"){
+            if(searchroute == "rtmap"){
 				//console.log(data)
 				mappoint(data)
 				return true;
             }
-            var type = "chartselect_" + route
+            var type = "chartselect_" + searchroute
             var charttype = document.getElementById(type).value 
 
             var csv = data2csv(data,charttype)
 
-            var chartloc = "chartcontainer_" + route;
+            var chartloc = "chartcontainer_" + searchroute;
             console.log(chartloc)
             chart = Highcharts.chart(chartloc, {
                 chart: {
@@ -609,8 +557,6 @@ function Submit_rt(route) {
         }
     });
 }
-var csv2 = "Day,访问量（PV）,访问用户（UV）\n3/20/13,16970,12599\n3/21/13,17580,13094\n3/22/13,17511,13234\n3/23/13,6601,5213\n3/24/13,6158,4806\n3/25/13,17353,12639\n3/26/13,17660,12768\n3/27/13,16921,12389\n3/28/13,15964,11686\n3/29/13,12028,8891\n3/30/13,5835,4513\n3/31/13,4799,3661\n4/1/13,13037,9503\n4/2/13,16976,12666\n4/3/13,17100,12635\n4/4/13,15701,11394\n4/5/13,14378,10530\n4/6/13,5889,4521\n4/7/13,6779,5109\n4/8/13,16068,11599\n"
-
 
 function data2csv(data,type){
     //console.log(type)
@@ -686,16 +632,7 @@ map.enableScrollWheelZoom(true);
 map.addControl(new BMap.NavigationControl());
 
 function mappoint(data){
-    console.log(data)
-	var convertor = new BMap.Convertor();
-    translateCallback = function (data){
-        console.log(data.status)
-        if(data.status === 0) {
-            var marker = new BMap.Marker(data.points[0]);
-            map.addOverlay(marker);
-            map.setCenter(data.points[0]);
-        }
-    }
+    var pointArr = [];
 
     for(var i = 0; i < data.length; i++){
         if(data[i].longitude == null ||data[i].latitude == null){
@@ -705,16 +642,64 @@ function mappoint(data){
             continue;
         }
         
-        var pointArr = [];
 		var ggPoint = new BMap.Point(data[i].longitude,data[i].latitude);
         pointArr.push(ggPoint);
-        var convertor = new BMap.Convertor();
-        convertor.translate(pointArr, 1, 5, translateCallback)
-
-        //var point = new BMap.Point(data[i].longitude, data[i].latitude);
-		//var marker = new BMap.Marker(point); // 创建点
-		//map.addOverlay(marker);
+    
+        //console.log(ggPoint)
     }
+
+    var total = 0;
+    var groupCount = 0;
+    if (pointArr.length % 10 > 0) {
+        groupCount = (pointArr.length / 10) + 1;
+    }
+    else {
+        groupCount = (pointArr.length / 10);
+    }
+
+    
+    for(var i=0;i<groupCount;i++){ //外层循环，有多少组十条
+        var pos = new Array();
+        for(var j=0;j<10;j++){ //内层循环，每组十条
+            if(total<pointArr.length){ //不超过总记录数结束
+                var point = pointArr[(i * 10) + j];
+                pos.push(point);
+            }
+            total++;
+        }
+        var pointarray = [];
+        var convertor = new BMap.Convertor();
+        convertor.translate(pos, 1, 5, function(data){
+            if(data.status === 0) {
+                for (var i = 0; i < data.points.length; i++) {
+                    pointarray.push(data.points[i]);
+                    //map.addOverlay(new BMap.Marker(data.points[i]));
+                    //map.setCenter(data.points[i]);
+                }
+            
+            console.log(pointarray.length)
+            var polyline = new BMap.Polyline(pointarray, {strokeColor:"blue", strokeWeight:2, strokeOpacity:0.5});
+            map.addOverlay(polyline);          //增加折线
+            map.setCenter(pointarray[0]);
+            pointarray = [];
+            }
+        });
+    }
+
+
+
+
+    //var convertor = new BMap.Convertor();
+    //convertor.translate(pointArr, 1, 5, translateCallback)
+
+    //var point = new BMap.Point(data[i].longitude, data[i].latitude);
+    //var marker = new BMap.Marker(point); // 创建点
+    //map.addOverlay(marker);
+    
+    console.log(pointarray)
 }
 
+function remove_overlay(){
+    map.clearOverlays();         
+}
 </script>
