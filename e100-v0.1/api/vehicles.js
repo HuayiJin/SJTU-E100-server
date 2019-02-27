@@ -148,7 +148,7 @@ exports.searchVehicleRuntime = function (req, res) {
             gap = 1
             if(resdata.length > 220){gap = parseInt(resdata.length / 200)}
             for (i=0; i<resdata.length; i+= gap){
-                console.log(i)
+                //console.log(i)
                 subresdata.push(resdata[i])
             }
             res.status(200).send(subresdata);
@@ -169,7 +169,7 @@ exports.searchVehicleBattery = function (req, res) {
             gap = 1
             if(resdata.length > 220){gap = parseInt(resdata.length / 200)}
             for (i=0; i<resdata.length; i+= gap){
-                console.log(i)
+                //console.log(i)
                 subresdata.push(resdata[i])
             }
             res.status(200).send(subresdata);
@@ -205,7 +205,7 @@ exports.searchVehicleOther = function (req, res) {
             gap = 1
             if(resdata.length > 220){gap = parseInt(resdata.length / 200)}
             for (i=0; i<resdata.length; i+= gap){
-                console.log(i)
+                //console.log(i)
                 subresdata.push(resdata[i])
             }
             res.status(200).send(subresdata);

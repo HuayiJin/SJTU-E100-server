@@ -1,74 +1,30 @@
-<div class="tab-pane fade" id="other">
-    <div id="search5" class="center">
-        <h2>其他历史数据</h2>
-        <form action="">
-            <input type="radio" name="searchtype_rt_other" checked="checked">
-            <b>按VIN查找</b>
-            <input list="VINs" id="car_VIN_rt_other">
-            <datalist id="VINs">
-                <option value="1">
-            </datalist><br>
-
-            <input type="radio" name="searchtype_rt_other">
-            <b>按车牌号查找</b>
-            <input list="Nums" id="car_NUM_rt_other">
-            <datalist id="Nums">
-                <option value="1">
-            </datalist><br>
-
-            <b>数据类型：</b>
-            <select id="chartselect_other" name="cars">
-                <option value="motor_torque" selected>电机转矩</option>
-                <option value="motor_controller_current">电机控制器电流</option>
-                <option value="motor_controller_voltage">电机控制器电压</option>
-            </select><br>
-            选择时间段:
-            <input type="datetime-local" name="bdaytime_other" value="2018-01-01T00:00">~
-            <input type="datetime-local" name="bdaytime_other" value="2019-01-01T00:00"><br>
-            <input type="button" value="查询" onclick="Submit_rt('other')">
-        </form>
-    </div>
-    <div>
-        <div id="chartcontainer_other" class="chartcontainer"></div>
-    </div>
-</div>
-
-            <div class="tab-pane fade" id="battery">
-    <div id="search3" class="center">
-        <h2>电池历史数据</h2>
-        <form action="">
-            <input type="radio" name="searchtype_rt_battery" checked="checked">
-            <b>按VIN查找</b>
-            <input list="VINs" id="car_VIN_rt_battery">
-            <datalist id="VINs">
-                <option value="1">
-                <option value="LK6ADCE21JB008286">
-            </datalist><br>
-
-            <input type="radio" name="searchtype_rt_battery">
-            <b>按车牌号查找</b>
-            <input list="Nums" id="car_NUM_rt_battery">
-            <datalist id="Nums">
-                <option value="1">
-                <option value="LK6ADCE21JB008286">
-            </datalist><br>
-
-            <b>数据类型：</b>
-            <select id="chartselect_battery" name="cars">
-                <option value="residual_energy" selected>剩余电量</option>
-                <option value="high_voltage_battery_current">总电流</option>
-                <option value="total_battery_voltage">总电压</option>
-                <option value="max_single_voltage">电池最高单体电压</option>
-                <option value="min_single_voltage">电池最低单体电压</option>
-                <option value="insulation_resistance_value">绝缘阻值</option>
-            </select><br>
-            选择时间段:
-            <input type="datetime-local" name="bdaytime_battery" value="2018-01-01T00:00">~
-            <input type="datetime-local" name="bdaytime_battery" value="2019-01-01T00:00"><br>
-            <input type="button" value="查询" onclick="Submit_rt('battery')">
-        </form>
-    </div>
-    <div>
-        <div id="chartcontainer_battery" class="chartcontainer"></div>
-    </div>
-</div>
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>自动点击例子</title>
+</head>
+<body onload="alert('这是默认点击弹窗')">
+    <script type="text/javascript">
+        setInterval(function () {
+            if (document.all) {
+                document.getElementById("buttonid").click();
+            }
+            else {
+                var e = document.createEvent("MouseEvents");
+                e.initEvent("click", true, true);
+                document.getElementById("buttonid").dispatchEvent(e);
+            }
+        }, 2000);
+    </script>
+    <input id="buttonid" type="button" value="按钮" onclick="alert('这是自动点击弹窗')" />
+    <style type="text/css">
+        input {
+            background: red;
+            color: #fff;
+            padding: 10px;
+            margin: 20px;
+        }
+    </style>
+</body>
+</html>
