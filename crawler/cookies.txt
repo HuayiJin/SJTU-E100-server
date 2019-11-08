@@ -1,0 +1,3 @@
+#LWP-Cookies-2.0
+Set-Cookie3: ASP.NET_SessionId=glz34ez4e3v0x4vvoen00x5u; path="/"; domain="cloud.sgmw.com.cn"; path_spec; discard; HttpOnly=None; version=0
+Set-Cookie3: MyCook="LoginName=shanghai&PassWord=&IsChoose=false&WhetherToEncrypt="; path="/"; domain="cloud.sgmw.com.cn"; path_spec; expires="2020-09-10 05:28:15Z"; version=0
