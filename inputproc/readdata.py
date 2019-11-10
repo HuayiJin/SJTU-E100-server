@@ -6,6 +6,7 @@ import sys
 import os
 import mysql.connector
 from sqlalchemy import create_engine
+import time
 
 class Data2sql:
     def replace(self,data):
@@ -26,10 +27,9 @@ class Data2sql:
         data.cumulative_mileage = data.cumulative_mileage.replace(regex=[r'km'],value='')
         return data
         
-
     def rename(self):
         columns={
-            '日期':'timestamp',
+            '日期':'create_time',
             '经度':'longitude',
             '纬度':'latitude',
             '车辆运行模式':'vehicle_operating_mode',
@@ -112,27 +112,31 @@ def convert2UTF(filedir):
             format(newf)
 
 def dbsqlengine(data,table):
-    engine = create_engine('mysql+pymysql://root:@localhost:3306/localtest')
-    data.to_sql(table, engine,if_exists='append', index=False)
+    engine = create_engine('mysql+pymysql://root:123456@localhost:3306/localtest')
+    data.to_sql(table, engine,if_exists='replace', index=False)
 
-def connectsql():
+def connectsql(sql):
     mydb = mysql.connector.connect(
-        host="localhost",       # 数据库主机地址
+        host="e100",       # 数据库主机地址
         user="root",    # 数据库用户名
-        passwd="",   # 数据库密码
-        database="localtest"
+        passwd="123456",   # 数据库密码
+        database="E100_TABLE"
     )
     mycursor = mydb.cursor()
-
+    mycursor.execute(sql)
 
 def main():
     filedir = os.getcwd()
     data2sql = Data2sql()
+    errorcount = 0
 
-    convert2UTF(filedir)
-
+    choose = input("convert or not? y/n")
+    if choose == 'y':
+        convert2UTF(filedir)
+    
     filelist = os.listdir(filedir+'/utf8data')
 
+    time_start = time.time()
     for files in filelist:
         f = filedir + '/utf8data/' + files
         data = pd.read_csv(f, low_memory=False)
@@ -140,23 +144,30 @@ def main():
         #Turn Chinese columns to Sql columns
         data.rename(columns = data2sql.rename(), inplace = True)
 
-        #Add column: car_VIN
-        car_VIN = files.split()[0]
-        print(car_VIN)
-        data['car_VIN'] = car_VIN
-
         #remove units in data
         data=data2sql.replace(data)        
-        
-        #split data into runtime battery and other to insert into sql
-        runtime=data.reindex(columns=data2sql.getruntime())
-        battery=data.reindex(columns=data2sql.getbattery())
-        other=data.reindex(columns=data2sql.getother())
- 
-        
-        dbsqlengine(runtime,'CAR_REALTIME_DATA_TEST')
-        dbsqlengine(battery,'BATTERY_REALTIME_DATA_TEST')
-        dbsqlengine(other,'OTHER_REALTIME_DATA_TEST')
+
+        #get and insert column: car_VIN
+        car_VIN = files.split()[0]
+        print(car_VIN)
+        data.insert(0, 'car_VIN', car_VIN)
+        print(data)
+
+    time_end = time.time()
+    print("count " + str(errorcount) + " errors")
+    print("Time cost: " + str(time_end - time_start))
+    return 0
+    '''
+    #split data into runtime battery and other to insert into sql
+    runtime=data.reindex(columns=data2sql.getruntime())
+    battery=data.reindex(columns=data2sql.getbattery())
+    other=data.reindex(columns=data2sql.getother())
+    
+    dbsqlengine(runtime,'CAR_REALTIME_DATA_TEST')
+    dbsqlengine(battery,'BATTERY_REALTIME_DATA_TEST')
+    dbsqlengine(other,'OTHER_REALTIME_DATA_TEST')
+    '''
+
         
 
 if __name__ == '__main__':
