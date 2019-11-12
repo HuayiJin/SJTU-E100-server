@@ -1,8 +1,9 @@
 var sqlquery = require('./sqlquery');
 var safetycheck = require('./safetycheck');
+var global = require('./global');
 const db_NAME = "e100";
 const tb_NAME = "E100_TABLE_TEST";
-const GLOBAL_limit = 1000
+const GLOBAL_limit = 1000; //最多返回1000条数据
 
 // MySQL数据库联接配置
 var mysql = require('mysql');
@@ -129,51 +130,77 @@ exports.get_all_status = function (req, res) {
 
 //请求单车当前所有信息
 exports.get_single_info = function (req, res) {
-    console.log(req.query);
-    var localsql = 
-        ""
+    if (req.query.car_VIN){
+        var localsql = 
+        "select * from " + tb_NAME +
+        " WHERE create_time in (select max(create_time) from " + tb_NAME +
+        " where car_VIN = \"" + req.query.car_VIN + "\")"
 
-    console.log('localsql is ' + localsql);
-    db(localsql, function (err, resdata) {
-        if (err) {
-            res.end("查询失败：", err)
-        } else {
-            console.log(resdata);
-            res.status(200).send(resdata);
-        }
-    });
+        console.log('localsql is ' + localsql);
+        db(localsql, function (err, resdata) {
+            if (err) {
+                res.end("查询失败：", err)
+            } else {
+                console.log(resdata);
+                res.status(200).send(resdata);
+            }
+        });
+    } else {
+        console.log(req.query);
+        res.status(202).end("NO VIN in request")
+    }
 }
 
 //请求单车某项历史记录
 exports.get_single_history = function (req, res) {
-    console.log(req.query);
-    var localsql = 
-        ""
+    if (global.dictionary.includes(req.query.type)){
+        if (req.query.car_VIN){
+            var limit = 100
+            if (req.query.limit) limit = req.query.limit;
 
-    console.log('localsql is ' + localsql);
-    db(localsql, function (err, resdata) {
-        if (err) {
-            res.end("查询失败：", err)
+            var localsql = 
+            "select create_time, " + req.query.type + " from " + tb_NAME +
+            " where car_VIN = \"" + req.query.car_VIN +
+            "\" and create_time > date_sub(current_timestamp(), interval " + limit + 
+            " minute) limit " + GLOBAL_limit;
+    
+            db(localsql, function (err, resdata) {
+                if (err) {
+                    console.log(err)
+                    res.end("查询失败：", err)
+                } else {
+                    res.status(200).send(resdata);
+                }
+            });
         } else {
-            console.log(resdata);
-            res.status(200).send(resdata);
+            res.status(202).end("NO VIN in request")
         }
-    });
+    } else {
+        res.status(202).end("request illegal data type")
+    }
 }
 
 //请求单车历史轨迹
 exports.get_single_route = function (req, res) {
-    console.log(req.query);
-    var localsql = 
-        ""
+    if (req.query.car_VIN){
+        var limit = 100
+        if (req.query.limit) limit = req.query.limit;
 
-    console.log('localsql is ' + localsql);
-    db(localsql, function (err, resdata) {
-        if (err) {
-            res.end("查询失败：", err)
-        } else {
-            console.log(resdata);
-            res.status(200).send(resdata);
-        }
-    });
+        var localsql = 
+        "select create_time, longitude, latitude from " + tb_NAME +
+        " where car_VIN = \"" + req.query.car_VIN +
+        "\" and create_time > date_sub(current_timestamp(), interval " + limit + 
+        " minute) limit " + GLOBAL_limit;
+
+        db(localsql, function (err, resdata) {
+            if (err) {
+                console.log(err)
+                res.end("查询失败：", err)
+            } else {
+                res.status(200).send(resdata);
+            }
+        });
+    } else {
+        res.status(202).end("NO VIN in request")
+    }
 }

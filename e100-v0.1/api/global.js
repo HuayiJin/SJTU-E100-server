@@ -1,22 +1,3 @@
-var CAR_REGISTER = {
-    timestamp,
-    car_VIN,
-    registration_time,
-    vehicle_type,
-    energy_storing_type,
-    drive_motor_type,
-    drive_motor_rated_power,
-    drive_motor_rated_rpm,
-    drive_motor_rated_torque,
-    drive_motor_number,
-    drive_motor_position,
-    drive_motor_cooling_method,
-    e_car_endurance_mileage,
-    e_car_top_speed,
-    power_battery_number,
-    power_battery_info_0,
-    power_battery_info_1,
-    power_battery_info_2,
-    power_battery_info_3,
-    extra_field
-}
+var dictionary=['create_time','longitude','latitude','vehicle_operating_mode','brake_pedal_status','accelerator_pedal_stroke','gear_position','key_status','driving_mode','velocity','motor_status','motor_torque','drive_motor_rpm','motor_controller_current','motor_controller_voltage','drive_motor_temperature','motor_controller_temperature','high_voltage_battery_current','total_battery_voltage','insulation_resistance_value','residual_energy','max_single_voltage','min_single_voltage','cumulative_mileage']
+
+exports.dictionary = dictionary
