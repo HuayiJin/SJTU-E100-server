@@ -21,17 +21,10 @@ router.get('/', function(req, res, next) {
  */
 router.get('/query/all/all', query.get_all_all);
 
-/**请求所有车辆的当前状态（用于计算饼图）
- * res = [{
- *      car_VIN = ...
- *      create_time = ...
- *      vehicle_operating_mode = ...
- * },{}...]
- */
-router.get('/query/all/status', query.get_all_status);
 
 /**请求所有车辆的历史状态（计算多级折线图）
- * 参数 length = [1,1000] -> 按分钟为单位，距今的分钟数
+ * 示例 http://202.120.60.31:3000/query/history/status?limit=5000000
+ * 参数 limit = [1,1000] -> 按分钟为单位，距今的分钟数
  * res = [{
  *      car_VIN,
  *      latest_info:{
@@ -43,16 +36,27 @@ router.get('/query/all/status', query.get_all_status);
  */
 router.get('/query/history/status', query.get_history_status);
 
-/**请求所有(在线、离线、充电)车辆的当前位置
- * 参数 status = {online, offline, charging}
+
+/**请求所有(在线、离线、充电)车辆的最新位置
  * res = [{
  *      car_VIN = ...
+ *      create_time = ...
  *      longitude = 121.425
  *      latitude = 31.0198
+ *      vehicle_operating_mode
  * },{}...]
  */
 router.get('/query/all/location', query.get_all_location);
 
+
+/**请求所有车辆的当前状态（用于计算饼图）
+ * res = [{
+ *      car_VIN = ...
+ *      create_time = ...
+ *      vehicle_operating_mode = ...
+ * },{}...]
+ */
+router.get('/query/all/status', query.get_all_status);
 
 /*============================单车============================*/
 
