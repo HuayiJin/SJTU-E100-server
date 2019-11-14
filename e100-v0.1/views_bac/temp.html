@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>自动点击例子</title>
+</head>
+<body onload="alert('这是默认点击弹窗')">
+    <script type="text/javascript">
+        setInterval(function () {
+            if (document.all) {
+                document.getElementById("buttonid").click();
+            }
+            else {
+                var e = document.createEvent("MouseEvents");
+                e.initEvent("click", true, true);
+                document.getElementById("buttonid").dispatchEvent(e);
+            }
+        }, 2000);
+    </script>
+    <input id="buttonid" type="button" value="按钮" onclick="alert('这是自动点击弹窗')" />
+    <style type="text/css">
+        input {
+            background: red;
+            color: #fff;
+            padding: 10px;
+            margin: 20px;
+        }
+    </style>
+</body>
+</html>
