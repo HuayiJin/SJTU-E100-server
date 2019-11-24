@@ -10,7 +10,10 @@
        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
-       <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=2GCVEjjkYGGiVjTR1EoENtf2SNzYaiRI"></script>
+       <!-- <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=2GCVEjjkYGGiVjTR1EoENtf2SNzYaiRI"></script> -->
+       <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=stCj3XtKtn4BKeUDSV512dwfCEDBkh6Y"></script>
+
+       
        <!-- <script src="theme/dark.js"></script> -->
        <!-- button -->
        <!-- <link rel="shortcut icon" href="../favicon.ico"> 
@@ -37,8 +40,16 @@
 
         <!-- semantic-ui -->
         <link href="semantic.min.css" rel="stylesheet" type="text/css">
+        <!-- <link href="icon.min.css" rel="stylesheet" type="text/css"> -->
+
         <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
         <script src="semantic.min.js"></script>
+
+        <link href="https://cdn.bootcss.com/semantic-ui/2.4.1/components/icon.css" rel="stylesheet">
+
+        <!-- <script src="package.js"></script> -->
+
+
 
        <style type="text/css">
         div#mapDiv {
@@ -64,7 +75,19 @@
         
     </head>
 
-    <body style="height: 100%; margin: 0" >
+    <body>
+    <div id="mySidebar" class="ui right inverted vertical menu sidebar">
+        <a class="item" href="javascript:void(0);" onclick="window.location.reload();">
+            刷新
+        </a>
+        <a class="item" href="javascript:void(0);" onclick="function(){pageStale = false;}">
+            重新激活
+        </a>
+        <a class="item">
+            Item 3
+        </a>
+    </div>
+    <div class="pusher" style="height: 100%; margin: 0" >
         <!-- <div id="Echarts"></div> -->
         <div id="mapDiv"></div>
         <div id="optionList">
@@ -125,7 +148,7 @@
                     <option value="LK6ADCE27JB009264">LK6ADCE27JB009264</option>
                     <option value="LK6ADCE27JB010480">LK6ADCE27JB010480</option>
                     <option value="LK6ADCE27JB011144">LK6ADCE27JB011144</option>
-                    <option value="LK6ADCE28JB008253" selected=true>LK6ADCE28JB008253</option>
+                    <option value="LK6ADCE28JB008253">LK6ADCE28JB008253</option>
                     <option value="LK6ADCE28JB009077">LK6ADCE28JB009077</option>
                     <option value="LK6ADCE28JB009273">LK6ADCE28JB009273</option>
                     <option value="LK6ADCE28JB010522">LK6ADCE28JB010522</option>
@@ -142,7 +165,7 @@
                     <option value="LK6ADCE2XJB009694">LK6ADCE2XJB009694</option>
                     <option value="LK6ADCE2XJB011137">LK6ADCE2XJB011137</option>
                     <option value="LK6ADCE20HB005003">LK6ADCE20HB005003</option>
-                    <option value="LK6ADCE20HB005082">LK6ADCE20HB005082</option>
+                    <option value="LK6ADCE20HB005082" selected=true>LK6ADCE20HB005082</option>
                     <option value="LK6ADCE20HB005339">LK6ADCE20HB005339</option>
                     <option value="LK6ADCE20HB005390">LK6ADCE20HB005390</option>
                     <option value="LK6ADCE20HB005678">LK6ADCE20HB005678</option>
@@ -223,11 +246,11 @@
                 </script>
                 <div class="ui animated button" onclick="onClickSearchButton()">
                     <div class="visible content">搜索</div>
-                    <div class="hidden content">走</div>
+                    <div class="hidden content"><i class="compass icon"></i></div>
                 </div>  
             </div>
             <div id="detailLine" style="height: 35%; width: 100%; float: left;">
-                    <div id="dynamicLine" style="height: 130%; width: 100%; float: left;"></div>
+                    <div id="dynamicLine" style="height: 110%; width: 100%; float: left;"></div>
             </div>
 
             <div id="detailPanel" style="height: 45%; width: 100%; float: left;">
@@ -241,19 +264,92 @@
             <!-- <div id="Heatmap"" style="height: 100%; width: 50%; float: left;"></div> -->
             <div id="Stack" style="height: 100%; width: 50%; float: left;"></div>
             <div id="Board" style="height: 100%; width: 25%; float: left;">
-                <div style="height: 40%; float: left; padding-right: 10%;">
+                <div id="right_bottom_coner_default" style="height: 40%; float: left; padding-right: 10%;">
                     <p id="time1" style="margin-left: 5%; margin-top: 5%;">item1</p>
-                    <iframe id="fancybox-frame" name="fancybox-frame1573219207283" frameborder="0" scrolling="no" hspace="0"  src="http://i.tianqi.com/index.php?c=code&a=getcode&id=35&h=55&w=200"></iframe>
-                
+                    <iframe id="fancybox-frame" name="fancybox-frame1573219207283" frameborder="0" scrolling="no" hspace="0"  src="http://i.tianqi.com/index.php?c=code&a=getcode&id=35&h=55&w=200&py=minhang"></iframe>
+                    <!-- <div style="float: right" href="javascript:void(0);" onclick="$('.ui.sidebar').sidebar('toggle');"><i class="huge angle left icon" ></i></div> -->
+                    <button class="ui button"href="javascript:void(0);" onclick="$('.ui.sidebar').sidebar('toggle');">
+                            <i class="angle left icon" ></i>
+                          </button>
                 </div>                    
-                <div style="height: 60%; width: 100%; padding-left:5%; float: left;">
-                    <table border="0" style="font: size 200px; height: 100%; width: 70%;">
-                        <tr><td> </td></tr>
-                        <tr><td> </td></tr>
-                        <tr><td> </td></tr>
-                        <tr><td> </td></tr>
-
-                    </table>
+                <div id="right_bottom_coner_detail" style="height: 100%; width: 100%; padding-left:5%; float: left; overflow:auto">
+                        <div class="ui secondary vertical pointing menu" style="width: 100%">
+                            <a class="active item">
+                                车辆详情
+                            </a>
+                            <a id="detail_car_VIN" class="active item" href="javascript:void(0);" onclick="setSingleCarType('car_VIN')">
+                                
+                            </a>
+                            <a id="detail_longitude" class="item" href="javascript:void(0);" onclick="setSingleCarType('longitude')">
+                                
+                            </a>
+                            <a id="detail_latitude" class="item" href="javascript:void(0);" onclick="setSingleCarType('latitude')">
+                                 
+                            </a>
+                            <a id="detail_vehicle_operating_mode" class="item" href="javascript:void(0);" onclick="setSingleCarType('vehicle_operating_mode')">
+                                 
+                            </a>
+                            <a id="detail_brake_pedal_status" class="item" href="javascript:void(0);" onclick="setSingleCarType('brake_pedal_status')">
+                                 
+                            </a>
+                            <a id="detail_accelerator_pedal_stroke" class="item" href="javascript:void(0);" onclick="setSingleCarType('accelerator_pedal_stroke')">
+                                 
+                            </a>
+                            <a id="detail_gear_position" class="item" href="javascript:void(0);" onclick="setSingleCarType('gear_position')">
+                                 
+                            </a>
+                            <a id="detail_key_status" class="item" href="javascript:void(0);" onclick="setSingleCarType('key_status')">
+                                 
+                            </a>
+                            <a id="detail_driving_mode" class="item" href="javascript:void(0);" onclick="setSingleCarType('driving_mode')">
+                                 
+                            </a>
+                            <a id="detail_velocity" class="item" href="javascript:void(0);" onclick="setSingleCarType('velocity')">
+                                 
+                            </a>
+                            <a id="detail_motor_status" class="item" href="javascript:void(0);" onclick="setSingleCarType('motor_status')">
+                                 
+                            </a>
+                            <a id="detail_motor_torque" class="item" href="javascript:void(0);" onclick="setSingleCarType('motor_torque')">
+                                 
+                            </a>
+                            <a id="detail_drive_motor_rpm" class="item" href="javascript:void(0);" onclick="setSingleCarType('drive_motor_rpm')">
+                                 
+                            </a>
+                            <a id="detail_motor_controller_current" class="item" href="javascript:void(0);" onclick="setSingleCarType('motor_controller_current')">
+                                 
+                            </a>
+                            <a id="detail_motor_controller_voltage" class="item" href="javascript:void(0);" onclick="setSingleCarType('motor_controller_voltage')">
+                                 
+                            </a>
+                            <a id="detail_drive_motor_temperature" class="item" href="javascript:void(0);" onclick="setSingleCarType('drive_motor_temperature')">
+                                 
+                            </a>
+                            <a id="detail_motor_controller_temperature" class="item" href="javascript:void(0);" onclick="setSingleCarType('motor_controller_temperature')">
+                                 
+                            </a>
+                            <a id="detail_high_voltage_battery_current" class="item" href="javascript:void(0);" onclick="setSingleCarType('high_voltage_battery_current')">
+                                 
+                            </a>
+                            <a id="detail_total_battery_voltage" class="item" href="javascript:void(0);" onclick="setSingleCarType('total_battery_voltage')">
+                                 
+                            </a>
+                            <a id="detail_insulation_resistance_value" class="item" href="javascript:void(0);" onclick="setSingleCarType('insulation_resistance_value')">
+                                 
+                            </a>
+                            <a id="detail_residual_energy" class="item" href="javascript:void(0);" onclick="setSingleCarType('residual_energy')">
+                                 
+                            </a>
+                            <a id="detail_max_single_voltage" class="item" href="javascript:void(0);" onclick="setSingleCarType('max_single_voltage')">
+                                 
+                            </a>
+                            <a id="detail_min_single_voltage" class="item" href="javascript:void(0);" onclick="setSingleCarType('min_single_voltage')">
+                                 
+                            </a>
+                            <a id="detail_cumulative_mileage" class="item" href="javascript:void(0);" onclick="setSingleCarType('cumulative_mileage')">
+                                 
+                            </a>
+                        </div>
                 </div>
 
                 </div>
@@ -266,14 +362,12 @@
                         document.getElementById("time1").innerHTML = "&nbsp"+"&nbsp"+c+"&nbsp"+b;
                         }
                     setInterval(function() {mytime()},1000);
+
+                    
                 </script>
 
             </div>
-
-            
-        </div>
-
-
+    </div>
     </body>
 </html>
 
@@ -299,6 +393,23 @@
     //     styleId: '17c84567c712a49ee687af01700e1d74'
     // });
 
+    // 右键菜单
+    var menu = new BMap.ContextMenu();
+	var txtMenuItem = [
+		{
+			text:'返回全局模式',
+			callback:function(){backToBackground();}
+		},
+		// {
+		// 	text:'缩小',
+		// 	callback:function(){map.zoomOut()}
+		// }
+	];
+	for(var i=0; i < txtMenuItem.length; i++){
+		menu.addItem(new BMap.MenuItem(txtMenuItem[i].text,txtMenuItem[i].callback,100));
+	}
+	map.addContextMenu(menu);
+
 
 
 // <!-- 测试工具 -->
@@ -317,9 +428,7 @@
         return stackTimeStamp;
     }
 
-    var onlineCarPosition = [['LK6ADCE28JB008253', 121.451102, 31.030699], ['LK6ADCE20HB005678', 121.449193, 31.031152], ['LK6ADCE22HB005438', 121.450657, 31.033836]];
-    var offlineCarPosition = [['LK6ADCE25HB005434', 121.441102, 31.031152], ['LK6ADCE26HB006852', 121.450657, 31.034961]];
-    var chargingCarPosition = [['LK6ADCE2XHB006790', 121.441215, 31.031527]];
+
 
     function getNextStep(prePosition){
         var nxtLongi = prePosition['longitude'] + (Math.random()-0.5)/1000;
@@ -339,12 +448,17 @@
     var stack_online;
     var stack_offline;
     var stack_charging;
-    var stack_time;
+    var stack_initmode;
+    var stack_poweron;
+    var stack_time = new Array();
+    var stack_show_time = new Array();
+    var stack_value = new Array(totalOperatingModelCnt);
+    for(var i = 0; i < totalOperatingModelCnt; ++i){
+        stack_value[i] = new Array();
+    }
 
-    // 用于背景查询，当前需要查哪些值
-    var need_online = true;
-    var need_offline = true;
-    var need_charging = true;
+    // 用于饼图和层叠图更新的数组
+    var cur_value = new Array(totalOperatingModelCnt);
 
     // 当前interval函数句柄
     var curIntervalHandler;
@@ -376,74 +490,373 @@
     var iconOnline = new BMap.Icon("icon-green-small.gif", new BMap.Size(25, 25));
     var iconOffline = new BMap.Icon("icon-pink-small.gif", new BMap.Size(25, 25));
     var iconCharging = new BMap.Icon("icon-blue-small.gif", new BMap.Size(25, 25));
+    var iconInitmode = new BMap.Icon("icon-purple-small.gif", new BMap.Size(25, 25));
+    var iconPoweron = new BMap.Icon("icon-yellow-small.gif", new BMap.Size(25, 25));
+    var iconUnknown = new BMap.Icon("icon-orange-small.gif", new BMap.Size(25, 25));
 
     var iconStart = new BMap.Icon("start.png", new BMap.Size(25, 25));
     var iconEnd = new BMap.Icon("final.png", new BMap.Size(25, 25));
 
     var iconArr = new Array();
-    iconArr.push(iconOnline,iconOffline, iconCharging);
+    iconArr.push(iconOnline,iconOffline, iconCharging, iconInitmode, iconPoweron, iconUnknown);
 
     // 是否需要显示动画
-    var needAnimation = [true, true, true]
+    var needAnimation = [true, true, true, true, true];
 
     // 时间解析
     // Date.parse("2018-11-30T09:49:50.000Z")
-    var timeGap = 1000*5    //1000ms*5s
+    var timeGap = 1000*60*60*12;    //1000ms/s*60s/min*60min/h*12h
 
     function timeValidate(rawTime){
-        Math.floor(rawTime.getTime()/timeGap)*timeGap
+        return Math.floor(rawTime.getTime()/timeGap)*timeGap;
     }
     
+    // 用于默认查询绘图的车辆原始坐标
+    // var onlineCarPosition = [];
+    // var offlineCarPosition = [];
+    // var chargingCarPosition = [];
+    // var poweronCarPosition = [];
+    // var initmodeCarPosition = [];
 
+    var totalOperatingModelCnt = 6;
+
+    var carPosition = new Array(totalOperatingModelCnt);
+    for(var i = 0; i < carPosition.length; ++i){
+        carPosition[i] = new Array();
+    }
+
+    var carPositionIdx = new Array(totalOperatingModelCnt);
+
+    function getOperatingModeType(typeStr){
+        if(typeStr == '行驶'){
+            return 0;
+        }else if(typeStr == '休眠'){
+            return 1;
+        }else if(typeStr == '充电'){
+            return 2;
+        }else if(typeStr == '初始化'){
+            return 3;
+        }else if(typeStr == '上电'){
+            return 4;
+        }else{
+            return 5;
+        }
+    }
+
+    function getOperatingModeTypeName(typeNum){
+        if(typeNum == 0){
+            return '行驶';
+        }else if(typeNum == 1){
+            return '休眠';
+        }else if(typeNum == 2){
+            return '充电';
+        }else if(typeNum == 3){
+            return '初始化';
+        }else if(typeNum == 4){
+            return '上电';
+        }else{
+            return '未知';
+        }
+    }
+
+    // 用于背景查询，当前需要查哪些值
+    // var need_online = true;
+    // var need_offline = true;
+    // var need_charging = true;
+    // var need_initmode = true;
+    // var need_poweron = true;
+
+    var needBackgroundRequest = new Array(totalOperatingModelCnt);
+
+    for(var i = 0; i < needBackgroundRequest.length; ++i){
+        needBackgroundRequest[i] = true;
+    }
+
+    // 单车历史轨迹参数
+    var singleCarFilteredPoints = new Array();
+    var singleCarTranslatedPoints = new Array();
+    var singleCarTranslatedPointsIdx = 0;
+    var singleCarFilteredPointsIdx = 0;
+
+    // 全局模式下地图覆盖物记录
+    var backgroundCarOverlayOld = new Array(totalOperatingModelCnt);
+    var backgroundCarOverlayNew = new Array(totalOperatingModelCnt);
+    for(var i = 0; i < totalOperatingModelCnt; ++i){
+        backgroundCarOverlayOld[i] = new Array();
+        backgroundCarOverlayNew[i] = new Array();
+    }
+
+    // stack初始化是否完成，防止在空stack里过早插入数据
+    var stackInitialFinish = false;
+
+    // 网页过期
+    var pageStale = false;
+
+    // 用于背景查询的坐标缓存
+    var backGroundPointCache = {};
 
 
 // <!-- 单车查询 -->
-    function requestSingleCarTrace(){
-
-        curOldOverlayHandler = new BMap.Marker(new BMap.Point(carTraceHistory[0]['longitude'], carTraceHistory[0]['latitude']));
+    function do_singleCarTrace(){
+        console.log('do_singleCarTrace');
+        if(singleCarTranslatedPoints.length == 0){
+            alert('no history trace');
+            return;
+        }
+        // console.log(singleCarTranslatedPoints.length);
+        curOldOverlayHandler = new BMap.Marker(singleCarTranslatedPoints[0]);
         curOldOverlayHandler.setIcon(iconStart);
         map.addOverlay(curOldOverlayHandler)
         curOldOverlayHandler.setAnimation(BMAP_ANIMATION_DROP);//跳动的动画
 
-        for(var i = 1; i < carTraceHistory.length; ++i){
-            drawLine(carTraceHistory[i-1], carTraceHistory[i]);
-        }
+        // for(var i = 1; i < singleCarTranslatedPoints.length; ++i){
+        //     console.log(i);
+        //     drawLine(singleCarTranslatedPoints[i-1], singleCarTranslatedPoints[i]);
+        // }
 
-        curNewOverlayHandler = new BMap.Marker(new BMap.Point(carTraceHistory[carTraceHistory.length-1]['longitude'], carTraceHistory[carTraceHistory.length-1]['latitude']));
+        // var sym = new BMap.Symbol
+        // (
+        //     BMap_Symbol_SHAPE_BACKWARD_OPEN_ARROW, //百度预定义的 箭头方向向下的非闭合箭头
+        //     {
+        //         fillColor : '#0F0', //设置矢量图标的填充颜色。支持颜色常量字符串、十六进制、RGB、RGBA等格式
+        //         fillOpacity : 1, //设置矢量图标填充透明度,范围0~1
+        //         scale : 0.5, //设置矢量图标的缩放比例
+        //         // rotation : 90, //设置矢量图标的旋转角度,参数为角度
+        //         strokeColor : '#FFF', //设置矢量图标的线填充颜色,支持颜色常量字符串、十六进制、RGB、RGBA等格式
+        //         strokeOpacity : 1, //设置矢量图标线的透明度,opacity范围0~1
+        //         strokeWeight : 2, //旋设置线宽。如果此属性没有指定，则线宽跟scale数值相
+        //     }
+        // );
+
+        // var iconSequence = new BMap.IconSequence
+        // (
+        //     sym, //symbol为符号样式
+        //     '0%', //offset为符号相对于线起点的位置，取值可以是百分比也可以是像素位置，默认为"100%"
+        //     '40%', //repeat为符号在线上重复显示的距离，可以是百分比也可以是距离值，同时设置repeat与offset时，以repeat为准
+        //     false //fixedRotation设置图标的旋转角度是否与线走向一致，默认为true
+        // );
+        // var polyline = new BMap.Polyline(
+        //     singleCarTranslatedPoints,
+        //     {
+        //         icons : [iconSequence], //图标集合  **也是我之前没有实现样式改变的最大原因**
+        //         strokeColor : '#0F0', //折线颜色 尽量与图标填充色保持一样
+        //         strokeOpacity : 1, //折线的透明度，取值范围0 - 1
+        //         strokeWeight : 5, //折线的宽度，以像素为单位
+        //     }
+        // );
+
+        // var sy = new BMap.Symbol(BMap_Symbol_SHAPE_BACKWARD_OPEN_ARROW, {
+        //     scale: 0.6,//图标缩放大小
+        //     strokeColor:'#fff',//设置矢量图标的线填充颜色
+        //     strokeWeight: '2',//设置线宽
+        // });
+        // var icons = new BMap.IconSequence(sy, '10', '30');
+        // var polyline =new BMap.Polyline(singleCarTranslatedPoints, {
+        //     enableEditing: false,//是否启用线编辑，默认为false
+        //     enableClicking: true,//是否响应点击事件，默认为true
+        //     icons:[icons],
+        //     strokeWeight:'8',//折线的宽度，以像素为单位
+        //     strokeOpacity: 0.8,//折线的透明度，取值范围0 - 1
+        //     strokeColor:"#18a45b" //折线颜色
+        // });
+
+        var polyline = new BMap.Polyline(singleCarTranslatedPoints, { strokeColor: "#18a45b", strokeWeight: 5, strokeOpacity: 0.8 });
+        map.addOverlay(polyline);
+
+        curNewOverlayHandler = new BMap.Marker(singleCarTranslatedPoints[singleCarTranslatedPoints.length-1]);
         curNewOverlayHandler.setIcon(iconEnd);
         var content = curCarVin;
         map.addOverlay(curNewOverlayHandler)
         curNewOverlayHandler.setAnimation(BMAP_ANIMATION_BOUNCE);//跳动的动画
         addMouseHandler(content, curNewOverlayHandler);
 
+        // console.log('brk0');
         
         var view = map.getViewport(eval([curOldOverlayHandler.getPosition(), curNewOverlayHandler.getPosition()]));
         var mapZoom = view.zoom; 
         var centerPoint = view.center; 
         map.centerAndZoom(centerPoint,mapZoom);
+    }
+
+    function rawPointValid(lon, lat){
+        if (lon == null || lat == null) {
+            return false;
+        }
+        if (lon > 124 || lon < 118 || lat > 35 || lat < 27) {
+            return false;
+        }
+        return true;
+    }
+
+    function filterTrace(data){
+        console.log('filterTrace');
+        for(var i = 0; i < data.length; ++i){
+            // if (data[i]['longitude'] == null || data[i]['latitude'] == null) {
+            //     continue;
+            // }
+            // if (data[i]['longitude'] > 124 || data[i]['longitude'] < 118 || data[i]['latitude'] > 35 || data[i]['latitude'] < 27) {
+            //     continue;
+            // }
+            if(!rawPointValid(data[i]['longitude'], data[i]['latitude'])){
+                continue;
+            }
+
+            var curPoint = new BMap.Point(data[i]['longitude'], data[i]['latitude']);
+            if(singleCarFilteredPoints.length == 0 || !curPoint.equals(singleCarFilteredPoints[singleCarFilteredPoints.length-1])){
+                singleCarFilteredPoints.push(curPoint);
+            }
+            // if(singleCarFilteredPoints.length > 10) break;
+        }
+        console.log('过滤完的历史轨迹长度: '+singleCarFilteredPoints.length);
+
+        // console.log(singleCarFilteredPoints.length);
+    }
+
+    function translateTrace(){
+        console.log('translateTrace');
+        var convertor = new BMap.Convertor();
+        var pointArr = [];
+        for(var j = 0; j < 10; ++j){
+            if(singleCarFilteredPointsIdx >= singleCarFilteredPoints.length) break;
+            pointArr.push(singleCarFilteredPoints[singleCarFilteredPointsIdx]);
+            ++singleCarFilteredPointsIdx;
+        }
+        // console.log(singleCarFilteredPointsIdx);
+        if(pointArr.length > 0) convertor.translate(pointArr, 1, 5, translateCallBackTrace);
+    }
+
+    function requestSingleCarTrace(){
+        $.ajax({
+            url: 'http://202.120.60.31:3000/query/single/route', //请求的url
+            type: 'get', //请求的方式
+            data: 'car_VIN='+curCarVin+'&limit=5000000',
+            error: function (data) {
+                console.log('requestSingleCarTrace请求失败');
+            },
+            success: function (data) {
+                console.log('请求到的历史轨迹长度: '+data.length);
+                singleCarTranslatedPoints = new Array();
+                singleCarFilteredPoints = new Array();
+                singleCarFilteredPointsIdx = 0;
+                singleCarTranslatedPointsIdx = 0;
+                filterTrace(data);
+                translateTrace();
+            }
+            
+        });
 
     }
 
-    function requestSingleCarHistory(){
-        for (var i = 0; i < 5; i++) {
-            data.shift();
-            data.push(randomData());
+    function setSingleCarType(typeName){
+        if(typeName == curCarType){
+            return;
+        }else{
+            mapLocked = true;
+            curCarType = typeName;
+            requestSingleCarHistory();
+            mapLocked = false;
         }
-    
-        myChartLine.setOption({
-            series: [{
-                data: data
-            }]
+    }
+
+    function requestSingleCarHistory(){
+        $.ajax({
+            url: 'http://202.120.60.31:3000/query/single/history', //请求的url
+            type: 'get', //请求的方式
+            data: 'car_VIN='+curCarVin+'&type='+curCarType+'&limit=5000000',
+            error: function (data) {
+                console.log('initialStack请求失败');
+            },
+            success: function (data) {
+                console.log('requestSingleCarHistory success');
+                dataLine = new Array();
+
+                for(var i = 0; i < data.length; ++i){
+                    var d = new Date();
+                    d.setTime(Date.parse(data[i]['create_time']));
+                    dataLine.push({
+                        name: d.toString(),
+                        // [d.getFullYear(), d.getMonth() + 1, d.getDate()].join('/')
+                        value: [
+                            d.getTime(),
+                            data[i][curCarType]
+                        ]
+                    })
+                }
+                console.log('requestSingleCarHistory: '+dataLine.length+' '+data.length);
+
+                myChartLine.setOption({
+                    title:{
+                        text:curCarType+' of '+curCarVin
+                    },
+                    series: [{
+                        data: dataLine
+                    }]
+                });
+            }
         });
+
+        // for (var i = 0; i < 5; i++) {
+        //     data.shift();
+        //     data.push(randomData());
+        // }
+    
+        // myChartLine.setOption({
+        //     series: [{
+        //         data: data
+        //     }]
+        // });
         
     }
 
     function requestSingleCar(){
-        optionGuage.series[0].data[0].value = (Math.random()*60).toFixed(2) - 0;
-        optionGuage.series[1].data[0].value = (Math.random()*7).toFixed(2) - 0;
-        optionGuage.series[2].data[0].value = (Math.random()*2).toFixed(2) - 0;
-        optionGuage.series[3].data[0].value = (Math.random()*2).toFixed(2) - 0;
-        myChartGuage.setOption(optionGuage,true);
+        $.ajax({
+            url: 'http://202.120.60.31:3000/query/single/info', //请求的url
+            type: 'get', //请求的方式
+            data: 'car_VIN='+curCarVin,
+            error: function (data) {
+                console.log('requestSingleCar请求失败');
+            },
+            success: function (data) {
+                console.log('requestSingleCar success');
+                if(!curSingleMode) return;
+
+                if(data.length == 0) return;
+                data = data[0];
+
+                // document.getElementById("detail_car").innerHTML = data;
+                for(var key in data){
+                    // console.log("detail_"+key);
+                    // console.log(''+key+ ' : '+data[key]);
+                    var element = document.getElementById('detail_'+key)
+                    if(element != null) element.innerHTML = ''+key+ ' : '+data[key];
+                }
+
+                if(rawPointValid(data['longitude'], data['latitude'])){
+                    var convertor = new BMap.Convertor();
+                    var pointArr = [];
+                    pointArr.push(new BMap.Point(data['longitude'], data['latitude']));
+                    convertor.translate(pointArr, 1, 5, singleQueryTranslateCallBack);
+                }else{
+                    // map.removeOverlay(curNewOverlayHandler);
+                    // map.addOverlay(curNewOverlayHandler);    
+                }
+
+                var curOption = myChartGuage.getOption();
+                curOption.series[0].data[0].value = data['velocity'];
+                curOption.series[1].data[0].value = data['drive_motor_rpm']/1000.0;
+                curOption.series[2].data[0].value = data['residual_energy'];
+                curOption.series[3].data[0].value = data['drive_motor_temperature'];
+                myChartGuage.setOption(curOption,true);
+
+                console.log('velocity: '+data['velocity']);
+                console.log('drive_motor_rpm: '+data['drive_motor_rpm']);
+                console.log('residual_energy: '+data['residual_energy']);
+                console.log('drive_motor_temperature: '+data['drive_motor_temperature']);
+
+            }
+        });
+
+        
     }
 
 
@@ -451,119 +864,327 @@
 
 // <!-- 默认查询 -->
     function requestOnline(){
-        drawMapPoint(onlineCarPosition, 0);
+        // console.log('requestOnline '+carPosition[0].length);
+        if(carPosition[0].length == 0) return;
+        
+        carPositionIdx[0] = 0;
+        var convertor = new BMap.Convertor();
+        var pointArr = [];
+        pointArr.push(new BMap.Point(carPosition[0][carPositionIdx[0]][1],carPosition[0][carPositionIdx[0]][2]));
+        convertor.translate(pointArr, 1, 5, translateCallBackOnline);
     }
     function requestOffline(){
-        drawMapPoint(offlineCarPosition, 1);
+        if(carPosition[1].length == 0) return;
+        carPositionIdx[1] = 0;
+        var convertor = new BMap.Convertor();
+        var pointArr = [];
+        pointArr.push(new BMap.Point(carPosition[1][carPositionIdx[1]][1],carPosition[1][carPositionIdx[1]][2]));
+        convertor.translate(pointArr, 1, 5, translateCallBackOffline);
     }
     function requestCharging(){
-        drawMapPoint(chargingCarPosition, 2);
+        if(carPosition[2].length == 0) return;
+        carPositionIdx[2] = 0;
+        var convertor = new BMap.Convertor();
+        var pointArr = [];
+        pointArr.push(new BMap.Point(carPosition[2][carPositionIdx[2]][1],carPosition[2][carPositionIdx[2]][2]));
+        convertor.translate(pointArr, 1, 5, translateCallBackCharging);
+    }
+    function requestInitmode(){
+        if(carPosition[3].length == 0) return;
+        carPositionIdx[3] = 0;
+        var convertor = new BMap.Convertor();
+        var pointArr = [];
+        pointArr.push(new BMap.Point(carPosition[3][carPositionIdx[3]][1],carPosition[3][carPositionIdx[3]][2]));
+        convertor.translate(pointArr, 1, 5, translateCallBackInitmode);
+    }
+    function requestPoweron(){
+        if(carPosition[4].length == 0) return;
+        carPositionIdx[4] = 0;
+        var convertor = new BMap.Convertor();
+        var pointArr = [];
+        pointArr.push(new BMap.Point(carPosition[4][carPositionIdx[4]][1],carPosition[4][carPositionIdx[4]][2]));
+        convertor.translate(pointArr, 1, 5, translateCallBackPoweron);
+    }
+    function requestUnknown(){
+        console.log('requestUnknown');
+        if(carPosition[5].length == 0) return;
+        carPositionIdx[5] = 0;
+        var convertor = new BMap.Convertor();
+        var pointArr = [];
+        pointArr.push(new BMap.Point(carPosition[5][carPositionIdx[5]][1],carPosition[5][carPositionIdx[5]][2]));
+        convertor.translate(pointArr, 1, 5, translateCallBackUnknown);
+    }
+
+    // function requestNormal(typeNum){
+    //     if(carPosition[typeNum].length == 0) return;
+    //     carPositionIdx[typeNum] = 0;
+    //     var convertor = new BMap.Convertor();
+    //     var pointArr = [];
+    //     pointArr.push(new BMap.Point(carPosition[typeNum][carPositionIdx[typeNum]][1],carPosition[typeNum][carPositionIdx[typeNum]][2]));
+    //     convertor.translate(pointArr, 1, 5, translateCallBackNor);
+    // }
+
+    var requestFunction = [requestOnline, requestOffline, requestCharging, requestInitmode, requestPoweron, requestUnknown];
+
+    var filterDic = {}
+    var filteredData = new Array();
+
+    // 过滤全局模式车辆坐标请求返回信息中的重复内容
+    function filterBackgroundRequest(data){
+        filterDic = {};
+        for(var i = 0; i < data.length; ++i){
+            var tem_key = data[i]['car_VIN']
+            if(filterTrace.hasOwnProperty(tem_key) && filterTrace[tem_key]['create_time'] >= data[i]['tem_key']){
+                continue;
+            }else{
+                filterDic[tem_key] = data[i];
+            }
+        }
+
+        filteredData = new Array();
+        for(var k in filterDic){
+            filteredData.push(filterDic[k]);
+        }
+
     }
 
     function backgroundRequest(){
         // map.clearOverlays();
-        if(need_online){requestOnline();}
-        if(need_offline){requestOffline();}
-        if(need_charging){requestCharging();}
+        $.ajax({
+            url: 'http://202.120.60.31:3000/query/all/location', //请求的url
+            type: 'get', //请求的方式
+            error: function (data) {
+                console.log('initialStack请求失败');
+            },
+            success: function (data) {
+                for(var i = 0; i < totalOperatingModelCnt; ++i){
+                    carPosition[i] = [];
+                }
+
+                var requestcnt = 0;
+                var cachecnt = 0;
+                var nocarcnt = 0;
+                var unequalcnt = 0;
+                var undefinecnt = 0;
+
+                filterBackgroundRequest(data);
+
+
+                for(var i = 0; i < filteredData.length; ++i){
+
+                    // if(i+1 < data.length && data[i]['car_VIN'] == data[i+1]['car_VIN']){
+                    //     continue;
+                    // }
+
+                    var tem_vin = filteredData[i]['car_VIN'];
+                    var tem_point = new BMap.Point(filteredData[i]['longitude'], filteredData[i]['latitude']);
+                    var tem_type = getOperatingModeType(filteredData[i]['vehicle_operating_mode']);
+
+
+                    if(backGroundPointCache.hasOwnProperty(tem_vin) && backGroundPointCache[tem_vin]['raw'].equals(tem_point) && backGroundPointCache[tem_vin]['converted'] != undefined){
+                        cachecnt += 1;
+                        
+                        var marker = new BMap.Marker(backGroundPointCache[tem_vin]['converted']);
+                        marker.setIcon(iconArr[tem_type]);
+                        var content = filteredData[i]['car_VIN']+' '+filteredData[i]['vehicle_operating_mode'];
+                        // map.addOverlay(marker)
+                        // if(needAnimation[5]) marker.setAnimation(BMAP_ANIMATION_DROP);//坠落动画
+                        addMouseHandler(content, marker);
+                        backgroundCarOverlayNew[tem_type].push(marker);
+                    }else{
+                        requestcnt += 1;
+                        if(!backGroundPointCache.hasOwnProperty(tem_vin)){
+                            ++nocarcnt;
+                        }else if(!backGroundPointCache[tem_vin]['raw'].equals(tem_point)){
+                            ++unequalcnt;
+                            // console.log('carvin: '+tem_vin);
+                            // console.log('unequal: '+filteredData[i]['longitude']+', '+filteredData[i]['latitude']+' old: '+backGroundPointCache[tem_vin]['raw'].lng+', '+backGroundPointCache[tem_vin]['raw'].lat);
+                        }else{
+                            ++undefinecnt;
+                        }
+
+                        backGroundPointCache[tem_vin] = {
+                            raw:tem_point,
+                            converted:undefined
+                        };
+                        (carPosition[getOperatingModeType(filteredData[i]['vehicle_operating_mode'])]).push([filteredData[i]['car_VIN']+' '+filteredData[i]['vehicle_operating_mode'], filteredData[i]['longitude'], filteredData[i]['latitude']]);
+
+                    }
+
+                    // (carPosition[getOperatingModeType(data[i]['vehicle_operating_mode'])]).push([data[i]['car_VIN']+' '+data[i]['vehicle_operating_mode'], new Bmap.Point(data[i]['longitude'], data[i]['latitude'])]);
+
+                    // (carPosition[getOperatingModeType(data[i]['vehicle_operating_mode'])]).push([data[i]['car_VIN']+' '+data[i]['vehicle_operating_mode'], data[i]['longitude'], data[i]['latitude']]);
+                    // if(data[i]['vehicle_operating_mode'] == '行驶'){
+                    //     onlineCarPosition.push([data[i]['car_VIN'], data[i]['longitude'], data[i]['latitude']]);
+                    // }else if(data[i]['vehicle_operating_mode'] == '离线'){
+                    //     offlineCarPosition.push([data[i]['car_VIN'], data[i]['longitude'], data[i]['latitude']]);
+                    // }else if(data[i]['vehicle_operating_mode'] == '充电'){
+                    //     chargingCarPosition.push([data[i]['car_VIN'], data[i]['longitude'], data[i]['latitude']]);
+                    // }else if(data[i]['vehicle_operating_mode'] == '初始化'){
+                    //     initmodeCarPosition.push([data[i]['car_VIN'], data[i]['longitude'], data[i]['latitude']]);
+                    // }else if(data[i]['vehicle_operating_mode'] == '上电'){
+                    //     poweronCarPosition.push([data[i]['car_VIN'], data[i]['longitude'], data[i]['latitude']]);
+                    // }
+                }
+
+                console.log('request: '+requestcnt+' cache: '+cachecnt);
+                console.log('nocar: '+nocarcnt+' unequal: '+unequalcnt+' undefine: '+undefinecnt);
+
+                // for(var i = 0; i < totalOperatingModelCnt; ++i){
+                //     console.log(carPosition[i].length+'');
+                // }
+                for(var i = 0; i < totalOperatingModelCnt; ++i){
+                    // console.log("request: "+i+" "+carPosition[i].length);
+                    if(needBackgroundRequest[i]) requestFunction[i]();
+                    // console.log(getOperatingModeTypeName(i)+' : '+carPosition[i].length);
+                }
+
+            }
+        });
+
+        // mapLocked = true;
+        
+
     }
 
 // <!-- 背景查询 -->
 
+    function _get_valide_date_for_stack(millisecond){
+        var tem = new Date();
+        tem.setTime(millisecond);
+        return tem.toLocaleString();
+    }
+
+    function _all_zero(idx){
+        for(var i = 0; i < totalOperatingModelCnt; ++i){
+            if(idx >= stack_value[i].length || stack_value[i][idx] != 0){
+                return false;
+            }
+        }
+        return true;
+    }
+    function do_initialStack(data){
+        // console.log(data.length);
+        // stack_online = new Array(5000);
+        // stack_offline = new Array(5000);
+        // stack_charging = new Array(5000);
+        // stack_initmode = new Array(5000);
+        // stack_poweron = new Array(5000);
+        for(var i = 0; i < totalOperatingModelCnt; ++i){
+            stack_value[i] = new Array(5000);
+        }
+        // console.log('stack array initial finish with length: '+stack_value[0].length);
+        stack_time = new Array(5000);
+        // stack_show_time = new Array(5000);
+        
+        var curDate = timeValidate(new Date());
+        // console.log('curDate'+curDate);
+
+        for(var i = 0; i < 5000; ++i){
+            // console.log(i);
+            stack_time[5000-1-i] = (curDate-timeGap*i);
+            for(var j = 0; j < totalOperatingModelCnt; ++j){
+                stack_value[j][i] = 0;
+            }
+        }
+
+        for(var c = 0; c < data.length; ++c){
+            // console.log(c);
+            curInfo = data[c]['info']
+            // console.log(curInfo.length);
+            var curDataIdx = 0;
+            for(var i in stack_time){
+                                // for(;curDataIdx < curInfo.length && timeValidate(curInfo[curDataIdx]['create_time']) <= stack_time[i]; ++curDataIdx){}
+                while(curDataIdx < curInfo.length && Date.parse(curInfo[curDataIdx]['create_time']) <= stack_time[i]){
+                    ++curDataIdx;
+                }
+                // if(curDataIdx < curInfo.length) console.log(curDataIdx+' '+Date.parse(curInfo[curDataIdx]['create_time'])+' '+stack_time[i]);
+                // else console.log('achieve length')
+                if(curDataIdx == 0){
+                    continue;
+                }else{
+                    stack_value[getOperatingModeType(curInfo[curDataIdx-1]['vehicle_operating_mode'])][i] += 1;
+                    // if(curInfo[curDataIdx-1]['vehicle_operating_mode'] == '行驶'){
+                    //     stack_online[i] += 1;
+                    // }else if(curInfo[curDataIdx-1]['vehicle_operating_mode'] == '充电'){
+                    //     stack_charging[i] += 1;
+                    // }else if(curInfo[curDataIdx-1]['vehicle_operating_mode'] == '休眠'){
+                    //     stack_offline[i] += 1;
+                    // }else if(curInfo[curDataIdx-1]['vehicle_operating_mode'] == '上电'){
+                    //     stack_poweron[i] += 1;
+                    // }else if(curInfo[curDataIdx-1]['vehicle_operating_mode'] == '初始化'){
+                    //     stack_initmode[i] += 1;
+                    // }
+                }
+            }
+        }
+        while(stack_time.length > 0){
+            if(_all_zero(0)){
+                for(var i = 0; i < totalOperatingModelCnt; ++i){
+                    stack_value[i].shift();
+                }
+                // stack_online.shift();
+                // stack_offline.shift();
+                // stack_charging.shift();
+                // stack_poweron.shift();
+                // stack_initmode.shift();
+                stack_time.shift();
+            }else{
+                break;
+            }
+        }
+
+        for(var i = 0; i < stack_time.length; ++i){
+            // var tem = new Date();
+            // tem.setTime(stack_time[i]);
+            stack_show_time.push(_get_valide_date_for_stack(stack_time[i]));
+        }
+
+        // console.log(stack_value[0].length);
+
+        var option = myChartStack.getOption();
+        for(var i = 0; i < totalOperatingModelCnt; ++i){
+            option.series[i].data = stack_value[i];
+        }
+        // option.series[0].data = stack_online;
+        // option.series[1].data = stack_offline;
+        // option.series[2].data = stack_charging;
+        // option.series[3].data = stack_initmode;
+        // option.series[4].data = stack_poweron;
+        option.xAxis[0].data = stack_show_time;
+        // option.xAxis[0].data = stack_time;
+
+
+        myChartStack.setOption(option);
+
+        stackInitialFinish = true;
+
+    }
+
     // 初始化层叠图
     function initialStack(){
-        
         $.ajax({
             url: 'http://202.120.60.31:3000/query/history/status', //请求的url
             type: 'get', //请求的方式
-            data: 'limit=100',
+            data: 'limit=5000000',
             error: function (data) {
-                alert('initialStack请求失败');
+                console.log('initialStack请求失败');
             },
             success: function (data) {
-                stack_online = new Array(1200);
-                stack_offline = new Array(1200);
-                stack_charging = new Array(1200);
-                stack_time = new Array(1200);
-                
-                var curDate = timeValidate(new Date());
-
-                for(var i = 0; i < 1200; ++i){
-                    stack_time[1200-1-i] = (curDate-timeGap*i);
-                    stack_offline[i] = 0;
-                    stack_charging[i] = 0;
-                    stack_online[i] = 0;
-                }
-
-                for(var car in data){
-                    curInfo = data[car]['info']
-                    var curDataIdx = 0;
-                    for(var i in stack_time){
-                        while(curDataIdx < curInfo.length && timeValidate(curInfo[curDataIdx]['create_time']) <= stack_time[i]){
-                            // alert(curDataIdx);
-                            ++curDataIdx;
-                        }
-                        if(curDataIdx == 0){
-                            continue;
-                        }else{
-                            if(curInfo[curDataIdx-1]['vehicle_operating_mode'] == '行驶'){
-                                stack_online[i] += 1;
-                            }else if(curInfo[curDataIdx-1]['vehicle_operating_mode'] == '上电'){
-                                stack_charging[i] += 1;
-                            }else if(curInfo[curDataIdx-1]['vehicle_operating_mode'] == '休眠'){
-                                stack_offline[i] += 1;
-                            }
-                        }
-                    }
-                }
-                // alert('brk 1');
-                while(stack_time.length > 0){
-                    // alert(stack_time.length);
-                    // alert('brk 2');
-                    // alert(stack_online[0]);
-                    // alert(stack_offline[0]);
-                    // alert(stack_charging[0]);
-                    if(stack_online[0] == 0 && stack_offline[0] == 0 && stack_charging[0] == 0){
-                        stack_online.shift();
-                        stack_offline.shift();
-                        stack_charging.shift();
-                        stack_time.shift();
-                    }else{
-                        break;
-                    }
-                }
-
-                // alert('brk 3');
-                // alert(stack_time.length)
-
-                var option = myChartStack.getOption();
-                option.series[0].data = stack_online;
-                option.series[1].data = stack_offline;
-                option.series[2].data = stack_charging;
-                option.xAxis[0].data = stack_time;
-
-                myChartStack.setOption(option);
-
+                do_initialStack(data);
             }
             
         });
 
-        // stack_online = new Array();
-        // stack_offline = new Array();
-        // stack_charging = new Array();
-        // stack_time = new Array();
-        // for(var i = 0; i < 1000; ++i){
-        //     stack_time.push(getStackTimeStamp());
-        //     stack_online.push(getRandomData(100));
-        //     stack_offline.push(getRandomData(50));
-        //     stack_charging.push(getRandomData(50));
-        // }
-        // var option = myChartStack.getOption();
-        // option.series[0].data = stack_online;
-        // option.series[1].data = stack_offline;
-        // option.series[2].data = stack_charging;
-        // option.xAxis[0].data = stack_time;
+    }
 
-        // myChartStack.setOption(option);
+    function _shouldUpdataStack(){
+        for(var i = 0; i < totalOperatingModelCnt; ++i){
+            if(cur_value[i] != stack_value[i][stack_value[i].length-1]){
+                return true;
+            }
+        }
+        return false;
     }
 
     function requestCurrentTypeNum(){
@@ -572,63 +1193,95 @@
             type: 'get', //请求的方式
             data: 'limit=1',
             error: function (data) {
-                alert('requestCurrentTypeNum请求失败');
+                console.log('requestCurrentTypeNum请求失败');
             },
             success: function (data) {
-                var cur_online = 0;
-                var cur_offline = 0;
-                var cur_charging = 0;
+                // var cur_online = 0;
+                // var cur_offline = 0;
+                // var cur_charging = 0;
+                // var cur_initmode = 0;
+                // var cur_poweron = 0;
+                
+                for(var i = 0; i < totalOperatingModelCnt; ++i){
+                    cur_value[i] = 0;
+                }
+                
                 for(var i in data){
-                    if(data[i]['latest_info']['vehicle_operating_mode'] == '休眠'){
-                        ++cur_offline;
-                    }else if(data[i]['latest_info']['vehicle_operating_mode'] == '行驶'){
-                        ++cur_online;
-                    }else if(data[i]['latest_info']['vehicle_operating_mode'] == '上电'){
-                        ++cur_charging;
-                    }
+                    cur_value[getOperatingModeType(data[i]['latest_info']['vehicle_operating_mode'])] += 1;
+
+                    // if(data[i]['latest_info']['vehicle_operating_mode'] == '休眠'){
+                    //     ++cur_offline;
+                    // }else if(data[i]['latest_info']['vehicle_operating_mode'] == '行驶'){
+                    //     ++cur_online;
+                    // }else if(data[i]['latest_info']['vehicle_operating_mode'] == '充电'){
+                    //     ++cur_charging;
+                    // }else if(data[i]['latest_info']['vehicle_operating_mode'] == '上电'){
+                    //     ++cur_poweron;
+                    // }else if(data[i]['latest_info']['vehicle_operating_mode'] == '初始化'){
+                    //     ++cur_initmode;
+                    // }
                 }
                 var option = myChartPie.getOption();
-                option.series[0].data[0]['value'] = cur_online;
-                option.series[0].data[1]['value'] = cur_offline;
-                option.series[0].data[2]['value'] = cur_charging;
+                for(var i = 0; i < totalOperatingModelCnt; ++i){
+                    option.series[0].data[i]['value'] = cur_value[i];
+                }
+                // option.series[0].data[0]['value'] = cur_online;
+                // option.series[0].data[1]['value'] = cur_offline;
+                // option.series[0].data[2]['value'] = cur_charging;
+                // option.series[0].data[3]['value'] = cur_initmode;
+                // option.series[0].data[4]['value'] = cur_poweron;
                 myChartPie.setOption(option);
 
-                // alert('brk 1');
-                var curDate = timeValidate(new Date());
-                if(stack_time.length != 0 && curDate <= stack_time[stack_time.length-1]){
-                    // alert('brk 2');
-                    //do nothing
-                }else{
-                    // alert('brk 3');
+                // console.log('brk 1');
+                // var curDate = timeValidate(new Date());
+                if(!stackInitialFinish) return;
 
-                    if(stack_time.length >= 500){
+                var curDate = new Date().getTime();
+
+                if(stack_time.length == 0 || curDate > stack_time[stack_time.length-1] || _shouldUpdataStack()){
+                    if(stack_time.length >= 1500){
                         stack_time.shift();
+                        stack_show_time.shift();
+                        for(var i = 0; i < totalOperatingModelCnt; ++i){
+                            stack_value[i].shift();
+                        }
+                        // stack_online.shift();
+                        // stack_offline.shift();
+                        // stack_charging.shift();
+                        // stack_poweron.shift();
+                        // stack_initmode.shift();
                     }
-                    stack_time.push(curDate);
-                    if(stack_time.length >= 500){
-                        stack_online.shift();
+                    var tem = new Date().getTime();
+                    stack_time.push(tem);
+                    stack_show_time.push(_get_valide_date_for_stack(tem));
+                    for(var i = 0; i < totalOperatingModelCnt; ++i){
+                        // console.log('stack_value.length'+stack_value.length);
+
+                        console.log('stack_value[i].length'+stack_value[i].length);
+
+                        (stack_value[i]).push(cur_value[i]);
                     }
-                    stack_online.push(cur_online);
-                    if(stack_time.length >= 500){
-                        stack_offline.shift();
-                    }
-                    stack_offline.push(cur_offline);
-                    if(stack_time.length >= 500){
-                        stack_charging.shift();
-                    }
-                    stack_charging.push(cur_charging);
+                    // stack_online.push(cur_online);
+                    // stack_offline.push(cur_offline);
+                    // stack_charging.push(cur_charging);
+                    // stack_poweron.push(cur_poweron);
+                    // stack_initmode.push(cur_initmode);
 
                     var option = myChartStack.getOption();
-                    option.series[0].data = stack_online;
-                    option.series[1].data = stack_offline;
-                    option.series[2].data = stack_charging;
-                    option.xAxis[0].data = stack_time;
+                    for(var i = 0; i < totalOperatingModelCnt; ++i){
+                        option.series[i].data = stack_value[i];
+                    }
+                    // option.series[0].data = stack_online;
+                    // option.series[1].data = stack_offline;
+                    // option.series[2].data = stack_charging;
+                    // option.series[3].data = stack_initmode;
+                    // option.series[4].data = stack_poweron;
+                    option.xAxis[0].data = stack_show_time;
 
                     myChartStack.setOption(option);
-                }
 
+                }
             }
-            
         });
 
         /**
@@ -672,18 +1325,20 @@
 
     // <!-- 饼图回调函数 --> 
     function eConsole(param) {
-        if(param.dataIndex == 0){
-            need_online = !need_online;
-            needAnimation[0] = true; need
-        }else if(param.dataIndex == 1){
-            need_offline = !need_offline;
-            needAnimation[1] = true;
-        }else if(param.dataIndex == 2){
-            need_charging = !need_charging;
-            needAnimation[2] = true;
+        needBackgroundRequest[param.dataIndex] = !needBackgroundRequest[param.dataIndex];
+        if(needBackgroundRequest[param.dataIndex] == false){
+            for(var i = 0; i < backgroundCarOverlayOld[param.dataIndex].length; ++i){
+                map.removeOverlay(backgroundCarOverlayOld[param.dataIndex][i]);
+            }
+            // backgroundCarOverlayOld[param.dataIndex];
+        }else{
+            if(backgroundCarOverlayOld[param.dataIndex].length != 0){
+                for(var i = 0; i < backgroundCarOverlayOld[param.dataIndex].length; ++i){
+                    map.addOverlay(backgroundCarOverlayOld[param.dataIndex][i]);
+                }
+            }
         }
-    //     map.clearOverlays();
-    // 　　clickFunc(param.dataIndex);//执行点击效果
+        needAnimation[param.dataIndex] = true;
     }
 
     // <!-- 搜索点击回调函数 -->
@@ -705,34 +1360,43 @@
         do_initRequestSingleCar(requestTypeValue, targetId)
 
         // onClickSearchButton()
-        // alert(targetId);
+        // console.log(targetId);
     }
 
     // <!-- 进入单车模式的实际执行函数 -->
     function do_initRequestSingleCar(requestTypeValue, requestIdValue){
-        data = [];
-        for (var i = 0; i < 1000; i++) {
-            data.push(randomData());
-        }
-        alert('single start');
-        if(requestIdValue != 'LK6ADCE28JB008253') alert('no data yet');
-        else{
+        // data = [];
+        // for (var i = 0; i < 1000; i++) {
+        //     data.push(randomData());
+        // }
+        console.log('single start');
+        document.getElementById("right_bottom_coner_default").style.display="none";//隐藏
+        document.getElementById("right_bottom_coner_detail").style.display="";//隐藏
+
+
+        // if(requestIdValue != 'LK6ADCE28JB008253') console.log('no data yet');
+        // else{
             mapLocked = true;
             map.clearOverlays();
+            curSingleMode = true;
             curCarVin = requestIdValue;
             curCarType = requestTypeValue;
             requestSingleCarTrace();
-            map.addEventListener("click", backToBackground);
+            requestSingleCarHistory();
+            // map.addEventListener('click', function(){console.log('EventListener trigged')});
             curSingleMode = true;
             mapLocked = false;
+            console.log('request History finish'+ curSingleMode);
+
             
-        }
+        // }
     }
 
     // 进入单车模式后增加的地图回调函数 用于返回到默认模式
     function backToBackground(){
-        // alert("evoke");
-        map.removeEventListener("click", backToBackground);
+        console.log("evoke");
+        map.clearOverlays();
+        // map.removeEventListener("click", backToBackground);
         for(var i = 0; i < needAnimation.length; ++i){
             needAnimation[i] = true;
         }
@@ -745,103 +1409,376 @@
         option.series[3].data[0].value = 0;
         myChartGuage.setOption(optionGuage);
 
-        option = myChartLine.getOption();
-        data=[];
-        option.series[0].data = data;
-        myChartLine.setOption(option);
+        dataLine=[];
+
+        myChartLine.setOption({
+            title:{
+                text:' '
+            },
+            series: [{
+                data: dataLine
+            }]
+        });
+
+        for(var i = 0; i < totalOperatingModelCnt; ++i){
+            
+            if(needBackgroundRequest[i] && backgroundCarOverlayOld[i].length != 0){
+                for(var j = 0; j < backgroundCarOverlayOld[i].length; ++j){
+                    map.addOverlay(backgroundCarOverlayOld[i][j]);
+                }
+            }
+        }
 
         curSingleMode = false;
+        document.getElementById("right_bottom_coner_detail").style.display="none";//隐藏
+        document.getElementById("right_bottom_coner_default").style.display="";
+
+        console.log('backtoground cursinglemode='+curSingleMode);
     }
 
+    // 百度地图坐标转换回调函数
+    function translateCallBackOnline(data){
+        // console.log('onlineCallback');
+        if(data.status != 0){
+            console.log('translateCallBackOnline错误');
+        }else{
+            var marker = new BMap.Marker(data.points[0]);
+            marker.setIcon(iconArr[0]);
+            var content = carPosition[0][carPositionIdx[0]][0];
+            // map.addOverlay(marker)
+            // if(needAnimation[0]) marker.setAnimation(BMAP_ANIMATION_DROP);//坠落动画
+            addMouseHandler(content, marker);
+            backgroundCarOverlayNew[0].push(marker);
 
+            var tem_vin = content.split(' ')[0];
+            backGroundPointCache[tem_vin]['converted'] = data.points[0];
 
-// <!-- 绘图 -->
-// <!-- 右侧栏折线图 开始 -->
+            
+            ++carPositionIdx[0];
+            if(carPositionIdx[0] == carPosition[0].length){
+                needAnimation[0] = false;
+                drawOverlay(0);
 
-    var domLine = document.getElementById("dynamicLine");
-    var myChartLine = echarts.init(domLine);
-    var app = {};
-    optionLine = null;
-    function randomData() {
-        now = new Date(+now + oneDay);
-        value = value + Math.random() * 21 - 10;
-        return {
-            name: now.toString(),
-            value: [
-                [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'),
-                Math.round(value)
-            ]
+                // for(var i = 0; i < totalOperatingModelCnt; ++i){
+                //     if(carPositionIdx[i] != carPosition[i].length){
+                //         return;
+                //     }
+                // }
+                // mapLocked = false;
+            }else{
+                var convertor = new BMap.Convertor();
+                var pointArr = [];
+                pointArr.push(new BMap.Point(carPosition[0][carPositionIdx[0]][1],carPosition[0][carPositionIdx[0]][2]));
+                convertor.translate(pointArr, 1, 5, translateCallBackOnline);
+            }
         }
     }
-    
-    var data = new Array();
-    var now = +new Date(1997, 9, 3);
-    var oneDay = 24 * 3600 * 1000;
-    var value = Math.random() * 1000;
-    // for (var i = 0; i < 1000; i++) {
-    //     data.push(randomData());
-    // }
-    
-    optionLine = {
-        title: {
-            text: '历史速度'
-        },
-        tooltip: {
-            trigger: 'axis',
-            formatter: function (params) {
-                params = params[0];
-                var date = new Date(params.name);
-                return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' : ' + params.value[1];
-            },
-            axisPointer: {
-                animation: false
+
+    function translateCallBackOffline(data){
+        if(data.status != 0){
+            console.log('translateCallBackOffline错误');
+        }else{
+            var marker = new BMap.Marker(data.points[0]);
+            marker.setIcon(iconArr[1]);
+            var content = carPosition[1][carPositionIdx[1]][0];
+            // map.addOverlay(marker)
+            // if(needAnimation[1]) marker.setAnimation(BMAP_ANIMATION_DROP);//坠落动画
+            addMouseHandler(content, marker);
+            backgroundCarOverlayNew[1].push(marker);
+
+            var tem_vin = content.split(' ')[0];
+            backGroundPointCache[tem_vin]['converted'] = data.points[0];
+
+            
+            ++carPositionIdx[1];
+            if(carPositionIdx[1] == carPosition[1].length){
+                needAnimation[1] = false;
+                drawOverlay(1);
+
+                // for(var i = 0; i < totalOperatingModelCnt; ++i){
+                //     if(carPositionIdx[i] != carPosition[i].length){
+                //         return;
+                //     }
+                // }
+                // mapLocked = false;
+            }else{
+                var convertor = new BMap.Convertor();
+                var pointArr = [];
+                pointArr.push(new BMap.Point(carPosition[1][carPositionIdx[1]][1],carPosition[1][carPositionIdx[1]][2]));
+                convertor.translate(pointArr, 1, 5, translateCallBackOffline);
             }
-        },
-        xAxis: {
-            type: 'time',
-            splitLine: {
-                show: false
-            }
-        },
-        yAxis: {
-            type: 'value',
-            boundaryGap: [0, '100%'],
-            splitLine: {
-                show: false
-            }
-        },
-        series: [{
-            name: '模拟数据',
-            type: 'line',
-            showSymbol: false,
-            hoverAnimation: false,
-            data: data
-        }]
-    };
-    
-    // setInterval(function () {
-    
-    //     for (var i = 0; i < 5; i++) {
-    //         data.shift();
-    //         data.push(randomData());
-    //     }
-    
-    //     myChartLine.setOption({
-    //         series: [{
-    //             data: data
-    //         }]
-    //     });
-    // }, 1000);;
-    if (optionLine && typeof optionLine === "object") {
-        myChartLine.setOption(optionLine, true);
+        }
     }
 
-// <!-- 右侧栏折线图 结束 -->
+    function translateCallBackCharging(data){
+        if(data.status != 0){
+            console.log('translateCallBackCharging');
+        }else{
+            var marker = new BMap.Marker(data.points[0]);
+            marker.setIcon(iconArr[2]);
+            var content = carPosition[2][carPositionIdx[2]][0];
+            // map.addOverlay(marker)
+            // if(needAnimation[2]) marker.setAnimation(BMAP_ANIMATION_DROP);//坠落动画
+            addMouseHandler(content, marker);
+            backgroundCarOverlayNew[2].push(marker);
 
+            var tem_vin = content.split(' ')[0];
+            backGroundPointCache[tem_vin]['converted'] = data.points[0];
+
+            
+            ++carPositionIdx[2];
+            if(carPositionIdx[2] == carPosition[2].length){
+                needAnimation[2] = false;
+                drawOverlay(2);
+
+                // for(var i = 0; i < totalOperatingModelCnt; ++i){
+                //     if(carPositionIdx[i] != carPosition[i].length){
+                //         return;
+                //     }
+                // }
+                // mapLocked = false;
+            }else{
+                var convertor = new BMap.Convertor();
+                var pointArr = [];
+                pointArr.push(new BMap.Point(carPosition[2][carPositionIdx[2]][1],carPosition[2][carPositionIdx[2]][2]));
+                convertor.translate(pointArr, 1, 5, translateCallBackCharging);
+            }
+        }
+    }
+
+    function translateCallBackInitmode(data){
+        if(data.status != 0){
+            console.log('translateCallBackInitmode');
+        }else{
+            var marker = new BMap.Marker(data.points[0]);
+            marker.setIcon(iconArr[3]);
+            var content = carPosition[3][carPositionIdx[3]][0];
+            // map.addOverlay(marker)
+            // if(needAnimation[3]) marker.setAnimation(BMAP_ANIMATION_DROP);//坠落动画
+            addMouseHandler(content, marker);
+            backgroundCarOverlayNew[3].push(marker);
+
+            var tem_vin = content.split(' ')[0];
+            backGroundPointCache[tem_vin]['converted'] = data.points[0];
+
+            
+            ++carPositionIdx[3];
+            if(carPositionIdx[3] == carPosition[3].length){
+                needAnimation[3] = false;
+                drawOverlay(3);
+
+                // for(var i = 0; i < totalOperatingModelCnt; ++i){
+                //     if(carPositionIdx[i] != carPosition[i].length){
+                //         return;
+                //     }
+                // }
+                // mapLocked = false;
+            }else{
+                var convertor = new BMap.Convertor();
+                var pointArr = [];
+                pointArr.push(new BMap.Point(carPosition[3][carPositionIdx[3]][1],carPosition[3][carPositionIdx[3]][2]));
+                convertor.translate(pointArr, 1, 5, translateCallBackInitmode);
+            }
+        }
+    }
+
+    function translateCallBackPoweron(data){
+        if(data.status != 0){
+            console.log('translateCallBackPoweron');
+        }else{
+            var marker = new BMap.Marker(data.points[0]);
+            marker.setIcon(iconArr[4]);
+            var content = carPosition[4][carPositionIdx[4]][0];
+            // map.addOverlay(marker)
+            // if(needAnimation[4]) marker.setAnimation(BMAP_ANIMATION_DROP);//坠落动画
+            addMouseHandler(content, marker);
+            backgroundCarOverlayNew[4].push(marker);
+
+            var tem_vin = content.split(' ')[0];
+            backGroundPointCache[tem_vin]['converted'] = data.points[0];
+
+            
+            ++carPositionIdx[4];
+            if(carPositionIdx[4] == carPosition[4].length){
+                needAnimation[4] = false;
+                drawOverlay(4);
+
+                // for(var i = 0; i < totalOperatingModelCnt; ++i){
+                //     if(carPositionIdx[i] != carPosition[i].length){
+                //         return;
+                //     }
+                // }
+                // mapLocked = false;
+            }else{
+                var convertor = new BMap.Convertor();
+                var pointArr = [];
+                pointArr.push(new BMap.Point(carPosition[4][carPositionIdx[4]][1],carPosition[4][carPositionIdx[4]][2]));
+                convertor.translate(pointArr, 1, 5, translateCallBackPoweron);
+            }
+        }
+    }
+
+    function translateCallBackUnknown(data){
+        if(data.status != 0){
+            console.log('translateCallBackPoweron');
+        }else{
+            // console.log('unknown translate doing');
+            
+
+            var marker = new BMap.Marker(data.points[0]);
+            marker.setIcon(iconArr[5]);
+            var content = carPosition[5][carPositionIdx[5]][0];
+            // map.addOverlay(marker)
+            // if(needAnimation[5]) marker.setAnimation(BMAP_ANIMATION_DROP);//坠落动画
+            addMouseHandler(content, marker);
+            backgroundCarOverlayNew[5].push(marker);
+
+            var tem_vin = content.split(' ')[0];
+            backGroundPointCache[tem_vin]['converted'] = data.points[0];
+
+            
+            ++carPositionIdx[5];
+            if(carPositionIdx[5] == carPosition[5].length){
+                needAnimation[5] = false;
+                // console.log('unknown translate finish');
+                drawOverlay(5);
+
+                // for(var i = 0; i < totalOperatingModelCnt; ++i){
+                //     if(carPositionIdx[i] != carPosition[i].length){
+                //         return;
+                //     }
+                // }
+                // mapLocked = false;
+            }else{
+                var convertor = new BMap.Convertor();
+                var pointArr = [];
+                pointArr.push(new BMap.Point(carPosition[5][carPositionIdx[5]][1],carPosition[5][carPositionIdx[5]][2]));
+                convertor.translate(pointArr, 1, 5, translateCallBackUnknown);
+            }
+        }
+    }
+
+    // function translateCallBackNormal(data, typeNum){
+    //     if(data.status != 0){
+    //         console.log('translateCallBackNormal '+typeNum);
+    //     }else{
+    //         var marker = new BMap.Marker(data.points[0]);
+    //         marker.setIcon(iconArr[typeNum]);
+    //         var content = carPosition[typeNum][carPositionIdx[typeNum]][0];
+    //         // map.addOverlay(marker)
+    //         // if(needAnimation[5]) marker.setAnimation(BMAP_ANIMATION_DROP);//坠落动画
+    //         addMouseHandler(content, marker);
+    //         backgroundCarOverlayNew[typeNum].push(marker);
+            
+    //         ++carPositionIdx[typeNum];
+    //         if(carPositionIdx[typeNum] == carPosition[typeNum].length){
+    //             needAnimation[typeNum] = false;
+    //             drawOverlay(typeNum);
+    //             // for(var i = 0; i < totalOperatingModelCnt; ++i){
+    //             //     if(carPositionIdx[i] != carPosition[i].length){
+    //             //         return;
+    //             //     }
+    //             // }
+    //             // mapLocked = false;
+    //         }else{
+    //             var convertor = new BMap.Convertor();
+    //             var pointArr = [];
+    //             pointArr.push(new BMap.Point(carPosition[typeNum][carPositionIdx[typeNum]][1],carPosition[typeNum][carPositionIdx[typeNum]][2]));
+    //             convertor.translate(pointArr, 1, 5, translateCallBackPoweron);
+    //         }
+    //     }
+    // }
+
+    function translateCallBackTrace(data){
+        if(data.status != 0){
+            console.log('translateCallBackTrace');
+        }else{
+            for(var i = 0; i < data.points.length; ++i){
+                singleCarTranslatedPoints.push(data.points[i]);
+                if(singleCarTranslatedPoints.length > 1){
+                    // console.log('draw: '+singleCarTranslatedPoints.length);
+                    // drawLine(singleCarTranslatedPoints[singleCarTranslatedPoints.length-2], singleCarTranslatedPoints[singleCarTranslatedPoints.length-1]);
+                }
+            }
+            // console.log(singleCarTranslatedPoints.length);
+            if(singleCarFilteredPointsIdx >= singleCarFilteredPoints.length){
+                console.log('translate finish: '+singleCarTranslatedPoints.length);
+                do_singleCarTrace();
+            }else{
+                var convertor = new BMap.Convertor();
+                var pointArr = [];
+                console.log("singleCarFilteredPointsIdx Str: "+singleCarFilteredPointsIdx);
+
+                for(var j = 0; j < 10; ++j){
+                    if(singleCarFilteredPointsIdx >= singleCarFilteredPoints.length) break;
+                    pointArr.push(singleCarFilteredPoints[singleCarFilteredPointsIdx]);
+                    ++singleCarFilteredPointsIdx;
+                }
+                console.log("singleCarFilteredPointsIdx Fin: "+singleCarFilteredPointsIdx);
+
+                convertor.translate(pointArr, 1, 5, translateCallBackTrace);
+            }
+        }
+    }
+
+    function drawOverlay(typeNum){
+        // console.log(getOperatingModeTypeName(typeNum));
+        for(var i = 0; i < backgroundCarOverlayOld[typeNum].length; ++i){
+            map.removeOverlay(backgroundCarOverlayOld[typeNum][i]);
+        }
+        backgroundCarOverlayOld[typeNum] = new Array();
+        for(var i = 0; i < backgroundCarOverlayNew[typeNum].length; ++i){
+            if(needBackgroundRequest[typeNum] && !curSingleMode){
+                map.addOverlay(backgroundCarOverlayNew[typeNum][i]);
+            }
+            backgroundCarOverlayOld[typeNum].push(backgroundCarOverlayNew[typeNum][i]);
+        }
+        backgroundCarOverlayNew[typeNum] = new Array();
+    }
+
+    function singleQueryTranslateCallBack(data){
+        if(data.status != 0){
+            console.log('translateCallBackTrace');
+        }else{
+            if(singleCarTranslatedPoints.length == 0){
+                singleCarTranslatedPoints.push(data.points[0]);
+
+                curOldOverlayHandler = new BMap.Marker(singleCarTranslatedPoints[0]);
+                curOldOverlayHandler.setIcon(iconStart);
+                map.addOverlay(curOldOverlayHandler)
+                curOldOverlayHandler.setAnimation(BMAP_ANIMATION_DROP);//跳动的动画
+
+                curNewOverlayHandler = new BMap.Marker(singleCarTranslatedPoints[singleCarTranslatedPoints.length-1]);
+                curNewOverlayHandler.setIcon(iconEnd);
+                var content = curCarVin;
+                map.addOverlay(curNewOverlayHandler)
+                curNewOverlayHandler.setAnimation(BMAP_ANIMATION_BOUNCE);//跳动的动画
+                addMouseHandler(content, curNewOverlayHandler);
+            }else if(!((data.points[0]).equals(singleCarTranslatedPoints[singleCarTranslatedPoints.length-1]))){
+                map.removeOverlay(curNewOverlayHandler);
+
+                curNewOverlayHandler = new BMap.Marker(data.points[0]);
+                curNewOverlayHandler.setIcon(iconEnd);
+                var content = curCarVin;
+                map.addOverlay(curNewOverlayHandler)
+                curNewOverlayHandler.setAnimation(BMAP_ANIMATION_BOUNCE);//跳动的动画
+                addMouseHandler(content, curNewOverlayHandler);
+
+                var polyline = new BMap.Polyline([singleCarTranslatedPoints[singleCarTranslatedPoints.length-1], data.points[0]], { strokeColor: "#18a45b", strokeWeight: 5, strokeOpacity: 0.8 });
+                map.addOverlay(polyline);
+
+                singleCarTranslatedPoints.push(data.points[0]);
+                
+            }
+
+
+        }
+    }
+// <!-- 绘图 -->
 // <!-- 右侧栏仪表盘 开始 -->
 
 
-    var domGuage = document.getElementById("guage");
+var domGuage = document.getElementById("guage");
     var myChartGuage = echarts.init(domGuage);
     var app = {};
     optionGuage = null;
@@ -938,7 +1875,7 @@
                     color: '#eee',
                     rich: {}
                 },
-                data:[{value: 40, name: 'km/h'}]
+                data:[{value: 0, name: 'km/h'}]
             },
             {
                 name: '转速',
@@ -978,15 +1915,15 @@
                     fontWeight: 'bolder',
                     fontSize:'10%',
                 },
-                data:[{value: 1.5, name: 'x1000 r/min'}]
+                data:[{value: 0, name: 'x1000 r/min'}]
             },
             {
-                name: '油表',
+                name: '电量',
                 type: 'gauge',
                 center: ['80%', '40%'],    // 默认全局居中
                 radius: '25%',
                 min: 0,
-                max: 2,
+                max: 100,
                 startAngle: 135,
                 endAngle: 45,
                 splitNumber: 2,
@@ -1026,15 +1963,15 @@
                 detail : {
                     show: false
                 },
-                data:[{value: 0.5, name: 'gas'}]
+                data:[{value: 0, name: '%'}]
             },
             {
-                name: '水表',
+                name: '温度',
                 type: 'gauge',
                 center : ['80%', '58%'],    // 默认全局居中
                 radius : '25%',
                 min: 0,
-                max: 2,
+                max: 80,
                 startAngle: 315,
                 endAngle: 225,
                 splitNumber: 2,
@@ -1070,7 +2007,7 @@
                 detail: {
                     show: false
                 },
-                data:[{value: 0.5, name: 'gas'}]
+                data:[{value: 0, name: '°C'}]
             }
         ]
     };
@@ -1085,6 +2022,109 @@
     if (optionGuage && typeof optionGuage === "object") {
         myChartGuage.setOption(optionGuage, true);
     }
+// <!-- 右侧栏仪表盘 结束 -->
+
+// <!-- 右侧栏折线图 开始 -->
+
+    var domLine = document.getElementById("dynamicLine");
+    var myChartLine = echarts.init(domLine);
+    var app = {};
+    optionLine = null;
+    function randomData() {
+        now = new Date(+now + oneDay);
+        value = value + Math.random() * 21 - 10;
+        return {
+            name: now.toString(),
+            value: [
+                [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'),
+                Math.round(value)
+            ]
+        }
+    }
+    
+    var dataLine = new Array();
+    var now = +new Date(1997, 9, 3);
+    var oneDay = 24 * 3600 * 1000;
+    var value = Math.random() * 1000;
+    // for (var i = 0; i < 1000; i++) {
+    //     data.push(randomData());
+    // }
+    
+    optionLine = {
+        title: {
+            text: '历史速度'
+        },
+        tooltip: {
+            trigger: 'axis',
+            formatter: function (params) {
+                params = params[0];
+                // var date = new Date(params.name);
+                var data_tem = params.name.split(' ');
+                return data_tem[3]+'-'+data_tem[1]+'-'+data_tem[2]+' '+data_tem[4]+' '+params.value[1]; 
+                // return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' : ' + params.value[1];
+                // return data.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()+'.'+date.getMinutes()+' '+params.value[1];
+            },
+            axisPointer: {
+                animation: false
+            }
+        },
+        xAxis: {
+            type: 'time',
+            splitLine: {
+                show: false
+            }
+        },
+        yAxis: {
+            type: 'value',
+            boundaryGap: [0, '100%'],
+            splitLine: {
+                show: false
+            }
+        },
+        dataZoom: [
+            {   // 这个dataZoom组件，默认控制x轴。
+                type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                start: 0,      // 左边在 10% 的位置。
+                end: 100,         // 右边在 60% 的位置。
+                height: '5%',
+                // zlevel:3
+                // minSpan:8,
+            },
+            {   // 这个dataZoom组件，也控制x轴。
+                type: 'inside', // 这个 dataZoom 组件是 inside 型 dataZoom 组件
+                start: 0,      // 左边在 10% 的位置。
+                end: 100         // 右边在 60% 的位置。
+            }
+        ],
+        series: [{
+            name: '数据',
+            type: 'line',
+            showSymbol: false,
+            hoverAnimation: false,
+            data: dataLine
+        }]
+    };
+    
+    // setInterval(function () {
+    
+    //     for (var i = 0; i < 5; i++) {
+    //         data.shift();
+    //         data.push(randomData());
+    //     }
+    
+    //     myChartLine.setOption({
+    //         series: [{
+    //             data: data
+    //         }]
+    //     });
+    // }, 1000);;
+    if (optionLine && typeof optionLine === "object") {
+        myChartLine.setOption(optionLine, true);
+    }
+
+// <!-- 右侧栏折线图 结束 -->
+
+
 
 
 // <!-- 底部栏 -->
@@ -1106,7 +2146,7 @@
         legend: {
             orient: 'vertical',
             x: 'left',
-            data:['online','offline','charging']
+            data:['行驶','休眠','充电','初始化','上电','未知']
             // data:['运行中','空闲中','低电量','离线','待维修']
             // tooltip: {
             //     triggeron:'click',
@@ -1140,11 +2180,12 @@
                     }
                 },
                 data:[
-                    {value:335, name:'online'},
-                    {value:335, name:'offline'},
-                    {value:310, name:'charging'},
-                    // {value:234, name:'离线'},
-                    // {value:135, name:'待维修'},
+                    {value:1, name:'行驶'},
+                    {value:1, name:'休眠'},
+                    {value:1, name:'充电'},
+                    {value:1, name:'初始化'},
+                    {value:1, name:'上电'},
+                    {value:1, name:'未知'},
                 ]
             }
         ]
@@ -1176,7 +2217,7 @@
         },
         legend: {
             // data:['使用中','空闲中','低电量','离线','待维修']
-            data:['online','offline','charging']
+            data:['行驶','休眠','充电','初始化','上电','未知']
         },
         // toolbox: {
         //     feature: {
@@ -1206,18 +2247,18 @@
         dataZoom: [
             {   // 这个dataZoom组件，默认控制x轴。
                 type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
-                start: 50,      // 左边在 10% 的位置。
+                start: 0,      // 左边在 10% 的位置。
                 end: 100         // 右边在 60% 的位置。
             },
             {   // 这个dataZoom组件，也控制x轴。
                 type: 'inside', // 这个 dataZoom 组件是 inside 型 dataZoom 组件
-                start: 50,      // 左边在 10% 的位置。
+                start: 0,      // 左边在 10% 的位置。
                 end: 100         // 右边在 60% 的位置。
             }
         ],
         series : [
             {
-                name:'online',
+                name:'行驶',
                 type:'line',
                 stack: '总量',
                 areaStyle: {},
@@ -1225,7 +2266,7 @@
                 // data:[120, 132, 101, 134, 90, 230, 210,1000]
             },
             {
-                name:'offline',
+                name:'休眠',
                 type:'line',
                 stack: '总量',
                 areaStyle: {},
@@ -1233,7 +2274,31 @@
                 // data:[220, 182, 191, 234, 290, 330, 310, 1000]
             },
             {
-                name:'charging',
+                name:'充电',
+                type:'line',
+                stack: '总量',
+                areaStyle: {},
+                data : new Array(),
+                // data:[150, 232, 201, 154, 190, 330, 410, 1000]
+            },
+            {
+                name:'初始化',
+                type:'line',
+                stack: '总量',
+                areaStyle: {},
+                data : new Array(),
+                // data:[150, 232, 201, 154, 190, 330, 410, 1000]
+            },
+            {
+                name:'上电',
+                type:'line',
+                stack: '总量',
+                areaStyle: {},
+                data : new Array(),
+                // data:[150, 232, 201, 154, 190, 330, 410, 1000]
+            },
+            {
+                name:'未知',
                 type:'line',
                 stack: '总量',
                 areaStyle: {},
@@ -1284,40 +2349,60 @@
 
     // 绘制轨迹折线图
     function drawLine(prePoint, nxtPoint){
-        var sym = new BMap.Symbol
-        (
-            BMap_Symbol_SHAPE_BACKWARD_OPEN_ARROW, //百度预定义的 箭头方向向下的非闭合箭头
-            {
-                fillColor : '#0F0', //设置矢量图标的填充颜色。支持颜色常量字符串、十六进制、RGB、RGBA等格式
-                fillOpacity : 1, //设置矢量图标填充透明度,范围0~1
-                scale : 0.5, //设置矢量图标的缩放比例
-                // rotation : 90, //设置矢量图标的旋转角度,参数为角度
-                strokeColor : '#FFF', //设置矢量图标的线填充颜色,支持颜色常量字符串、十六进制、RGB、RGBA等格式
-                strokeOpacity : 1, //设置矢量图标线的透明度,opacity范围0~1
-                strokeWeight : 2, //旋设置线宽。如果此属性没有指定，则线宽跟scale数值相
-            }
-        );
+        console.log('prePoint: '+prePoint.lng+''+prePoint.lat);
+        console.log('nxtPoint: '+nxtPoint.lng+''+nxtPoint.lat);
 
-        var iconSequence = new BMap.IconSequence
-        (
-            sym, //symbol为符号样式
-            '0%', //offset为符号相对于线起点的位置，取值可以是百分比也可以是像素位置，默认为"100%"
-            '40%', //repeat为符号在线上重复显示的距离，可以是百分比也可以是距离值，同时设置repeat与offset时，以repeat为准
-            false //fixedRotation设置图标的旋转角度是否与线走向一致，默认为true
-        );
-        var polyline = new BMap.Polyline(
-            [
-                new BMap.Point(prePoint['longitude'], prePoint['latitude']),
-                new BMap.Point(nxtPoint['longitude'], nxtPoint['latitude'])
-            ],
-            {
-                icons : [iconSequence], //图标集合  **也是我之前没有实现样式改变的最大原因**
-                strokeColor : '#0F0', //折线颜色 尽量与图标填充色保持一样
-                strokeOpacity : 1, //折线的透明度，取值范围0 - 1
-                strokeWeight : 5, //折线的宽度，以像素为单位
-            }
-        );
+        // var sym = new BMap.Symbol
+        // (
+        //     BMap_Symbol_SHAPE_BACKWARD_OPEN_ARROW, //百度预定义的 箭头方向向下的非闭合箭头
+        //     {
+        //         fillColor : '#0F0', //设置矢量图标的填充颜色。支持颜色常量字符串、十六进制、RGB、RGBA等格式
+        //         fillOpacity : 1, //设置矢量图标填充透明度,范围0~1
+        //         scale : 0.5, //设置矢量图标的缩放比例
+        //         // rotation : 90, //设置矢量图标的旋转角度,参数为角度
+        //         strokeColor : '#FFF', //设置矢量图标的线填充颜色,支持颜色常量字符串、十六进制、RGB、RGBA等格式
+        //         strokeOpacity : 1, //设置矢量图标线的透明度,opacity范围0~1
+        //         strokeWeight : 2, //旋设置线宽。如果此属性没有指定，则线宽跟scale数值相
+        //     }
+        // );
+
+        // var iconSequence = new BMap.IconSequence
+        // (
+        //     sym, //symbol为符号样式
+        //     '0%', //offset为符号相对于线起点的位置，取值可以是百分比也可以是像素位置，默认为"100%"
+        //     '40%', //repeat为符号在线上重复显示的距离，可以是百分比也可以是距离值，同时设置repeat与offset时，以repeat为准
+        //     false //fixedRotation设置图标的旋转角度是否与线走向一致，默认为true
+        // );
+        // var polyline = new BMap.Polyline(
+        //     [
+        //         prePoint,
+        //         nxtPoint
+        //     ],
+        //     {
+        //         icons : [iconSequence], //图标集合  **也是我之前没有实现样式改变的最大原因**
+        //         strokeColor : '#0F0', //折线颜色 尽量与图标填充色保持一样
+        //         strokeOpacity : 1, //折线的透明度，取值范围0 - 1
+        //         strokeWeight : 5, //折线的宽度，以像素为单位
+        //     }
+        // );
+        var sy = new BMap.Symbol(BMap_Symbol_SHAPE_BACKWARD_OPEN_ARROW, {    
+            scale: 0.6,//图标缩放大小
+            strokeColor:'#fff',//设置矢量图标的线填充颜色
+            strokeWeight: '2',//设置线宽
+        });
+        var icons = new BMap.IconSequence(sy, '10', '30');
+        var arr = new Array();
+        arr.push(prePoint, nxtPoint)
+        var polyline = new BMap.Polyline(arr, {
+            enableEditing: false,//是否启用线编辑，默认为false
+            enableClicking: true,//是否响应点击事件，默认为true
+            icons:[icons],
+            strokeWeight:'8',//折线的宽度，以像素为单位
+            strokeOpacity: 0.8,//折线的透明度，取值范围0 - 1
+            strokeColor:"#18a45b" //折线颜色
+        });
         map.addOverlay(polyline);
+        console.log('drawnline finish');
     }
 
     // 绘制点（根据车辆状态选择图片颜色），并加入回调
@@ -1345,7 +2430,8 @@
             needUpdateMap = true;
         });
         marker.addEventListener("click",function(){ //必须要在外面套一个匿名函数，不然会直接执行，不知道为什么
-            onClickOverlay(content);
+            needUpdateMap = true;
+            onClickOverlay((content.split(' '))[0]);
         });
     }
 
@@ -1367,7 +2453,7 @@
     // var data_info = [[121.447176,31.033780,"car1"],[121.445009,31.030880,"car2"],[121.444695,31.027980,"car2"]];
     // function eConsole(param) {
     // 　　//param.dataIndex 获取当前点击索引，
-    // // 　　alert(param.dataIndex);
+    // // 　　console.log(param.dataIndex);
     //     map.clearOverlays();
     // 　　clickFunc(param.dataIndex);//执行点击效果
     // }
@@ -1378,7 +2464,7 @@
             
     //         this.getPosition();
     //         openInfo(content, e);
-    //         // alert(num);
+    //         // console.log(num);
     //     });
     //     marker.addEventListener("click",function(){ //必须要在外面套一个匿名函数，不然会直接执行，不知道为什么
     //         onClickOverlay(num);
@@ -1386,7 +2472,7 @@
     // }
 
     // function openInfo(content, e){
-    //     // alert("mouse on");
+    //     // console.log("mouse on");
     //     var p=e.target;
         
     //     var opts = {
@@ -1399,11 +2485,11 @@
     //     var point=new BMap.Point(p.getPosition().lng, p.getPosition().lat);
     //     var infoWindow = new BMap.InfoWindow(content, opts);
     //     map.openInfoWindow(infoWindow, point);
-    //     // alert(content);
+    //     // console.log(content);
     // }
 
     // function clickFunc(carType){
-    //     // alert(data_info.length);
+    //     // console.log(data_info.length);
     //     var myIcon = new BMap.Icon("./img/icon-green-small.gif", new BMap.Size(25, 25));
     //     for(var i = 0; i < data_info.length; ++i){
             
@@ -1421,17 +2507,32 @@
     initialStack();
     myChartPie.on("click", eConsole);
     backToBackground();
-    setInterval(function(){requestCurrentTypeNum()}, 919);
+    requestCurrentTypeNum();
+    backgroundRequest();
     setInterval(function(){
+        if(pageStale) return;
+        requestCurrentTypeNum();
+    }, 12253 );
+    setInterval(function(){
+        // console.log('needUpdateMap: '+needUpdateMap);
+        // console.log('mapLocked: '+mapLocked);
+
+        if(pageStale) return;
+
         if(!needUpdateMap || mapLocked) return;
         if(!curSingleMode){
-            map.clearOverlays();
+            // console.log('request background');
+            // map.clearOverlays();
             backgroundRequest();
         }else{
-
-            requestSingleCarHistory();
+            // console.log('request single');
+            // requestSingleCarHistory();
             requestSingleCar();
         }
-    }, 977);
+    }, 11719 );
+
+    setInterval(function(){
+        pageStale = true;
+    }, 600000);
 </script>
           
