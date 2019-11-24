@@ -6,7 +6,28 @@ var query = require('../api/query');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index.html', { title: 'ExpressTitle' });
+    if(req.query.password == 'sjtu123'){
+      res.render('index.html', { title: 'ExpressTitle' });
+      
+    }else{
+    res.render('login.html', { title: 'ExpressTitle' });
+    }
+});
+
+router.get('/login', function(req, res, next) {
+  if(req.query.password == 'sjtu123'){
+    res.status(200).send({token:'hello'});
+  }else{
+    res.status(666).send('wrong');
+  }
+});
+
+router.get('/home', function(req, res, next) {
+  if(req.query.token == 'hello'){
+    res.render('index.html', { title: 'ExpressTitle' });
+  }else{
+    res.render('error.html', { title: 'ExpressTitle' });
+  }
 });
 
 

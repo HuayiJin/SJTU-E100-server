@@ -80,12 +80,20 @@
         <a class="item" href="javascript:void(0);" onclick="window.location.reload();">
             刷新
         </a>
-        <a class="item" href="javascript:void(0);" onclick="function(){pageStale = false;}">
+        <a class="item" href="javascript:void(0);" onclick="reactivate()">
             重新激活
         </a>
-        <a class="item">
-            Item 3
+        <a class="item" href="javascript:void(0);" onclick="logout()">
+            退出登录
         </a>
+        <script>
+            function reactivate(){
+                pageStale = false;
+            }
+            function logout(){
+                location.href='http://202.120.60.31:3000';
+            }
+        </script>
     </div>
     <div class="pusher" style="height: 100%; margin: 0" >
         <!-- <div id="Echarts"></div> -->
