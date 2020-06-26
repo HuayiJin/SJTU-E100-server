@@ -16,6 +16,7 @@
     "morgan": "~1.9.0",
     "mysql": "^2.15.0",
     "nunjucks": "^3.1.2",
+    "request": "^2.88.0",
     "semantic-ui-icon": "^2.3.3"
   },
   "devDependencies": {

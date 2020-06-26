@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+    <head>
+            <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+        <!-- <meta http-equiv="refresh" content="10"> -->
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
+       <!-- <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=2GCVEjjkYGGiVjTR1EoENtf2SNzYaiRI"></script> -->
+       <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=stCj3XtKtn4BKeUDSV512dwfCEDBkh6Y"></script>
+
+       
+       <!-- <script src="theme/dark.js"></script> -->
+       <!-- button -->
+       <!-- <link rel="shortcut icon" href="../favicon.ico"> 
+       <link rel="stylesheet" type="text/css" href="css/default.css" />
+       <link rel="stylesheet" type="text/css" href="css/component.css" />
+       <script src="js/modernizr.custom.js"></script> -->
+
+       <!-- Stylesheet -->
+        <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous"> -->
+        
+        <!-- jQuery & Bootstrap -->
+        <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script> -->
+
+        <!-- Latest compiled and minified CSS -->
+        <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.12/dist/css/bootstrap-select.min.css"> -->
+
+        <!-- Latest compiled and minified JavaScript -->
+        <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.12/dist/js/bootstrap-select.min.js"></script> -->
+
+        <!-- (Optional) Latest compiled and minified JavaScript translation files -->
+        <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.12/dist/js/i18n/defaults-*.min.js"></script> -->
+
+        <!-- semantic-ui -->
+        <link href="semantic.min.css" rel="stylesheet" type="text/css">
+        <!-- <link href="icon.min.css" rel="stylesheet" type="text/css"> -->
+
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script src="semantic.min.js"></script>
+
+        <link href="https://cdn.bootcss.com/semantic-ui/2.4.1/components/icon.css" rel="stylesheet">
+
+        <!-- <script src="package.js"></script> -->
+        <script src="lsbridge.min.js"></script>
+
+        
+    </head>
+
+    <body>
+        <div id="guage" style="height: 100%; width: 100%; float: left;"></div>   
+    </body>
+</html>
+
+<script type="text/javascript">
+    // <!-- 右侧栏仪表盘 开始 -->
+    var domGuage = document.getElementById("guage");
+    var myChartGuage = echarts.init(domGuage);
+    var app = {};
+    optionGuage = null;
+    optionGuage = {
+        tooltip : {
+            formatter: "{a} <br/>{c} {b}"
+        },
+        // toolbox: {
+        //     show: true,
+        //     feature: {
+        //         restore: {show: true},
+        //         saveAsImage: {show: true}
+        //     }
+        // },
+        series : [
+            {
+                name: '速度',
+                type: 'gauge',
+                z: 3,
+                center: ['48%', '50%'],    // 默认全局居中
+
+                min: 0,
+                max: 50,
+                splitNumber: 10,
+                radius: '55%',
+                axisLine: {            // 坐标轴线
+                    lineStyle: {       // 属性lineStyle控制线条样式
+                        color : [ //表盘颜色
+                            [ 0.2,  "#8FBC8F"],//0-50%处的颜色
+                            [ 0.6, "#4F94CD" ],//51%-70%处的颜色
+                            [ 1, "#B22222" ],//70%-90%处的颜色
+                        ],
+                        width: 10
+                    }
+                },
+                axisTick: {            // 坐标轴小标记
+                    length: "15%",        // 属性length控制线长
+                    lineStyle: {       // 属性lineStyle控制线条样式
+                        color: 'auto'
+                    }
+                },
+                splitLine: {           // 分隔线
+                    length: "20%",         // 属性length控制线长
+                    lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
+                        color: 'auto'
+                    }
+                },
+                axisLabel: {
+                    backgroundColor: 'auto',
+                    borderRadius: 2,
+                    color: '#eee',
+                    padding: 3,
+                    fontSize:'70%',
+                    textShadowBlur: 2,
+                    textShadowOffsetX: 1,
+                    textShadowOffsetY: 1,
+                    textShadowColor: '#222'
+                },
+                pointer: {
+                    width:"7%"
+                },
+                title : {
+                    // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                    fontWeight: 'bolder',
+                    fontSize: '60%',
+                    fontStyle: 'italic'
+                },
+                detail : {
+                    // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                    formatter: function (value) {
+                        value = (value + '').split('.');
+                        value.length < 2 && (value.push('00'));
+                        return ('00' + value[0]).slice(-2)
+                            + '.' + (value[1] + '00').slice(0, 2);
+                    },
+                    fontWeight: 'bolder',
+                    borderRadius: 3,
+                    backgroundColor: '#444',
+                    borderColor: '#aaa',
+                    shadowBlur: 5,
+                    shadowColor: '#333',
+                    shadowOffsetX: 0,
+                    shadowOffsetY: 3,
+                    borderWidth: 2,
+                    textBorderColor: '#000',
+                    textBorderWidth: 2,
+                    textShadowBlur: 2,
+                    textShadowColor: '#fff',
+                    textShadowOffsetX: 0,
+                    textShadowOffsetY: 0,
+                    fontFamily: 'Arial',
+                    fontSize:'100%',
+                    width: 100,
+                    color: '#eee',
+                    rich: {}
+                },
+                data:[{value: 0, name: 'km/h'}]
+            },
+            {
+                name: '转速',
+                type: 'gauge',
+                center: ['30%', '55%'],    // 默认全局居中
+                radius: '30%',
+                min:0,
+                max:7,
+                endAngle:50,
+                splitNumber:7,
+                axisLine: {            // 坐标轴线
+                    lineStyle: {       // 属性lineStyle控制线条样式
+                        width: 8
+                    }
+                },
+                axisTick: {            // 坐标轴小标记
+                    length:'15%',        // 属性length控制线长
+                    lineStyle: {       // 属性lineStyle控制线条样式
+                        color: 'auto'
+                    }
+                },
+                splitLine: {           // 分隔线
+                    length:'20%',         // 属性length控制线长
+                    lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
+                        color: 'auto'
+                    }
+                },
+                pointer: {
+                    width:"8%"
+                },
+                title: {
+                    offsetCenter: [0, '-30%'],       // x, y，单位px
+                    fontSize:'60%'
+                },
+                detail: {
+                    // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                    fontWeight: 'bolder',
+                    fontSize:'10%',
+                },
+                data:[{value: 0, name: 'x1000 r/min'}]
+            },
+            {
+                name: '电量',
+                type: 'gauge',
+                center: ['65%', '40%'],    // 默认全局居中
+                radius: '25%',
+                min: 0,
+                max: 100,
+                startAngle: 135,
+                endAngle: 45,
+                splitNumber: 2,
+                axisLine: {            // 坐标轴线
+                    lineStyle: {       // 属性lineStyle控制线条样式
+                        width: 8
+                    }
+                },
+                axisTick: {            // 坐标轴小标记
+                    splitNumber: 5,
+                    length: '10%',        // 属性length控制线长
+                    lineStyle: {        // 属性lineStyle控制线条样式
+                        color: 'auto'
+                    }
+                },
+                axisLabel: {
+                    formatter:function(v){
+                        switch (v + '') {
+                            case '0' : return 'E';
+                            case '1' : return 'Gas';
+                            case '2' : return 'F';
+                        }
+                    }
+                },
+                splitLine: {           // 分隔线
+                    length: '15%',         // 属性length控制线长
+                    lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
+                        color: 'auto'
+                    }
+                },
+                pointer: {
+                    width:"4%"
+                },
+                title : {
+                    show: false
+                },
+                detail : {
+                    show: false
+                },
+                data:[{value: 0, name: '%'}]
+            },
+            {
+                name: '温度',
+                type: 'gauge',
+                center : ['65%', '58%'],    // 默认全局居中
+                radius : '25%',
+                min: 0,
+                max: 80,
+                startAngle: 315,
+                endAngle: 225,
+                splitNumber: 2,
+                axisLine: {            // 坐标轴线
+                    lineStyle: {       // 属性lineStyle控制线条样式
+                        width: 8
+                    }
+                },
+                axisTick: {            // 坐标轴小标记
+                    show: false
+                },
+                axisLabel: {
+                    formatter:function(v){
+                        switch (v + '') {
+                            case '0' : return 'H';
+                            case '1' : return 'Water';
+                            case '2' : return 'C';
+                        }
+                    }
+                },
+                splitLine: {           // 分隔线
+                    length: '15%',         // 属性length控制线长
+                    lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
+                        color: 'auto'
+                    }
+                },
+                pointer: {
+                    width:"4%"
+                },
+                title: {
+                    show: false
+                },
+                detail: {
+                    show: false
+                },
+                data:[{value: 0, name: '°C'}]
+            }
+        ]
+    };
+    
+    // setInterval(function (){
+    //     optionGuage.series[0].data[0].value = (Math.random()*60).toFixed(2) - 0;
+    //     optionGuage.series[1].data[0].value = (Math.random()*7).toFixed(2) - 0;
+    //     optionGuage.series[2].data[0].value = (Math.random()*2).toFixed(2) - 0;
+    //     optionGuage.series[3].data[0].value = (Math.random()*2).toFixed(2) - 0;
+    //     myChartGuage.setOption(optionGuage,true);
+    // },2000);;
+    if (optionGuage && typeof optionGuage === "object") {
+        myChartGuage.setOption(optionGuage, true);
+    }
+// <!-- 右侧栏仪表盘 结束 -->
+</script>
+          

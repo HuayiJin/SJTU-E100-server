@@ -30,6 +30,8 @@ router.get('/home', function(req, res, next) {
   }
 });
 
+router.get('/query/single/info_java', query.get_single_info_java);
+
 
 /*============================全局============================*/
 

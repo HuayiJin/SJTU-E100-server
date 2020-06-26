@@ -1,10 +1,12 @@
 var sqlquery = require('./sqlquery');
 var safetycheck = require('./safetycheck');
 var global = require('./global');
+var request = require('request');
+
 const db_NAME = "e100";
 const tb_NAME = "E100_TABLE_TEST";
-const GLOBAL_limit = 1000; //最多返回1000条数据
-
+const time_tb_NAME = "E100_TABLE_TIMELY"; 
+const GLOBAL_limit = 1000; //最多返回1000条数据 
 // MySQL数据库联接配置
 var mysql = require('mysql');
 var pool = mysql.createPool({
@@ -27,6 +29,17 @@ function db(sql, callback) {
         console.log(error)
         callback(error, null)
     }
+}
+
+exports.get_single_info_java = function(req, res){
+    console.log(req.query);
+    var requestDest = 'http://202.120.60.31:3005/api/datarequest?vin='+req.query.car_VIN;
+    request(requestDest, function (error, response, body) {
+        // console.log('error:', error); // Print the error if one occurred
+        // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+        console.log('body:', body); // Print the HTML for the Google homepage.
+        res.status(200).send(body);
+    });
 }
 
 /*============================全局============================*/
@@ -94,11 +107,11 @@ exports.get_history_status = function (req, res) {
     });
 }
 
-//请求所有(在线、离线、充电)车辆的当前位置和状态
+//请求所有(在线、离线、充电)车辆的当前位置
 exports.get_all_location = function (req, res) {
     var localsql = 
-        "select car_VIN, create_time, longitude, latitude, vehicle_operating_mode from " + tb_NAME +
-        " WHERE create_time IN (select max(create_time) from " + tb_NAME +
+        "select car_VIN, create_time, longitude, latitude from " + time_tb_NAME +
+        " WHERE create_time IN (select max(create_time) from " + time_tb_NAME +
         " group by car_VIN);"
 
     db(localsql, function (err, resdata) {
@@ -158,12 +171,21 @@ exports.get_single_history = function (req, res) {
             var limit = 100
             if (req.query.limit) limit = req.query.limit;
 
-            var localsql = 
-            "select create_time, " + req.query.type + " from " + tb_NAME +
-            " where car_VIN = \"" + req.query.car_VIN +
-            "\" and create_time > date_sub(current_timestamp(), interval " + limit + 
-            " minute) limit " + GLOBAL_limit;
-    
+	    if (req.query.type == "velocity"){
+		
+            	var localsql = "select create_time, speed from " + time_tb_NAME +
+            		" where car_VIN = \"" + req.query.car_VIN +
+            		"\" and create_time > date_sub(current_timestamp(), interval " + limit + 
+            		" minute) limit " + GLOBAL_limit;
+	    } else {	
+	        var localsql = "select create_time, " + req.query.type + " from " + tb_NAME +
+	            " where car_VIN = \"" + req.query.car_VIN +
+        	    "\" and create_time > date_sub(current_timestamp(), interval " + limit + 
+	            " minute) limit " + GLOBAL_limit;
+	    }    
+
+	console.log(localsql)
+
             db(localsql, function (err, resdata) {
                 if (err) {
                     console.log(err)
@@ -187,7 +209,7 @@ exports.get_single_route = function (req, res) {
         if (req.query.limit) limit = req.query.limit;
 
         var localsql = 
-        "select create_time, longitude, latitude from " + tb_NAME +
+        "select create_time, longitude, latitude from " + time_tb_NAME +
         " where car_VIN = \"" + req.query.car_VIN +
         "\" and create_time > date_sub(current_timestamp(), interval " + limit + 
         " minute) limit " + GLOBAL_limit;

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+    <head>
+            <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+        <!-- <meta http-equiv="refresh" content="10"> -->
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
+       <!-- <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=2GCVEjjkYGGiVjTR1EoENtf2SNzYaiRI"></script> -->
+       <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=stCj3XtKtn4BKeUDSV512dwfCEDBkh6Y"></script>
+
+       
+       <!-- <script src="theme/dark.js"></script> -->
+       <!-- button -->
+       <!-- <link rel="shortcut icon" href="../favicon.ico"> 
+       <link rel="stylesheet" type="text/css" href="css/default.css" />
+       <link rel="stylesheet" type="text/css" href="css/component.css" />
+       <script src="js/modernizr.custom.js"></script> -->
+
+       <!-- Stylesheet -->
+        <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous"> -->
+        
+        <!-- jQuery & Bootstrap -->
+        <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script> -->
+
+        <!-- Latest compiled and minified CSS -->
+        <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.12/dist/css/bootstrap-select.min.css"> -->
+
+        <!-- Latest compiled and minified JavaScript -->
+        <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.12/dist/js/bootstrap-select.min.js"></script> -->
+
+        <!-- (Optional) Latest compiled and minified JavaScript translation files -->
+        <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.12/dist/js/i18n/defaults-*.min.js"></script> -->
+
+        <!-- semantic-ui -->
+        <link href="semantic.min.css" rel="stylesheet" type="text/css">
+        <!-- <link href="icon.min.css" rel="stylesheet" type="text/css"> -->
+
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script src="semantic.min.js"></script>
+
+        <link href="https://cdn.bootcss.com/semantic-ui/2.4.1/components/icon.css" rel="stylesheet">
+
+        <!-- <script src="package.js"></script> -->
+        <script src="lsbridge.min.js"></script>
+        
+    </head>
+
+    <body>
+        <div id="Stack" style="height: 100%; width: 100%; float: left;"></div>
+    </body>
+</html>
+
+<script type="text/javascript">
+
+// 层叠图开始
+    var domStack = document.getElementById("Stack");
+    var myChartStack = echarts.init(domStack);
+    var app = {};
+    optionStack = null;
+    optionStack = {
+        title: {
+            top: '3%',
+            left: '2%',
+            text: '车辆使用情况'
+        },
+        tooltip : {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                label: {
+                    backgroundColor: '#6a7985'
+                }
+            }
+        },
+        legend: {
+            top: '3%',
+
+            // data:['使用中','空闲中','低电量','离线','待维修']
+            data:['行驶','休眠','充电','初始化','上电','未知']
+        },
+        // toolbox: {
+        //     feature: {
+        //         saveAsImage: {}
+        //     }
+        // },
+        grid: {
+            top: '15%',
+            left: '3%',
+            right: '4%',
+            // bottom: '50px',
+            containLabel: true
+        },
+        xAxis : [
+            {
+                type : 'category',
+                boundaryGap : false,
+                data : new Array(),
+                // data : ['','','','','','','', '']
+            }
+        ],
+        yAxis : [
+            {
+                type : 'value'
+            }
+        ],
+        dataZoom: [
+            {   // 这个dataZoom组件，默认控制x轴。
+                type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                start: 0,      // 左边在 10% 的位置。
+                end: 100         // 右边在 60% 的位置。
+            },
+            {   // 这个dataZoom组件，也控制x轴。
+                type: 'inside', // 这个 dataZoom 组件是 inside 型 dataZoom 组件
+                start: 0,      // 左边在 10% 的位置。
+                end: 100         // 右边在 60% 的位置。
+            }
+        ],
+        series : [
+            {
+                name:'行驶',
+                type:'line',
+                stack: '总量',
+                areaStyle: {},
+                data : new Array(),
+                // data:[120, 132, 101, 134, 90, 230, 210,1000]
+            },
+            {
+                name:'休眠',
+                type:'line',
+                stack: '总量',
+                areaStyle: {},
+                data : new Array(),
+                // data:[220, 182, 191, 234, 290, 330, 310, 1000]
+            },
+            {
+                name:'充电',
+                type:'line',
+                stack: '总量',
+                areaStyle: {},
+                data : new Array(),
+                // data:[150, 232, 201, 154, 190, 330, 410, 1000]
+            },
+            {
+                name:'初始化',
+                type:'line',
+                stack: '总量',
+                areaStyle: {},
+                data : new Array(),
+                // data:[150, 232, 201, 154, 190, 330, 410, 1000]
+            },
+            {
+                name:'上电',
+                type:'line',
+                stack: '总量',
+                areaStyle: {},
+                data : new Array(),
+                // data:[150, 232, 201, 154, 190, 330, 410, 1000]
+            },
+            {
+                name:'未知',
+                type:'line',
+                stack: '总量',
+                areaStyle: {},
+                data : new Array(),
+                // data:[150, 232, 201, 154, 190, 330, 410, 1000]
+            },
+        ]
+    };
+    ;
+
+    // initialStack();
+    if (optionStack && typeof optionStack === "object") {
+        myChartStack.setOption(optionStack, true);
+    }
+
+// 层叠图 结束
+
+</script>
+ 
+ <!-- 全局变量 -->
+<script type="text/javascript">
+    var totalOperatingModelCnt = 6;
+
+    var stack_time = new Array();
+    var stack_show_time = new Array();
+    var stack_value = new Array(totalOperatingModelCnt);
+    for(var i = 0; i < totalOperatingModelCnt; ++i){
+        stack_value[i] = new Array();
+    }
+
+    // 时间解析
+    // Date.parse("2018-11-30T09:49:50.000Z")
+    var timeGap = 1000*60*60*12;    //1000ms/s*60s/min*60min/h*12h
+
+    function timeValidate(rawTime){
+        return Math.floor(rawTime.getTime()/timeGap)*timeGap;
+    }
+
+    var totalOperatingModelCnt = 6;
+
+    function getOperatingModeType(typeStr){
+        if(typeStr == '行驶'){
+            return 0;
+        }else if(typeStr == '休眠'){
+            return 1;
+        }else if(typeStr == '充电'){
+            return 2;
+        }else if(typeStr == '初始化'){
+            return 3;
+        }else if(typeStr == '上电'){
+            return 4;
+        }else{
+            return 5;
+        }
+    }
+
+    function getOperatingModeTypeName(typeNum){
+        if(typeNum == 0){
+            return '行驶';
+        }else if(typeNum == 1){
+            return '休眠';
+        }else if(typeNum == 2){
+            return '充电';
+        }else if(typeNum == 3){
+            return '初始化';
+        }else if(typeNum == 4){
+            return '上电';
+        }else{
+            return '未知';
+        }
+    }
+
+
+    var needBackgroundRequest = new Array(totalOperatingModelCnt);
+
+    for(var i = 0; i < needBackgroundRequest.length; ++i){
+        needBackgroundRequest[i] = true;
+    }
+
+    // 单车历史轨迹参数
+    var singleCarFilteredPoints = new Array();
+    var singleCarTranslatedPoints = new Array();
+    var singleCarTranslatedPointsIdx = 0;
+    var singleCarFilteredPointsIdx = 0;
+
+    // stack初始化是否完成，防止在空stack里过早插入数据
+    var stackInitialFinish = false;
+
+
+</script>
+
+<!-- initial Stack -->
+<script type="text/javascript">
+    function _get_valide_date_for_stack(millisecond){
+        var tem = new Date();
+        tem.setTime(millisecond);
+        return tem.toLocaleString();
+    }
+
+    function _all_zero(idx){
+        for(var i = 0; i < totalOperatingModelCnt; ++i){
+            if(idx >= stack_value[i].length || stack_value[i][idx] != 0){
+                return false;
+            }
+        }
+        return true;
+    }
+    function do_initialStack(data){
+
+        for(var i = 0; i < totalOperatingModelCnt; ++i){
+            stack_value[i] = new Array(5000);
+        }
+        // console.log('stack array initial finish with length: '+stack_value[0].length);
+        stack_time = new Array(5000);
+        // stack_show_time = new Array(5000);
+        
+        var curDate = timeValidate(new Date());
+        // console.log('curDate'+curDate);
+
+        for(var i = 0; i < 5000; ++i){
+            // console.log(i);
+            stack_time[5000-1-i] = (curDate-timeGap*i);
+            for(var j = 0; j < totalOperatingModelCnt; ++j){
+                stack_value[j][i] = 0;
+            }
+        }
+
+        for(var c = 0; c < data.length; ++c){
+            // console.log(c);
+            curInfo = data[c]['info']
+            // console.log(curInfo.length);
+            var curDataIdx = 0;
+            for(var i in stack_time){
+                                // for(;curDataIdx < curInfo.length && timeValidate(curInfo[curDataIdx]['create_time']) <= stack_time[i]; ++curDataIdx){}
+                while(curDataIdx < curInfo.length && Date.parse(curInfo[curDataIdx]['create_time']) <= stack_time[i]){
+                    ++curDataIdx;
+                }
+                // if(curDataIdx < curInfo.length) console.log(curDataIdx+' '+Date.parse(curInfo[curDataIdx]['create_time'])+' '+stack_time[i]);
+                // else console.log('achieve length')
+                if(curDataIdx == 0){
+                    continue;
+                }else{
+                    stack_value[getOperatingModeType(curInfo[curDataIdx-1]['vehicle_operating_mode'])][i] += 1;
+                }
+            }
+        }
+        while(stack_time.length > 0){
+            if(_all_zero(0)){
+                for(var i = 0; i < totalOperatingModelCnt; ++i){
+                    stack_value[i].shift();
+                }
+                stack_time.shift();
+            }else{
+                break;
+            }
+        }
+
+        for(var i = 0; i < stack_time.length; ++i){
+            // var tem = new Date();
+            // tem.setTime(stack_time[i]);
+            stack_show_time.push(_get_valide_date_for_stack(stack_time[i]));
+        }
+
+        // console.log(stack_value[0].length);
+
+        var option = myChartStack.getOption();
+        for(var i = 0; i < totalOperatingModelCnt; ++i){
+            option.series[i].data = stack_value[i];
+        }
+        option.xAxis[0].data = stack_show_time;
+        // option.xAxis[0].data = stack_time;
+
+
+        myChartStack.setOption(option);
+
+        stackInitialFinish = true;
+
+    }
+
+    // 初始化层叠图
+    function initialStack(){
+        $.ajax({
+            url: 'http://202.120.60.31:3000/query/history/status', //请求的url
+            type: 'get', //请求的方式
+            data: 'limit=5000000',
+            error: function (data) {
+                console.log('initialStack请求失败');
+            },
+            success: function (data) {
+                do_initialStack(data);
+            }
+            
+        });
+
+    }
+</script>
+
+<!--  -->
+<script type="text/javascript">
+    initialStack();
+    lsbridge.subscribe('screen_5', function(data) {
+        console.log(data);
+
+        if(data.message == 'requestCurrentTypeNum'){
+            var curDate = new Date().getTime();
+
+            if(stack_time.length == 0 || curDate > stack_time[stack_time.length-1] || _shouldUpdataStack()){
+                if(stack_time.length >= 1500){
+                    stack_time.shift();
+                    stack_show_time.shift();
+                    for(var i = 0; i < totalOperatingModelCnt; ++i){
+                        stack_value[i].shift();
+                    }
+                }
+                var tem = new Date().getTime();
+                stack_time.push(tem);
+                stack_show_time.push(_get_valide_date_for_stack(tem));
+                for(var i = 0; i < totalOperatingModelCnt; ++i){
+                    // console.log(data[getOperatingModeTypeName(i)]);
+                    (stack_value[i]).push(data[getOperatingModeTypeName(i)]);
+                }
+
+
+                var option = myChartStack.getOption();
+                for(var i = 0; i < totalOperatingModelCnt; ++i){
+                    option.series[i].data = stack_value[i];
+                }
+                option.xAxis[0].data = stack_show_time;
+
+                myChartStack.setOption(option);
+            }
+        }
+        
+    });
+
+    window.onresize = function () {
+        myChartStack.resize();
+    }
+</script>

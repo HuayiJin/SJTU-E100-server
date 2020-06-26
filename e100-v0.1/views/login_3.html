@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html >
+<head>
+<meta charset="UTF-8">
+<title>智能车监控平台</title>
+
+<script src="login_3/jrj6out.js"></script>
+<script>try{Typekit.load({ async: false });}catch(e){}</script>
+
+<style>
+  body {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+}
+
+.intro-container {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+  text-align: center;
+  margin: 0 auto;
+  right: 0;
+  left: 0;
+}
+
+h1 {
+  font-family: 'brandon-grotesque', sans-serif;
+  font-weight: bold;
+  margin-top: 0px;
+  margin-bottom: 0;
+  font-size: 20px;
+}
+@media screen and (min-width: 860px) {
+  h1 {
+    font-size: 40px;
+    line-height: 52px;
+  }
+}
+
+.fancy-text {
+  font-family: "adobe-garamond-pro",sans-serif;
+  font-style: italic;
+  letter-spacing: 1px;
+  margin-bottom: 17px;
+}
+
+.button {
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  font-family: 'brandon-grotesque', sans-serif;
+  text-transform: uppercase;
+  min-width: 200px;
+  margin-top: 30px;
+}
+.button:hover .border {
+  box-shadow: 0px 0px 10px 0px white;
+}
+.button:hover .border .left-plane, .button:hover .border .right-plane {
+  transform: translateX(0%);
+}
+.button:hover .text {
+  color: #121212;
+}
+.button .border {
+  border: 1px solid white;
+  transform: skewX(-20deg);
+  height: 32px;
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+  transition: .10s ease-out;
+}
+.button .border .left-plane, .button .border .right-plane {
+  position: absolute;
+  background: white;
+  height: 32px;
+  width: 100px;
+  transition: .15s ease-out;
+}
+.button .border .left-plane {
+  left: 0;
+  transform: translateX(-100%);
+}
+.button .border .right-plane {
+  right: 0;
+  transform: translateX(100%);
+}
+.button .text {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: .15s ease-out;
+}
+
+.x-mark {
+  right: 10px;
+  top: 10px;
+  position: absolute;
+  cursor: pointer;
+  opacity: 0;
+}
+.x-mark:hover .right {
+  transform: rotate(-45deg) scaleY(1.2);
+}
+.x-mark:hover .left {
+  transform: rotate(45deg) scaleY(1.2);
+}
+.x-mark .container {
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+.x-mark .left, .x-mark .right {
+  width: 2px;
+  height: 20px;
+  background: white;
+  position: absolute;
+  border-radius: 3px;
+  transition: .15s ease-out;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+}
+.x-mark .right {
+  transform: rotate(-45deg);
+}
+.x-mark .left {
+  transform: rotate(45deg);
+}
+
+.sky-container {
+  position: absolute;
+  color: white;
+  text-transform: uppercase;
+  margin: 0 auto;
+  right: 0;
+  left: 0;
+  top: 2%;
+  text-align: center;
+  opacity: 0;
+}
+@media screen and (min-width: 860px) {
+  .sky-container {
+    top: 18%;
+    right: auto;
+    left: auto;
+  }
+}
+.sky-container__left, .sky-container__right {
+  display: inline-block;
+  vertical-align: top;
+  font-weight: bold;
+}
+.sky-container__left h2, .sky-container__right h2 {
+  font-family: 'brandon-grotesque', sans-serif;
+  font-size: 26px;
+  line-height: 26px;
+  margin: 0;
+}
+@media screen and (min-width: 860px) {
+  .sky-container__left h2, .sky-container__right h2 {
+    font-size: 72px;
+    line-height: 68px;
+  }
+}
+.sky-container__left {
+  margin-right: 5px;
+}
+.sky-container .thirty-one {
+  letter-spacing: 4px;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.twitter:hover a {
+  transform: rotate(-45deg) scale(1.05);
+}
+.twitter:hover i {
+  color: #21c2ff;
+}
+.twitter a {
+  bottom: -40px;
+  right: -75px;
+  transform: rotate(-45deg);
+}
+.twitter i {
+  bottom: 7px;
+  right: 7px;
+  color: #00ACED;
+}
+
+.social-icon a {
+  position: absolute;
+  background: white;
+  color: white;
+  box-shadow: -1px -1px 20px 0px rgba(0, 0, 0, 0.3);
+  display: inline-block;
+  width: 150px;
+  height: 80px;
+  transform-origin: 50% 50%;
+  transition: .15s ease-out;
+}
+.social-icon i {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1000;
+  transition: .15s ease-out;
+}
+
+.youtube:hover a {
+  transform: rotate(45deg) scale(1.05);
+}
+.youtube:hover i {
+  color: #ec4c44;
+}
+.youtube a {
+  bottom: -40px;
+  left: -75px;
+  transform: rotate(45deg);
+}
+.youtube i {
+  bottom: 7px;
+  left: 7px;
+  color: #E62117;
+}
+
+</style>
+
+<script src="login_3/prefixfree.min.js"></script>
+<script src="semantic.min.js"></script>
+<link href="semantic.min.css" rel="stylesheet" type="text/css">
+<link href="https://cdn.bootcss.com/semantic-ui/2.4.1/components/icon.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+<script src="lsbridge.min.js"></script>
+
+
+
+</head>
+
+<body>
+<div class="x-mark">
+	<div class="container" onclick="hideskycontainer()">
+		<div class="left"></div>
+		<div class="right"></div>
+	</div>
+</div>
+<div class="intro-container">
+	
+  <!-- <h1>ONE WITH AN EVERLASTING DESIRE <br> FOR THE UNKNOWN & UNTOLD</h1> -->
+  <div style="width: 100%; float: left">
+    <div class="ui left icon input" >
+      <i class="lock icon"></i>
+      <input type="password" placeholder="密码" id="_password" >
+    </div>
+  </div>
+
+  <div style="width: 100%; float: left">
+	  <div class="button shift-camera-button" id="login_button" onclick='_log_in()'>
+      <div class="border">
+        <div class="left-plane"></div>
+        <div class="right-plane"></div>
+      </div>	
+      <div class="text">登录</div>
+    </div>
+  </div>
+</div>
+<div class="sky-container" id="screenselector" style = "width: 40%; height: 40%; margin-left: 30%; margin-right: 30%; display: none">
+  <div style="width: 74%; height: 74%; float: left;">
+      <button class="ui fluid inverted teal button" id="screen_0" style="height: 100%;" onclick="screen_0_click()">屏幕0</button>
+  </div>
+
+  <div style="width: 24%; height: 74%; float: left;"> 
+      <button class="ui fluid inverted teal button" id="screen_1" style="height: 25%;" onclick="screen_1_click()">屏幕1</button>
+      <button class="ui fluid inverted teal button" id="screen_2" style="height: 25%;" onclick="screen_2_click()">屏幕2</button>
+      <button class="ui fluid inverted teal button" id="screen_3" style="height: 25%;" onclick="screen_3_click()">屏幕3</button>
+      <button class="ui fluid inverted teal button" id="screen_4" style="height: 25%;" onclick="screen_4_click()">屏幕4</button>
+    </div>
+
+  <div style="width: 98 %; height: 24%; float: left;">
+      <!-- <button class="ui inverted teal button" style="height: 100%; width: 2%; margin: 0%;">屏幕5</button>
+      <button class="ui inverted teal button" style="height: 100%; width: 2%; margin: 0%;">屏幕5</button>
+      <button class="ui inverted teal button" style="height: 100%; width: 2%; margin: 0%;">屏幕5</button>
+      <button class="ui inverted teal button" style="height: 100%; width: 2%; margin: 0%;">屏幕5</button> -->
+      
+      <div style="height: 100%; width: 25%; padding-right:5%; float: left;"><button class="ui inverted teal button" id="screen_5" style="height: 100%; width: 90%; " onclick="screen_5_click()">屏幕5</button></div>
+      <div style="height: 100%; width: 25%; padding-right:5%; float: left;"><button class="ui inverted teal button" id="screen_6" style="height: 100%; width: 90%; " onclick="screen_6_click()">屏幕6</button></div>
+      <div style="height: 100%; width: 25%; padding-right:5%; float: left;"><button class="ui inverted teal button" id="screen_7" style="height: 100%; width: 90%; " onclick="screen_7_click()">屏幕7</button></div>
+      <div style="height: 100%; width: 25%; padding-right:5%; float: left;"><button class="ui inverted teal button" id="screen_8" style="height: 100%; width: 90%; " onclick="screen_8_click()">屏幕8</button></div>
+
+    </div>
+    
+	<!-- <div class="text-right sky-container__left">
+		<h2 class="portfolio">
+			PORTFOLIO
+		</h2>
+		<h2 class="resurrection">
+			resurrection	
+		</h2>
+	</div>
+	<div class="text-left sky-container__right">
+		<h2 class="08">
+			08
+		</h2>
+		<h2 class="thirty-one">
+			31
+		</h2>
+		<h2 class="2016">
+			2016
+		</h2>
+	</div> -->
+</div>
+
+
+<script src='login_3/jquery.min.js'></script>
+<script src='login_3/TweenMax.min.js'></script>
+<script src='login_3/three.min.js'></script>
+<script src="login_3/index.js"></script>
+
+<div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';">
+<!-- <p>适用浏览器：360、FireFox、Chrome、Opera、傲游、搜狗、世界之窗. 不支持Safari、IE8及以下浏览器。</p>
+<p>来源：<a href="http://sc.chinaz.com/" target="_blank">站长素材</a></p> -->
+</div>
+</body>
+</html>
+
+<script type="text/javascript">
+
+  $('#_password').on('keypress',function(event){   
+      if(event.keyCode == 13)      
+      {  
+        _log_in()  
+      }  
+  });
+
+  function screen_0_click(){
+    lsbridge.send('login-page', { message: 'screen_select', screenId: 'screen_0'});
+  }
+
+  function screen_1_click(){
+    lsbridge.send('login-page', { message: 'screen_select', screenId: 'screen_1'});
+  }
+
+  function screen_2_click(){
+    lsbridge.send('login-page', { message: 'screen_select', screenId: 'screen_2'});
+  }
+
+  function screen_3_click(){
+    lsbridge.send('login-page', { message: 'screen_select', screenId: 'screen_3'});
+  }
+
+  function screen_4_click(){
+    lsbridge.send('login-page', { message: 'screen_select', screenId: 'screen_4'});
+  }
+
+  function screen_5_click(){
+    lsbridge.send('login-page', { message: 'screen_select', screenId: 'screen_5'});
+  }
+
+  function screen_6_click(){
+    lsbridge.send('login-page', { message: 'screen_select', screenId: 'screen_6'});
+  }
+
+  function screen_7_click(){
+    lsbridge.send('login-page', { message: 'screen_select', screenId: 'screen_7'});
+  }
+
+  function screen_8_click(){
+    lsbridge.send('login-page', { message: 'screen_select', screenId: 'screen_8'});
+  }
+
+  function screen_9_click(){
+    lsbridge.send('login-page', { message: 'screen_select', screenId: 'screen_9'});
+  }
+
+  function _log_in(){
+    console.log('进入');
+    var curPassword = document.getElementById("_password").value;
+    document.getElementById("screenselector").style.display="";
+    lsbridge.send('login-page', { message: 'login_success' });
+    // $.ajax({
+    //   url: 'http://202.120.60.31:3000/login', //请求的url
+    //   type: 'get', //请求的方式
+    //   data: 'password='+curPassword,
+    //   error: function (data) {
+    //       alert('密码错误，请联系系统管理员');
+    //   },
+    //   success: function (data) {
+    //       console.log('token: '+data['token']);
+    //       var tem = 'http://202.120.60.31:3000/home?token='+data['token'];
+    //       location.href=tem;
+    //   }
+        
+    // });
+  }
+
+  function hideskycontainer(){
+    // document.getElementById("screenselector").style.display="none";
+    setTimeout(function(){
+      document.getElementById("screenselector").style.display="none";
+    }, 1000);
+
+  }
+
+  lsbridge.subscribe('login-page', function(data) {
+    console.log(data);
+    if(data.message == 'login_success'){
+      console.log('cascade login');
+      var evt = document.createEvent("MouseEvents");
+      evt.initEvent("click", false, false);
+      document.getElementById("login_button").dispatchEvent(evt);
+    }else if(data.message == 'screen_select'){
+      document.getElementById(data.screenId).className += ' disabled';
+    }
+  });
+
+</script>

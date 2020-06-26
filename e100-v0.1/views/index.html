@@ -47,6 +47,8 @@
 
         <link href="https://cdn.bootcss.com/semantic-ui/2.4.1/components/icon.css" rel="stylesheet">
 
+        <script type="text/javascript" src="vin_license.js"></script>
+
         <!-- <script src="package.js"></script> -->
 
 
@@ -281,7 +283,7 @@
                           </button>
                 </div>                    
                 <div id="right_bottom_coner_detail" style="height: 100%; width: 100%; padding-left:5%; float: left; overflow:auto">
-                        <div class="ui secondary vertical pointing menu" style="width: 100%">
+                        <div id="detail_div" class="ui secondary vertical pointing menu" style="width: 100%">
                             <a class="active item">
                                 车辆详情
                             </a>
@@ -451,6 +453,7 @@
     }
 
 // <!-- 全局变量 当前激活脚本 状态信息 -->
+    var totalOperatingModelCnt = 6;
 
     // 用于层叠图的全局变量数组
     var stack_online;
@@ -463,8 +466,8 @@
     var stack_value = new Array(totalOperatingModelCnt);
     for(var i = 0; i < totalOperatingModelCnt; ++i){
         stack_value[i] = new Array();
+        console.log('stacklen ' + stack_value[i].length);
     }
-
     // 用于饼图和层叠图更新的数组
     var cur_value = new Array(totalOperatingModelCnt);
 
@@ -526,7 +529,6 @@
     // var poweronCarPosition = [];
     // var initmodeCarPosition = [];
 
-    var totalOperatingModelCnt = 6;
 
     var carPosition = new Array(totalOperatingModelCnt);
     for(var i = 0; i < carPosition.length; ++i){
@@ -580,6 +582,11 @@
         needBackgroundRequest[i] = true;
     }
 
+    var backgroundRequestProcessing = new Array(totalOperatingModelCnt);
+    for(var i = 0; i < backgroundRequestProcessing.length; ++i){
+        backgroundRequestProcessing[i] = false;
+    }
+
     // 单车历史轨迹参数
     var singleCarFilteredPoints = new Array();
     var singleCarTranslatedPoints = new Array();
@@ -602,6 +609,14 @@
 
     // 用于背景查询的坐标缓存
     var backGroundPointCache = {};
+
+    // 历史状态接口被封掉之后用all/location接口来画饼图用
+    var pie_active_cnt = 0;
+    var pie_deactive_cnt = 0;
+
+    var singleCarTraceInitFinish = false;
+
+    var shouldRequestSingle = true;
 
 
 // <!-- 单车查询 -->
@@ -678,12 +693,15 @@
         curNewOverlayHandler.setAnimation(BMAP_ANIMATION_BOUNCE);//跳动的动画
         addMouseHandler(content, curNewOverlayHandler);
 
+        singleCarTraceInitFinish = true;
+
         // console.log('brk0');
         
         var view = map.getViewport(eval([curOldOverlayHandler.getPosition(), curNewOverlayHandler.getPosition()]));
         var mapZoom = view.zoom; 
         var centerPoint = view.center; 
         map.centerAndZoom(centerPoint,mapZoom);
+
     }
 
     function rawPointValid(lon, lat){
@@ -697,7 +715,7 @@
     }
 
     function filterTrace(data){
-        console.log('filterTrace');
+        console.log('过滤前的历史轨迹长度: '+data.length);
         for(var i = 0; i < data.length; ++i){
             // if (data[i]['longitude'] == null || data[i]['latitude'] == null) {
             //     continue;
@@ -705,6 +723,7 @@
             // if (data[i]['longitude'] > 124 || data[i]['longitude'] < 118 || data[i]['latitude'] > 35 || data[i]['latitude'] < 27) {
             //     continue;
             // }
+
             if(!rawPointValid(data[i]['longitude'], data[i]['latitude'])){
                 continue;
             }
@@ -734,10 +753,11 @@
     }
 
     function requestSingleCarTrace(){
+        singleCarTraceInitFinish = false;
         $.ajax({
             url: 'http://202.120.60.31:3000/query/single/route', //请求的url
             type: 'get', //请求的方式
-            data: 'car_VIN='+curCarVin+'&limit=5000000',
+            data: 'car_VIN='+curCarVin+'&limit=60',
             error: function (data) {
                 console.log('requestSingleCarTrace请求失败');
             },
@@ -770,13 +790,18 @@
         $.ajax({
             url: 'http://202.120.60.31:3000/query/single/history', //请求的url
             type: 'get', //请求的方式
-            data: 'car_VIN='+curCarVin+'&type='+curCarType+'&limit=5000000',
+            data: 'car_VIN='+curCarVin+'&type='+curCarType+'&limit=60',
             error: function (data) {
                 console.log('initialStack请求失败');
             },
             success: function (data) {
                 console.log('requestSingleCarHistory success');
                 dataLine = new Array();
+
+                var dataType = curCarType;
+                if(dataType == 'velocity'){
+                    dataType = 'speed';
+                }
 
                 for(var i = 0; i < data.length; ++i){
                     var d = new Date();
@@ -786,7 +811,7 @@
                         // [d.getFullYear(), d.getMonth() + 1, d.getDate()].join('/')
                         value: [
                             d.getTime(),
-                            data[i][curCarType]
+                            data[i][dataType]
                         ]
                     })
                 }
@@ -816,9 +841,17 @@
         
     }
 
+    function createDetailItem(k, d){
+        var result = '<a id="detail_cumulative_mileage" class="item" href="javascript:void(0);">' + k + ' : ' + d + '</a> \n';
+        return result;
+        
+    }
+
     function requestSingleCar(){
+        if(shouldRequestSingle == false) return;
+        shouldRequestSingle = false;
         $.ajax({
-            url: 'http://202.120.60.31:3000/query/single/info', //请求的url
+            url: 'http://202.120.60.31:3000/query/single/info_java', //请求的url
             type: 'get', //请求的方式
             data: 'car_VIN='+curCarVin,
             error: function (data) {
@@ -826,18 +859,26 @@
             },
             success: function (data) {
                 console.log('requestSingleCar success');
+                console.log(data);
+                data = JSON.parse(data);
+                console.log(data);
                 if(!curSingleMode) return;
 
                 if(data.length == 0) return;
-                data = data[0];
+
+                var elementList = '<a class="active item">车辆详情</a>\n';
 
                 // document.getElementById("detail_car").innerHTML = data;
                 for(var key in data){
                     // console.log("detail_"+key);
                     // console.log(''+key+ ' : '+data[key]);
-                    var element = document.getElementById('detail_'+key)
-                    if(element != null) element.innerHTML = ''+key+ ' : '+data[key];
+
+                    // var element = document.getElementById('detail_'+key)
+                    // if(element != null) element.innerHTML = ''+key+ ' : '+data[key];
+                    elementList += createDetailItem(key, data[key]);
                 }
+
+                document.getElementById('detail_div').innerHTML = elementList;
 
                 if(rawPointValid(data['longitude'], data['latitude'])){
                     var convertor = new BMap.Convertor();
@@ -850,17 +891,35 @@
                 }
 
                 var curOption = myChartGuage.getOption();
-                curOption.series[0].data[0].value = data['velocity'];
-                curOption.series[1].data[0].value = data['drive_motor_rpm']/1000.0;
-                curOption.series[2].data[0].value = data['residual_energy'];
-                curOption.series[3].data[0].value = data['drive_motor_temperature'];
+                curOption.series[0].data[0].value = parseInt(data['speed'], 10);
+                curOption.series[1].data[0].value = parseInt(data['accPedalPos'], 10);
+                curOption.series[2].data[0].value = parseInt(data['batVoltage'], 10);
+                curOption.series[3].data[0].value = parseInt(data['batHighTemp'], 10);
                 myChartGuage.setOption(curOption,true);
 
-                console.log('velocity: '+data['velocity']);
-                console.log('drive_motor_rpm: '+data['drive_motor_rpm']);
-                console.log('residual_energy: '+data['residual_energy']);
-                console.log('drive_motor_temperature: '+data['drive_motor_temperature']);
+                console.log('speed: '+data['speed']);
+                console.log('accPedalPos: '+data['accPedalPos']);
+                console.log('batVoltage: '+data['batVoltage']);
+                console.log('batHighTemp: '+data['batHighTemp']);
 
+                var d = new Date();
+                d.setTime(Date.parse(data['collectTime']));
+                dataLine.push({
+                    name: d.toString(),
+                    // [d.getFullYear(), d.getMonth() + 1, d.getDate()].join('/')
+                    value: [
+                        d.getTime(),
+                        data['speed']
+                    ]
+                })
+
+                myChartLine.setOption({
+                    series: [{
+                        data: dataLine
+                    }]
+                });
+
+                shouldRequestSingle = true;
             }
         });
 
@@ -873,8 +932,13 @@
 // <!-- 默认查询 -->
     function requestOnline(){
         // console.log('requestOnline '+carPosition[0].length);
-        if(carPosition[0].length == 0) return;
+        if(carPosition[0].length == 0){
+            drawOverlay(0);
+            // backgroundCarOverlayNew[0] = new Array();
+            return;
+        }
         
+        backgroundRequestProcessing[0] = true;
         carPositionIdx[0] = 0;
         var convertor = new BMap.Convertor();
         var pointArr = [];
@@ -882,7 +946,14 @@
         convertor.translate(pointArr, 1, 5, translateCallBackOnline);
     }
     function requestOffline(){
-        if(carPosition[1].length == 0) return;
+        if(carPosition[1].length == 0){
+            // console.log("backgroundCarOverlayNew[1].length" + backgroundCarOverlayNew[1].length);
+            drawOverlay(1);
+
+            // backgroundCarOverlayNew[1] = new Array();
+            return;
+        }
+        backgroundRequestProcessing[1] = true;
         carPositionIdx[1] = 0;
         var convertor = new BMap.Convertor();
         var pointArr = [];
@@ -890,7 +961,12 @@
         convertor.translate(pointArr, 1, 5, translateCallBackOffline);
     }
     function requestCharging(){
-        if(carPosition[2].length == 0) return;
+        if(carPosition[2].length == 0){
+            drawOverlay(2);
+            return;
+        }
+        
+        backgroundRequestProcessing[2] = true;
         carPositionIdx[2] = 0;
         var convertor = new BMap.Convertor();
         var pointArr = [];
@@ -898,7 +974,12 @@
         convertor.translate(pointArr, 1, 5, translateCallBackCharging);
     }
     function requestInitmode(){
-        if(carPosition[3].length == 0) return;
+        if(carPosition[3].length == 0){
+            drawOverlay(3);
+            return;
+        }
+        
+        backgroundRequestProcessing[3] = true;
         carPositionIdx[3] = 0;
         var convertor = new BMap.Convertor();
         var pointArr = [];
@@ -906,7 +987,12 @@
         convertor.translate(pointArr, 1, 5, translateCallBackInitmode);
     }
     function requestPoweron(){
-        if(carPosition[4].length == 0) return;
+        if(carPosition[4].length == 0){
+            drawOverlay(4);
+            return;
+        }
+        
+        backgroundRequestProcessing[4] = true;
         carPositionIdx[4] = 0;
         var convertor = new BMap.Convertor();
         var pointArr = [];
@@ -914,8 +1000,12 @@
         convertor.translate(pointArr, 1, 5, translateCallBackPoweron);
     }
     function requestUnknown(){
-        console.log('requestUnknown');
-        if(carPosition[5].length == 0) return;
+        if(carPosition[5].length == 0){
+            drawOverlay(5);
+            return;
+        }
+        
+        backgroundRequestProcessing[5] = true;
         carPositionIdx[5] = 0;
         var convertor = new BMap.Convertor();
         var pointArr = [];
@@ -942,7 +1032,7 @@
         filterDic = {};
         for(var i = 0; i < data.length; ++i){
             var tem_key = data[i]['car_VIN']
-            if(filterTrace.hasOwnProperty(tem_key) && filterTrace[tem_key]['create_time'] >= data[i]['tem_key']){
+            if(filterDic.hasOwnProperty(tem_key) && (Date.parse(filterDic[tem_key]['create_time']) >= Date.parse(data[i]['create_time']))){
                 continue;
             }else{
                 filterDic[tem_key] = data[i];
@@ -951,9 +1041,28 @@
 
         filteredData = new Array();
         for(var k in filterDic){
+            if(k == "LK6ADCE20HB005678"){
+                console.log("LK6ADCE20HB005678: ")
+                console.log(filterDic[k]);
+            }
             filteredData.push(filterDic[k]);
         }
 
+    }
+
+    var activeThreshold = 1000*60*3;
+
+    function getMode(logTime, curTime){
+        var tem = Date.parse(logTime);
+        // console.log('curTime: '+curTime+' logTime: '+tem+' diff: '+(curTime-tem));
+        if(curTime-tem > activeThreshold){
+            // console.log('5 '+ (curTime-tem));
+            return 1; //表示未知
+        }else{
+            // console.log('0 '+(curTime-tem));
+
+            return 0; //表示运行中
+        }
     }
 
     function backgroundRequest(){
@@ -965,8 +1074,22 @@
                 console.log('initialStack请求失败');
             },
             success: function (data) {
+                var needProcess = Array(totalOperatingModelCnt);
                 for(var i = 0; i < totalOperatingModelCnt; ++i){
-                    carPosition[i] = [];
+                    if(backgroundRequestProcessing[i] == true){
+                        needProcess[i] = false;
+                        console.log('background lock: '+getOperatingModeTypeName(i));
+                    }else{
+                        needProcess[i] = true
+                    }
+                }
+
+                for(var i = 0; i < totalOperatingModelCnt; ++i){
+                    if(needProcess[i] == false){
+                        continue;
+                    }else{
+                        carPosition[i] = [];
+                    }
                 }
 
                 var requestcnt = 0;
@@ -977,6 +1100,10 @@
 
                 filterBackgroundRequest(data);
 
+                var curTime = new Date().getTime();
+                pie_active_cnt = 0;
+                pie_deactive_cnt = 0;
+
 
                 for(var i = 0; i < filteredData.length; ++i){
 
@@ -986,7 +1113,18 @@
 
                     var tem_vin = filteredData[i]['car_VIN'];
                     var tem_point = new BMap.Point(filteredData[i]['longitude'], filteredData[i]['latitude']);
-                    var tem_type = getOperatingModeType(filteredData[i]['vehicle_operating_mode']);
+                    // var tem_type = getOperatingModeType(filteredData[i]['vehicle_operating_mode']);
+                    var tem_type = getMode(filteredData[i]['create_time'], curTime);
+
+                    if(tem_type == 0){
+                        pie_active_cnt += 1;
+                        console.log(tem_vin);
+                    }else{
+                        pie_deactive_cnt += 1;
+                    }
+
+                    // backGroundPointCache = {};
+                    // console.log(backGroundPointCache);
 
 
                     if(backGroundPointCache.hasOwnProperty(tem_vin) && backGroundPointCache[tem_vin]['raw'].equals(tem_point) && backGroundPointCache[tem_vin]['converted'] != undefined){
@@ -994,7 +1132,7 @@
                         
                         var marker = new BMap.Marker(backGroundPointCache[tem_vin]['converted']);
                         marker.setIcon(iconArr[tem_type]);
-                        var content = filteredData[i]['car_VIN']+' '+filteredData[i]['vehicle_operating_mode'];
+                        var content = filteredData[i]['car_VIN']+' '+vin2license[filteredData[i]['car_VIN']]+' '+getOperatingModeTypeName(tem_type);
                         // map.addOverlay(marker)
                         // if(needAnimation[5]) marker.setAnimation(BMAP_ANIMATION_DROP);//坠落动画
                         addMouseHandler(content, marker);
@@ -1015,8 +1153,9 @@
                             raw:tem_point,
                             converted:undefined
                         };
-                        (carPosition[getOperatingModeType(filteredData[i]['vehicle_operating_mode'])]).push([filteredData[i]['car_VIN']+' '+filteredData[i]['vehicle_operating_mode'], filteredData[i]['longitude'], filteredData[i]['latitude']]);
-
+                        if(needProcess[tem_type] == true){
+                            (carPosition[tem_type]).push([filteredData[i]['car_VIN']+' '+vin2license[filteredData[i]['car_VIN']]+' '+getOperatingModeTypeName(tem_type), filteredData[i]['longitude'], filteredData[i]['latitude']]);
+                        }
                     }
 
                     // (carPosition[getOperatingModeType(data[i]['vehicle_operating_mode'])]).push([data[i]['car_VIN']+' '+data[i]['vehicle_operating_mode'], new Bmap.Point(data[i]['longitude'], data[i]['latitude'])]);
@@ -1035,6 +1174,66 @@
                     // }
                 }
 
+                var option = myChartPie.getOption();
+                for(var i = 0; i < totalOperatingModelCnt; ++i){
+                    option.series[0].data[i]['value'] = 0;
+                }
+                option.series[0].data[0]['value'] = pie_active_cnt;
+                option.series[0].data[1]['value'] = pie_deactive_cnt;
+
+                myChartPie.setOption(option);
+
+                cur_value[0] = pie_active_cnt;
+                cur_value[1] = pie_deactive_cnt;
+
+                console.log('deactive: '+pie_deactive_cnt);
+
+                var curDate = curTime;
+
+                if(stack_time.length == 0 || curDate > stack_time[stack_time.length-1] || _shouldUpdataStack()){
+                    if(stack_time.length >= 1500){
+                        stack_time.shift();
+                        stack_show_time.shift();
+                        for(var i = 0; i < totalOperatingModelCnt; ++i){
+                            stack_value[i].shift();
+                        }
+                        // stack_online.shift();
+                        // stack_offline.shift();
+                        // stack_charging.shift();
+                        // stack_poweron.shift();
+                        // stack_initmode.shift();
+                    }
+                    var tem = curDate;
+                    stack_time.push(tem);
+                    stack_show_time.push(_get_valide_date_for_stack(tem));
+                    for(var i = 0; i < 2; ++i){
+                        // console.log('stack_value.length'+stack_value.length);
+
+                        // console.log('stack_value[i].length'+stack_value[i].length);
+
+                        (stack_value[i]).push(cur_value[i]);
+                    }
+                    // stack_online.push(cur_online);
+                    // stack_offline.push(cur_offline);
+                    // stack_charging.push(cur_charging);
+                    // stack_poweron.push(cur_poweron);
+                    // stack_initmode.push(cur_initmode);
+
+                    var option = myChartStack.getOption();
+                    for(var i = 0; i < totalOperatingModelCnt; ++i){
+                        option.series[i].data = stack_value[i];
+                    }
+                    // option.series[0].data = stack_online;
+                    // option.series[1].data = stack_offline;
+                    // option.series[2].data = stack_charging;
+                    // option.series[3].data = stack_initmode;
+                    // option.series[4].data = stack_poweron;
+                    option.xAxis[0].data = stack_show_time;
+
+                    myChartStack.setOption(option);
+
+                }
+
                 console.log('request: '+requestcnt+' cache: '+cachecnt);
                 console.log('nocar: '+nocarcnt+' unequal: '+unequalcnt+' undefine: '+undefinecnt);
 
@@ -1043,9 +1242,10 @@
                 // }
                 for(var i = 0; i < totalOperatingModelCnt; ++i){
                     // console.log("request: "+i+" "+carPosition[i].length);
-                    if(needBackgroundRequest[i]) requestFunction[i]();
+                    if((needBackgroundRequest[i] == true) && (needProcess[i] == true)) requestFunction[i]();
                     // console.log(getOperatingModeTypeName(i)+' : '+carPosition[i].length);
                 }
+
 
             }
         });
@@ -1199,7 +1399,7 @@
         $.ajax({
             url: 'http://202.120.60.31:3000/query/history/status', //请求的url
             type: 'get', //请求的方式
-            data: 'limit=1',
+            data: 'limit=0',
             error: function (data) {
                 console.log('requestCurrentTypeNum请求失败');
             },
@@ -1229,16 +1429,22 @@
                     //     ++cur_initmode;
                     // }
                 }
-                var option = myChartPie.getOption();
-                for(var i = 0; i < totalOperatingModelCnt; ++i){
-                    option.series[0].data[i]['value'] = cur_value[i];
-                }
-                // option.series[0].data[0]['value'] = cur_online;
-                // option.series[0].data[1]['value'] = cur_offline;
-                // option.series[0].data[2]['value'] = cur_charging;
-                // option.series[0].data[3]['value'] = cur_initmode;
-                // option.series[0].data[4]['value'] = cur_poweron;
-                myChartPie.setOption(option);
+
+                // pie的修改转移到背景查询中了
+                // var option = myChartPie.getOption();
+                // for(var i = 0; i < totalOperatingModelCnt; ++i){
+                //     // option.series[0].data[i]['value'] = cur_value[i];
+                //     option.series[0].data[i]['value'] = 0;
+                // }
+                // option.series[0].data[0]['value'] = pie_active_cnt;
+                // option.series[0].data[1]['value'] = pie_deactive_cnt;
+
+                // // option.series[0].data[0]['value'] = cur_online;
+                // // option.series[0].data[1]['value'] = cur_offline;
+                // // option.series[0].data[2]['value'] = cur_charging;
+                // // option.series[0].data[3]['value'] = cur_initmode;
+                // // option.series[0].data[4]['value'] = cur_poweron;
+                // myChartPie.setOption(option);
 
                 // console.log('brk 1');
                 // var curDate = timeValidate(new Date());
@@ -1264,7 +1470,7 @@
                     stack_show_time.push(_get_valide_date_for_stack(tem));
                     for(var i = 0; i < totalOperatingModelCnt; ++i){
                         // console.log('stack_value.length'+stack_value.length);
-
+                        if(stack_value[i] == undefined) stack_value = new Array();
                         console.log('stack_value[i].length'+stack_value[i].length);
 
                         (stack_value[i]).push(cur_value[i]);
@@ -1395,6 +1601,7 @@
             curSingleMode = true;
             mapLocked = false;
             console.log('request History finish'+ curSingleMode);
+            shouldRequestSingle = true;
 
             
         // }
@@ -1465,6 +1672,7 @@
             ++carPositionIdx[0];
             if(carPositionIdx[0] == carPosition[0].length){
                 needAnimation[0] = false;
+                backgroundRequestProcessing[0] = false;
                 drawOverlay(0);
 
                 // for(var i = 0; i < totalOperatingModelCnt; ++i){
@@ -1486,9 +1694,18 @@
         if(data.status != 0){
             console.log('translateCallBackOffline错误');
         }else{
+            // console.log(data);
             var marker = new BMap.Marker(data.points[0]);
             marker.setIcon(iconArr[1]);
             var content = carPosition[1][carPositionIdx[1]][0];
+            // console.log(content);
+            // console.log(''+carPosition[1][carPositionIdx[1]][0] +', '+ carPosition[1][carPositionIdx[1]][1] + ', '+ carPosition[1][carPositionIdx[1]][2])
+
+            // if(carPosition[1][carPositionIdx[1]][0] == 'LK6ADCE20HB005700 休眠'){
+            //     console.log(''+carPosition[1][carPositionIdx[1]][0] +', '+ carPosition[1][carPositionIdx[1]][1] + ', '+ carPosition[1][carPositionIdx[1]][2])
+            //     console.log(data.points[0])
+            // }
+
             // map.addOverlay(marker)
             // if(needAnimation[1]) marker.setAnimation(BMAP_ANIMATION_DROP);//坠落动画
             addMouseHandler(content, marker);
@@ -1501,6 +1718,7 @@
             ++carPositionIdx[1];
             if(carPositionIdx[1] == carPosition[1].length){
                 needAnimation[1] = false;
+                backgroundRequestProcessing[1] = false;
                 drawOverlay(1);
 
                 // for(var i = 0; i < totalOperatingModelCnt; ++i){
@@ -1537,6 +1755,7 @@
             ++carPositionIdx[2];
             if(carPositionIdx[2] == carPosition[2].length){
                 needAnimation[2] = false;
+                backgroundRequestProcessing[2] = false;
                 drawOverlay(2);
 
                 // for(var i = 0; i < totalOperatingModelCnt; ++i){
@@ -1573,6 +1792,7 @@
             ++carPositionIdx[3];
             if(carPositionIdx[3] == carPosition[3].length){
                 needAnimation[3] = false;
+                backgroundRequestProcessing[3] = false;
                 drawOverlay(3);
 
                 // for(var i = 0; i < totalOperatingModelCnt; ++i){
@@ -1609,6 +1829,7 @@
             ++carPositionIdx[4];
             if(carPositionIdx[4] == carPosition[4].length){
                 needAnimation[4] = false;
+                backgroundRequestProcessing[4] = false;
                 drawOverlay(4);
 
                 // for(var i = 0; i < totalOperatingModelCnt; ++i){
@@ -1649,6 +1870,7 @@
             if(carPositionIdx[5] == carPosition[5].length){
                 needAnimation[5] = false;
                 // console.log('unknown translate finish');
+                backgroundRequestProcessing[5] = false;
                 drawOverlay(5);
 
                 // for(var i = 0; i < totalOperatingModelCnt; ++i){
@@ -1746,7 +1968,9 @@
 
     function singleQueryTranslateCallBack(data){
         if(data.status != 0){
-            console.log('translateCallBackTrace');
+            console.log('singleQueryTranslateCallBack');
+        }else if(singleCarTraceInitFinish == false){
+            console.log('singleTrace : new query evoked, but initial not yet finished')
         }else{
             if(singleCarTranslatedPoints.length == 0){
                 singleCarTranslatedPoints.push(data.points[0]);
@@ -1763,6 +1987,7 @@
                 curNewOverlayHandler.setAnimation(BMAP_ANIMATION_BOUNCE);//跳动的动画
                 addMouseHandler(content, curNewOverlayHandler);
             }else if(!((data.points[0]).equals(singleCarTranslatedPoints[singleCarTranslatedPoints.length-1]))){
+                console.log('final icon should move');
                 map.removeOverlay(curNewOverlayHandler);
 
                 curNewOverlayHandler = new BMap.Marker(data.points[0]);
@@ -1778,8 +2003,6 @@
                 singleCarTranslatedPoints.push(data.points[0]);
                 
             }
-
-
         }
     }
 // <!-- 绘图 -->
@@ -2512,15 +2735,15 @@ var domGuage = document.getElementById("guage");
 
 
     // <!-- 网页启动 -->
-    initialStack();
+    // initialStack();
     myChartPie.on("click", eConsole);
     backToBackground();
     requestCurrentTypeNum();
     backgroundRequest();
-    setInterval(function(){
-        if(pageStale) return;
-        requestCurrentTypeNum();
-    }, 12253 );
+    // setInterval(function(){
+    //     if(pageStale) return;
+    //     requestCurrentTypeNum();
+    // }, 12253 );
     setInterval(function(){
         // console.log('needUpdateMap: '+needUpdateMap);
         // console.log('mapLocked: '+mapLocked);
@@ -2537,10 +2760,10 @@ var domGuage = document.getElementById("guage");
             // requestSingleCarHistory();
             requestSingleCar();
         }
-    }, 11719 );
+    }, 1543   );
 
     setInterval(function(){
         pageStale = true;
-    }, 600000);
+    }, 1800000);
 </script>
           

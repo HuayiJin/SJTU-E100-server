@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+    <head>
+            <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+        <!-- <meta http-equiv="refresh" content="10"> -->
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
+       <!-- <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=2GCVEjjkYGGiVjTR1EoENtf2SNzYaiRI"></script> -->
+       <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=stCj3XtKtn4BKeUDSV512dwfCEDBkh6Y"></script>
+
+       
+       <!-- <script src="theme/dark.js"></script> -->
+       <!-- button -->
+       <!-- <link rel="shortcut icon" href="../favicon.ico"> 
+       <link rel="stylesheet" type="text/css" href="css/default.css" />
+       <link rel="stylesheet" type="text/css" href="css/component.css" />
+       <script src="js/modernizr.custom.js"></script> -->
+
+       <!-- Stylesheet -->
+        <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous"> -->
+        
+        <!-- jQuery & Bootstrap -->
+        <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script> -->
+
+        <!-- Latest compiled and minified CSS -->
+        <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.12/dist/css/bootstrap-select.min.css"> -->
+
+        <!-- Latest compiled and minified JavaScript -->
+        <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.12/dist/js/bootstrap-select.min.js"></script> -->
+
+        <!-- (Optional) Latest compiled and minified JavaScript translation files -->
+        <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.12/dist/js/i18n/defaults-*.min.js"></script> -->
+
+        <!-- semantic-ui -->
+        <link href="semantic.min.css" rel="stylesheet" type="text/css">
+        <!-- <link href="icon.min.css" rel="stylesheet" type="text/css"> -->
+
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script src="semantic.min.js"></script>
+
+        <link href="https://cdn.bootcss.com/semantic-ui/2.4.1/components/icon.css" rel="stylesheet">
+
+        <script src="lsbridge.min.js"></script>
+
+
+        <!-- <script src="package.js"></script> -->    
+    </head>
+
+    <body>
+        <div id="optionList">
+            <div id="detailOption" style="height: 20%; width: 80%; float: left; padding-left: 15%;">
+                <select name="reques_type" class="ui dropdown fluid" id="select">
+                    <optgroup label="车辆状态">
+                        <option value="velocity" selected>速度</option>
+                        <option value="cumulative_mileage">总行驶里程</option>
+                        <option value="drive_motor_rpm">电机转速</option>
+                        <option value="drive_motor_temperature">电机温度</option>
+                    </optgroup>
+                    <optgroup label="电池信息">
+                        <option value="residual_energy">剩余电量</option>
+                        <option value="high_voltage_battery_current">总电流</option>
+                        <option value="total_battery_voltage">总电压</option>
+                        <option value="max_single_voltage">电池最高单体电压</option>
+                        <option value="min_single_voltage">电池最低单体电压</option>
+                        <option value="insulation_resistance_value">绝缘阻值</option>
+                    </optgroup>
+                    <optgroup label="其他数据">
+                        <option value="motor_torque">电机转矩</option>
+                        <option value="motor_controller_current">电机控制器电流</option>
+                        <option value="motor_controller_voltage">电机控制器电压</option>
+                    </optgroup>
+                </select>
+                
+                <select class="ui search selection dropdown fluid" id="search-select"> 
+                    <option value="LK6ADCE20JB008246">LK6ADCE20JB008246</option>
+                    <option value="LK6ADCE20JB008862">LK6ADCE20JB008862</option>
+                    <option value="LK6ADCE20JB009252">LK6ADCE20JB009252</option>
+                    <option value="LK6ADCE21JB009051">LK6ADCE21JB009051</option>
+                    <option value="LK6ADCE21JB010538">LK6ADCE21JB010538</option>
+                    <option value="LK6ADCE21JB011110">LK6ADCE21JB011110</option>
+                    <option value="LK6ADCE22JB008295">LK6ADCE22JB008295</option>
+                    <option value="LK6ADCE22JB009639">LK6ADCE22JB009639</option>
+                    <option value="LK6ADCE22JB011116">LK6ADCE22JB011116</option>
+                    <option value="LK6ADCE23JB009102">LK6ADCE23JB009102</option>
+                    <option value="LK6ADCE23JB009634">LK6ADCE23JB009634</option>
+                    <option value="LK6ADCE23JB011142">LK6ADCE23JB011142</option>
+                    <option value="LK6ADCE24JB007889">LK6ADCE24JB007889</option>
+                    <option value="LK6ADCE24JB008251">LK6ADCE24JB008251</option>
+                    <option value="LK6ADCE24JB008864">LK6ADCE24JB008864</option>
+                    <option value="LK6ADCE24JB008878">LK6ADCE24JB008878</option>
+                    <option value="LK6ADCE24JB011084">LK6ADCE24JB011084</option>
+                    <option value="LK6ADCE24JB011098">LK6ADCE24JB011098</option>
+                    <option value="LK6ADCE24JB011134">LK6ADCE24JB011134</option>
+                    <option value="LK6ADCE25JB008288">LK6ADCE25JB008288</option>
+                    <option value="LK6ADCE25JB008310">LK6ADCE25JB008310</option>
+                    <option value="LK6ADCE25JB008887">LK6ADCE25JB008887</option>
+                    <option value="LK6ADCE25JB011059">LK6ADCE25JB011059</option>
+                    <option value="LK6ADCE25JB011062">LK6ADCE25JB011062</option>
+                    <option value="LK6ADCE25JB011112">LK6ADCE25JB011112</option>
+                    <option value="LK6ADCE26JB008879">LK6ADCE26JB008879</option>
+                    <option value="LK6ADCE26JB008882">LK6ADCE26JB008882</option>
+                    <option value="LK6ADCE26JB010499">LK6ADCE26JB010499</option>
+                    <option value="LK6ADCE27JB008292">LK6ADCE27JB008292</option>
+                    <option value="LK6ADCE27JB008874">LK6ADCE27JB008874</option>
+                    <option value="LK6ADCE27JB009264">LK6ADCE27JB009264</option>
+                    <option value="LK6ADCE27JB010480">LK6ADCE27JB010480</option>
+                    <option value="LK6ADCE27JB011144">LK6ADCE27JB011144</option>
+                    <option value="LK6ADCE28JB008253">LK6ADCE28JB008253</option>
+                    <option value="LK6ADCE28JB009077">LK6ADCE28JB009077</option>
+                    <option value="LK6ADCE28JB009273">LK6ADCE28JB009273</option>
+                    <option value="LK6ADCE28JB010522">LK6ADCE28JB010522</option>
+                    <option value="LK6ADCE28JB011122">LK6ADCE28JB011122</option>
+                    <option value="LK6ADCE29JB007922">LK6ADCE29JB007922</option>
+                    <option value="LK6ADCE29JB008293">LK6ADCE29JB008293</option>
+                    <option value="LK6ADCE29JB009640">LK6ADCE29JB009640</option>
+                    <option value="LK6ADCE29JB011114">LK6ADCE29JB011114</option>
+                    <option value="LK6ADCE2XJB008285">LK6ADCE2XJB008285</option>
+                    <option value="LK6ADCE2XJB008299">LK6ADCE2XJB008299</option>
+                    <option value="LK6ADCE2XJB008884">LK6ADCE2XJB008884</option>
+                    <option value="LK6ADCE2XJB009081">LK6ADCE2XJB009081</option>
+                    <option value="LK6ADCE2XJB009243">LK6ADCE2XJB009243</option>
+                    <option value="LK6ADCE2XJB009694">LK6ADCE2XJB009694</option>
+                    <option value="LK6ADCE2XJB011137">LK6ADCE2XJB011137</option>
+                    <option value="LK6ADCE20HB005003">LK6ADCE20HB005003</option>
+                    <option value="LK6ADCE20HB005082" selected=true>LK6ADCE20HB005082</option>
+                    <option value="LK6ADCE20HB005339">LK6ADCE20HB005339</option>
+                    <option value="LK6ADCE20HB005390">LK6ADCE20HB005390</option>
+                    <option value="LK6ADCE20HB005678">LK6ADCE20HB005678</option>
+                    <option value="LK6ADCE20HB005700">LK6ADCE20HB005700</option>
+                    <option value="LK6ADCE20HB006040">LK6ADCE20HB006040</option>
+                    <option value="LK6ADCE20HB006247">LK6ADCE20HB006247</option>
+                    <option value="LK6ADCE21HB005012">LK6ADCE21HB005012</option>
+                    <option value="LK6ADCE21HB005026">LK6ADCE21HB005026</option>
+                    <option value="LK6ADCE21HB005155">LK6ADCE21HB005155</option>
+                    <option value="LK6ADCE21HB005401">LK6ADCE21HB005401</option>
+                    <option value="LK6ADCE21HB005446">LK6ADCE21HB005446</option>
+                    <option value="LK6ADCE21HB005527">LK6ADCE21HB005527</option>
+                    <option value="LK6ADCE21HB005723">LK6ADCE21HB005723</option>
+                    <option value="LK6ADCE21HB005995">LK6ADCE21HB005995</option>
+                    <option value="LK6ADCE21HB006063">LK6ADCE21HB006063</option>
+                    <option value="LK6ADCE21HB006564">LK6ADCE21HB006564</option>
+                    <option value="LK6ADCE21HB006810">LK6ADCE21HB006810</option>
+                    <option value="LK6ADCE22HB005102">LK6ADCE22HB005102</option>
+                    <option value="LK6ADCE22HB005438">LK6ADCE22HB005438</option>
+                    <option value="LK6ADCE22HB005701">LK6ADCE22HB005701</option>
+                    <option value="LK6ADCE22HB006203">LK6ADCE22HB006203</option>
+                    <option value="LK6ADCE22HB006556">LK6ADCE22HB006556</option>
+                    <option value="LK6ADCE23HB005383">LK6ADCE23HB005383</option>
+                    <option value="LK6ADCE23HB005402">LK6ADCE23HB005402</option>
+                    <option value="LK6ADCE23HB005433">LK6ADCE23HB005433</option>
+                    <option value="LK6ADCE23HB005447">LK6ADCE23HB005447</option>
+                    <option value="LK6ADCE23HB005481">LK6ADCE23HB005481</option>
+                    <option value="LK6ADCE23HB005724">LK6ADCE23HB005724</option>
+                    <option value="LK6ADCE23HB005738">LK6ADCE23HB005738</option>
+                    <option value="LK6ADCE23HB005805">LK6ADCE23HB005805</option>
+                    <option value="LK6ADCE23HB006789">LK6ADCE23HB006789</option>
+                    <option value="LK6ADCE24HB005103">LK6ADCE24HB005103</option>
+                    <option value="LK6ADCE24HB005425">LK6ADCE24HB005425</option>
+                    <option value="LK6ADCE24HB005697">LK6ADCE24HB005697</option>
+                    <option value="LK6ADCE24HB005957">LK6ADCE24HB005957</option>
+                    <option value="LK6ADCE24HB006381">LK6ADCE24HB006381</option>
+                    <option value="LK6ADCE24HB006512">LK6ADCE24HB006512</option>
+                    <option value="LK6ADCE25HB005207">LK6ADCE25HB005207</option>
+                    <option value="LK6ADCE25HB005322">LK6ADCE25HB005322</option>
+                    <option value="LK6ADCE25HB005370">LK6ADCE25HB005370</option>
+                    <option value="LK6ADCE25HB005384">LK6ADCE25HB005384</option>
+                    <option value="LK6ADCE25HB005434">LK6ADCE25HB005434</option>
+                    <option value="LK6ADCE25HB005529">LK6ADCE25HB005529</option>
+                    <option value="LK6ADCE25HB006812">LK6ADCE25HB006812</option>
+                    <option value="LK6ADCE26HB005085">LK6ADCE26HB005085</option>
+                    <option value="LK6ADCE26HB005409">LK6ADCE26HB005409</option>
+                    <option value="LK6ADCE26HB005460">LK6ADCE26HB005460</option>
+                    <option value="LK6ADCE26HB005703">LK6ADCE26HB005703</option>
+                    <option value="LK6ADCE26HB006284">LK6ADCE26HB006284</option>
+                    <option value="LK6ADCE26HB006558">LK6ADCE26HB006558</option>
+                    <option value="LK6ADCE26HB006804">LK6ADCE26HB006804</option>
+                    <option value="LK6ADCE26HB006852">LK6ADCE26HB006852</option>
+                    <option value="LK6ADCE27HB005063">LK6ADCE27HB005063</option>
+                    <option value="LK6ADCE27HB006407">LK6ADCE27HB006407</option>
+                    <option value="LK6ADCE27HB006536">LK6ADCE27HB006536</option>
+                    <option value="LK6ADCE27HB006553">LK6ADCE27HB006553</option>
+                    <option value="LK6ADCE27HB006861">LK6ADCE27HB006861</option>
+                    <option value="LK6ADCE28HB005010">LK6ADCE28HB005010</option>
+                    <option value="LK6ADCE28HB005072">LK6ADCE28HB005072</option>
+                    <option value="LK6ADCE28HB005282">LK6ADCE28HB005282</option>
+                    <option value="LK6ADCE28HB005413">LK6ADCE28HB005413</option>
+                    <option value="LK6ADCE28HB005640">LK6ADCE28HB005640</option>
+                    <option value="LK6ADCE28HB006027">LK6ADCE28HB006027</option>
+                    <option value="LK6ADCE28HB006464">LK6ADCE28HB006464</option>
+                    <option value="LK6ADCE28HB006836">LK6ADCE28HB006836</option>
+                    <option value="LK6ADCE29HB005176">LK6ADCE29HB005176</option>
+                    <option value="LK6ADCE2XHB005185">LK6ADCE2XHB005185</option>
+                    <option value="LK6ADCE2XHB005526">LK6ADCE2XHB005526</option>
+                    <option value="LK6ADCE2XHB006207">LK6ADCE2XHB006207</option>
+                    <option value="LK6ADCE2XHB006546">LK6ADCE2XHB006546</option>
+                    <option value="LK6ADCE2XHB006790">LK6ADCE2XHB006790</option>
+
+                    
+                </select>
+                <script>
+                    $('#select').dropdown();
+                    $('#search-select').dropdown();
+                </script>
+                 
+            </div>
+            <div style="height: 20%; width: 20%; padding-right: 15%; float: left;">
+                <button class="ui fluid button" style="height: 100%;">搜索</button>
+            </div>
+        </div>
+
+        <div id="single_car_detail" style="height: 80%; width: 100%; padding-left:15%; padding-top: 5%; float: left; overflow:auto">
+            <div class="ui secondary vertical pointing menu" style="width: 100%">
+                <a class="active item">
+                    车辆详情
+                </a>
+                <a id="detail_car_VIN" class="active item" href="javascript:void(0);" onclick="setSingleCarType('car_VIN')">
+                    
+                </a>
+                <a id="detail_longitude" class="item" href="javascript:void(0);" onclick="setSingleCarType('longitude')">
+                    
+                </a>
+                <a id="detail_latitude" class="item" href="javascript:void(0);" onclick="setSingleCarType('latitude')">
+                     
+                </a>
+                <a id="detail_vehicle_operating_mode" class="item" href="javascript:void(0);" onclick="setSingleCarType('vehicle_operating_mode')">
+                     
+                </a>
+                <a id="detail_brake_pedal_status" class="item" href="javascript:void(0);" onclick="setSingleCarType('brake_pedal_status')">
+                     
+                </a>
+                <a id="detail_accelerator_pedal_stroke" class="item" href="javascript:void(0);" onclick="setSingleCarType('accelerator_pedal_stroke')">
+                     
+                </a>
+                <a id="detail_gear_position" class="item" href="javascript:void(0);" onclick="setSingleCarType('gear_position')">
+                     
+                </a>
+                <a id="detail_key_status" class="item" href="javascript:void(0);" onclick="setSingleCarType('key_status')">
+                     
+                </a>
+                <a id="detail_driving_mode" class="item" href="javascript:void(0);" onclick="setSingleCarType('driving_mode')">
+                     
+                </a>
+                <a id="detail_velocity" class="item" href="javascript:void(0);" onclick="setSingleCarType('velocity')">
+                     
+                </a>
+                <a id="detail_motor_status" class="item" href="javascript:void(0);" onclick="setSingleCarType('motor_status')">
+                     
+                </a>
+                <a id="detail_motor_torque" class="item" href="javascript:void(0);" onclick="setSingleCarType('motor_torque')">
+                     
+                </a>
+                <a id="detail_drive_motor_rpm" class="item" href="javascript:void(0);" onclick="setSingleCarType('drive_motor_rpm')">
+                     
+                </a>
+                <a id="detail_motor_controller_current" class="item" href="javascript:void(0);" onclick="setSingleCarType('motor_controller_current')">
+                     
+                </a>
+                <a id="detail_motor_controller_voltage" class="item" href="javascript:void(0);" onclick="setSingleCarType('motor_controller_voltage')">
+                     
+                </a>
+                <a id="detail_drive_motor_temperature" class="item" href="javascript:void(0);" onclick="setSingleCarType('drive_motor_temperature')">
+                     
+                </a>
+                <a id="detail_motor_controller_temperature" class="item" href="javascript:void(0);" onclick="setSingleCarType('motor_controller_temperature')">
+                     
+                </a>
+                <a id="detail_high_voltage_battery_current" class="item" href="javascript:void(0);" onclick="setSingleCarType('high_voltage_battery_current')">
+                     
+                </a>
+                <a id="detail_total_battery_voltage" class="item" href="javascript:void(0);" onclick="setSingleCarType('total_battery_voltage')">
+                     
+                </a>
+                <a id="detail_insulation_resistance_value" class="item" href="javascript:void(0);" onclick="setSingleCarType('insulation_resistance_value')">
+                     
+                </a>
+                <a id="detail_residual_energy" class="item" href="javascript:void(0);" onclick="setSingleCarType('residual_energy')">
+                     
+                </a>
+                <a id="detail_max_single_voltage" class="item" href="javascript:void(0);" onclick="setSingleCarType('max_single_voltage')">
+                     
+                </a>
+                <a id="detail_min_single_voltage" class="item" href="javascript:void(0);" onclick="setSingleCarType('min_single_voltage')">
+                     
+                </a>
+                <a id="detail_cumulative_mileage" class="item" href="javascript:void(0);" onclick="setSingleCarType('cumulative_mileage')">
+                     
+                </a>
+            </div>
+        </div>
+    </body>
+</html>
+
+<script type="text/javascript">
+
+
+</script>
+          
