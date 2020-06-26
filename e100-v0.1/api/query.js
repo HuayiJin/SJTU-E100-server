@@ -6,6 +6,7 @@ var request = require('request');
 const db_NAME = "e100";
 const tb_NAME = "E100_TABLE_TEST";
 const time_tb_NAME = "E100_TABLE_TIMELY"; 
+const tb_LOC_BATCH = "E100_LOC_BATCH";
 const GLOBAL_limit = 1000; //最多返回1000条数据 
 // MySQL数据库联接配置
 var mysql = require('mysql');
@@ -113,6 +114,43 @@ exports.get_all_location = function (req, res) {
         "select car_VIN, create_time, longitude, latitude from " + time_tb_NAME +
         " WHERE create_time IN (select max(create_time) from " + time_tb_NAME +
         " group by car_VIN);"
+
+    db(localsql, function (err, resdata) {
+        if (err) {
+            res.end("查询失败：", err)
+        } else {
+            res.status(200).send(resdata);
+        }
+    });
+}
+
+//2020年6月新增，批量请求所有车辆的最新位置
+exports.get_all_location_batch = function (req, res) {
+    var localsql = 
+        "select VIN, collectTime, longitude, latitude, angle from " + tb_LOC_BATCH +
+        " WHERE addTime IN (select max(addTime) from " + tb_LOC_BATCH +
+        " group by VIN);"
+
+    db(localsql, function (err, resdata) {
+        if (err) {
+            res.end("查询失败：", err)
+        } else {
+            res.status(200).send(resdata);
+        }
+    });
+}
+
+//2020年6月新增，请求某一时刻的所有车辆的位置
+exports.get_all_location_batch_time = function (req, res) {
+    var timestamp = parseInt(Date.now() / 1000);
+    if(req.query.timestamp) timestamp = req.query.timestamp;
+
+    var localsql = 
+        "SELECT	VIN, collectTime, longitude, latitude, angle FROM " + tb_LOC_BATCH +
+        " WHERE	ID IN (SELECT max( ID ) FROM " + tb_LOC_BATCH + 
+        " WHERE	collectTime IN ( SELECT max( collectTime ) FROM " + tb_LOC_BATCH +
+        " WHERE UNIX_TIMESTAMP( collectTime ) < " + timestamp +
+        " GROUP BY VIN ) GROUP BY VIN );"
 
     db(localsql, function (err, resdata) {
         if (err) {
