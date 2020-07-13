@@ -30,6 +30,11 @@ router.get('/home', function(req, res, next) {
   }
 });
 
+router.get('/heatmap', function(req, res, next) {
+   res.render('heatmap.html', { title: 'ExpressTitle' });
+});
+
+
 router.get('/query/single/info_java', query.get_single_info_java);
 
 
@@ -107,7 +112,9 @@ router.get('/query/all/location/batch/time', query.get_all_location_batch_time);
  */
 router.get('/query/all/status', query.get_all_status);
 
+
 /*============================单车============================*/
+
 
 /**请求单车当前所有信息
  * 参数 car_VIN = "LXXXXXXXXXXXXXXXXX"
@@ -122,7 +129,7 @@ router.get('/query/single/info', query.get_single_info);
 /**请求单车某项历史记录
  * 参数 car_VIN = "LXXXXXXXXXXXXXXXXX"
  * 参数 type = {velocity, drive_motor_rpm, drive_motor_temperature ...}
- * 参数 length = [1,1000] -> 按分钟为单位，距今的分钟数 默认为100
+ * 参数 limit = [1,1000] -> 按分钟为单位，距今的分钟数 默认为100
  * res = [{
  *      create_time = ...
  *      velocity = 20
@@ -133,8 +140,9 @@ router.get('/query/single/info', query.get_single_info);
 router.get('/query/single/history', query.get_single_history);
 
 /**请求单车历史轨迹
+ * 2020年7月更新，位置信息从批量采集数据库中收集
  * 参数 car_VIN = "LXXXXXXXXXXXXXXXXX"
- * 参数 length = [1,1000] -> 按分钟为单位，距今的分钟数 默认为100
+ * 参数 limit = [1,1000] -> 按分钟为单位，距今的分钟数 默认为100
  * res = [{
  *      create_time = ...
  *      longitude = 20

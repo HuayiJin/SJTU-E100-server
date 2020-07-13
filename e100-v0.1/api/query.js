@@ -241,15 +241,17 @@ exports.get_single_history = function (req, res) {
 }
 
 //请求单车历史轨迹
+//2020年7月更新，位置信息从批量采集数据库中收集
+
 exports.get_single_route = function (req, res) {
     if (req.query.car_VIN){
         var limit = 100
         if (req.query.limit) limit = req.query.limit;
 
         var localsql = 
-        "select create_time, longitude, latitude from " + time_tb_NAME +
-        " where car_VIN = \"" + req.query.car_VIN +
-        "\" and create_time > date_sub(current_timestamp(), interval " + limit + 
+        "select DISTINCT collectTime, longitude, latitude from " + tb_LOC_BATCH +
+        " where VIN = \"" + req.query.car_VIN +
+        "\" and collectTime > date_sub(current_timestamp(), interval " + limit + 
         " minute) limit " + GLOBAL_limit;
 
         db(localsql, function (err, resdata) {

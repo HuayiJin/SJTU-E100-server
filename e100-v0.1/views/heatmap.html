@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+
+    <!-- 百度地图GL -->
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=stCj3XtKtn4BKeUDSV512dwfCEDBkh6Y"></script>
+    <script type="text/javascript" src="//api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
+    <script type="text/javascript" src="//api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
+	<script type="text/javascript" src="//api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js"></script>
+    <!-- <script src="static/my_common.js"></script> -->
+    <script src="https://unpkg.com/mapvgl/dist/mapvgl.min.js"></script>
+    <script src="https://unpkg.com/mapvgl/dist/mapvgl.threelayers.min.js"></script>
+    <script src="//mapv.baidu.com/build/mapv.min.js"></script>
+    <!-- <script src="https://code.bdstatic.com/npm/mapvgl@1.0.0-beta.46/dist/mapvgl.min.js"></script> -->
+    <script src="https://code.bdstatic.com/npm/mapvgl@1.0.0-beta.55/dist/mapvgl.min.js"></script>
+
+    <!-- jquery -->
+    <!--
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+
+    <!-- semantic UI -->
+    <script src="https://cdn.bootcss.com/semantic-ui/2.4.1/semantic.js"></script>
+    <link href="https://cdn.bootcss.com/semantic-ui/2.4.1/semantic.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/semantic-ui/2.4.1/components/sidebar.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/semantic-ui/2.4.1/components/sidebar.js"></script>
+    <link href="https://cdn.bootcss.com/semantic-ui/2.4.1/components/statistic.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/semantic-ui/2.4.1/components/divider.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/semantic-ui/2.4.1/components/dropdown.js"></script>
+    <link href="https://cdn.bootcss.com/semantic-ui/2.4.1/components/dropdown.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/semantic-ui/2.4.1/components/input.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/semantic-ui/2.4.1/components/accordion.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/semantic-ui/2.4.1/components/accordion.js"></script>
+    <link href="https://cdn.bootcss.com/semantic-ui/2.4.1/components/button.css" rel="stylesheet">
+    <link href="https://cdn.bootcdn.net/ajax/libs/semantic-ui/2.4.1/components/dimmer.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/semantic-ui/2.4.1/components/dimmer.js"></script>
+    <link href="https://cdn.bootcdn.net/ajax/libs/semantic-ui/2.4.1/components/progress.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/semantic-ui/2.4.1/components/progress.js"></script>
+
+    <!-- 百度地图封装api -->
+    <script src="static/common.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="static/component.css">
+
+
+
+    <title>五菱智能车分布热力图</title>
+
+    <style type="text/css">
+        div#map_container    {width: 75%;height: 100%; background: rgb(6, 211, 50); overflow: hidden;margin:0;font-family:"微软雅黑"; float: left;}
+        div#info_container    {width: 25%;height: 100%; background: rgb(222, 221, 226); overflow: hidden;margin:0;font-family:"微软雅黑"; float: left;}
+        div#progress_bar {top:0; left:0;width: 100%;height: 100%;position:fixed; z-index: 999;;display: none; overflow: hidden;margin:0;font-family:"微软雅黑";}
+        /* div#posDetail {width: 20%; height:35%; background: rgb(211, 21, 21);float: left;}
+        div#posNotice {width: 20%; height:65%; background: rgb(15, 12, 201);float: left;} */
+	</style>
+</head>
+
+<body>
+    <div id="mySidebar" class="ui right inverted vertical menu sidebar">
+        <!-- <script src="static/sidebar.js"></script> -->
+    </div>
+    <div class="pusher" style="height: 100%; margin: 0" >
+        <div id="map_container"></div>
+        <div id="progress_bar">
+            <div>
+                <div class="ui indicating progress" id="progress_0" data-percent="0">
+                    <div class="bar">
+                        <div class="progress"></div>
+                    </div>
+                    <div class="label">加载</div>
+                </div>
+            </div>
+        </div>
+        <div id="info_container">
+            <!-- 时间粒度选择 -->
+            <div class="ui floating labeled icon dropdown button">
+                <i class="filter icon"></i>
+                <span class="text">分钟</span>
+                <div class="menu">
+                    <div class="header"><i class="tags icon"></i>时间单位</div>
+                    <div class="item active selected" onclick= "(function(){
+                        document.getElementById('start_time').type='datetime-local';
+                        document.getElementById('end_time').type='datetime-local';
+                    })()">分钟</div>
+                    <div class="disabled item" onclick= "(function(){
+                        document.getElementById('start_time').type='date';
+                        document.getElementById('end_time').type='date';
+                    })()">天</div>
+                    <div class="disabled item" onclick= "(function(){
+                        document.getElementById('start_time').type='week';
+                        document.getElementById('end_time').type='week';
+                    })()" >周</div>
+                    <div class="disabled item" onclick= "(function(){
+                        document.getElementById('start_time').type='month';
+                        document.getElementById('end_time').type='month';
+                    })()" >月</div>
+                </div>
+            </div>
+
+            <button class="ui blue button" style="float: right;" onclick="setMapData()">
+                查询
+            </button>
+
+            <!-- 时间选择 -->
+            <p>开始日期：</p>
+            <div class="ui input" style="margin-left: 3%; margin-bottom: 3%;"><input id="start_time" type="datetime-local" value="2020-06-27T08:00:00"/></div>
+            <br />
+            <p>结束日期：</p>
+            <div class="ui input" style="margin-left: 3%; margin-bottom: 3%;"><input id="end_time" type="datetime-local" value="2020-06-27T08:30:00"/></div>
+
+            <p>查询步长（min）</p>
+            <form oninput="xStep.value=rangeStep.value">
+                <input type="range" id="rangeStep" min="5" max="1440" value="60" step="5" onchange="(function(val){
+                    curStep = val*60;
+                })(this.value)"/>
+                ->
+                <output name="xStep" for="rangeStep" >60</output>
+            </form>
+
+            <div class="ui divider"></div>
+
+            <!-- 速度 -->
+            <p>时间进度</p>
+            <form oninput="x1.value=new Date(range1.value*1000).toLocaleString()">
+                <input type="range" id="range1" min="0" max="5" value="0.3" step="300" onchange="(function(val){
+                    initHeatmapAndMarker(val.toString());
+                })(this.value)"/>
+                ->
+                <output name="x1" for="range1" ></output>
+            </form>
+
+            <p>热力最大值</p>
+            <form oninput="x2.value=range2.value">
+                <input type="range" id="range2" min="1" max="50" value="15" step="1" onchange="(function(val){
+                    heatmapOverlay.setDataSet({data:pointSets[startTimeStamp.toString()],max:val});
+                })(this.value)"/>
+                ->
+                <output name="x2" for="range2" >15</output>
+            </form>
+
+            <p>热力辐射范围</p>
+            <form oninput="x3.value=range3.value">
+                <input type="range" id="range3" min="10" max="100" value="40" step="1" onchange="(function(val){
+                    heatmapOverlay.setOptions({radius:val});
+                })(this.value)"/>
+                ->
+                <output name="x3" for="range3" >40</output>
+            </form>
+
+
+            <div class="ui divider"></div>
+            <!-- <button class="ui blue button" style="float: right;" onclick="toggleMarker()">
+                marker
+            </button> -->
+            <div class="ui toggle checkbox" onclick="toggleMarker()">
+                <input type="checkbox" name="public" checked="checked">
+                <label>marker</label>
+            </div>
+
+            <!-- 过滤器 -->
+            <!-- <div class="ui styled accordion">
+                <div class="title">
+                  <i class="dropdown icon"></i>
+                  按公司筛选
+                </div>
+                <div class="content">
+                    <div class="ui form">
+                        <div class="grouped fields">
+                            <div class="field">
+                            <div class="ui checkbox">
+                                <input type="checkbox" name="small">
+                                <label>公司1</label>
+                            </div>
+                            </div>
+                            <div class="field">
+                            <div class="ui checkbox">
+                                <input type="checkbox" name="medium">
+                                <label>公司2</label>
+                            </div>
+                            </div>
+                            <div class="field">
+                            <div class="ui checkbox">
+                                <input type="checkbox" name="large">
+                                <label>公司3</label>
+                            </div>
+                            </div>
+                            <div class="field">
+                            <div class="ui checkbox">
+                                <input type="checkbox" name="x-large">
+                                <label>公司4</label>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="title">
+                  <i class="dropdown icon"></i>
+                  按车型筛选
+                </div>
+                <div class="content">
+                    <div class="ui form">
+                        <div class="grouped fields">
+                            <div class="field">
+                            <div class="ui checkbox">
+                                <input type="checkbox" name="small">
+                                <label>车型1</label>
+                            </div>
+                            </div>
+                            <div class="field">
+                            <div class="ui checkbox">
+                                <input type="checkbox" name="medium">
+                                <label>车型2</label>
+                            </div>
+                            </div>
+                            <div class="field">
+                            <div class="ui checkbox">
+                                <input type="checkbox" name="large">
+                                <label>车型3</label>
+                            </div>
+                            </div>
+                            <div class="field">
+                            <div class="ui checkbox">
+                                <input type="checkbox" name="x-large">
+                                <label>车型4</label>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="title">
+                  <i class="dropdown icon"></i>
+                  自选字段
+                </div>
+                <div class="content">
+                </div>
+            </div> -->
+        </div>
+    </div>
+    <i id="back-to-top" style="display: inline; z-index: 999;" href="javascript:void(0);" onclick="$('.ui.sidebar').sidebar('toggle');"></i>
+</body>
+</html>
+
+
+<script type="text/javascript">
+    var startTimeValue, startTimeStamp;
+    var endTimeValue, endTimeStamp;
+    var spanType;
+
+    var markerOn = true;
+
+    function setTimeSpan(){
+        spanType = document.getElementById('start_time').type;
+        startTimeValue = document.getElementById('start_time').value;
+        endTimeValue = document.getElementById('end_time').value;
+
+        startTimeStamp = Date.parse(startTimeValue)/1000;
+        endTimeStamp = Date.parse(endTimeValue)/1000;
+
+        curStamp = startTimeStamp;
+
+        console.log(spanType);
+        console.log(startTimeStamp);
+        console.log(endTimeStamp);
+
+        document.getElementById('range1').min = startTimeStamp;
+        document.getElementById('range1').max = startTimeStamp+Math.floor((endTimeStamp-startTimeStamp)/curStep)*curStep;
+        document.getElementById('range1').value = startTimeStamp;
+        document.getElementById('range1').step = curStep;
+
+        
+
+        // getPointSet();
+
+    }
+
+    function toggleMarker(){
+        if(markerOn){
+            markerClusterer.clearMarkers(markers);
+            markerOn = false;
+        }else{
+            markerClusterer = new BMapLib.MarkerClusterer(map, {markers:markers});
+            markerOn = true;
+        }
+    }
+
+</script>
+
+<script>
+
+    var pointSets = {'010':'测试'};
+    var curStamp;
+    var curStep = 60*60; // 5分钟
+    var curRemain = 999;
+
+    var rottenSpan = 2*30*24*60*60; //2个月大概
+
+    function initMap(){
+
+    }
+
+    function getNextPointSet(){
+        console.log(curStamp+'finish')
+        curStamp += curStep;
+        $('#progress_0')
+            .progress('increment')
+        ;
+        getPointSet();
+    }
+
+    var translateCallback = function (data){
+        console.log('state'+data.status);
+        // console.log('points'+data.points);
+        if(data.status === 0) {
+            // pointSets[curStamp.toString()] = data.points;
+            for (var i = 0; i < data.points.length; i++) {
+                // console.log(data.points[i]);
+                pointSets[curStamp.toString()].push(data.points[i]);
+                // console.log(curStamp.toString());
+                // bm.addOverlay(new BMap.Marker(data.points[i]));
+                // bm.setCenter(data.points[i]);
+            }
+        }else{
+            console.log('trans error')
+        }
+
+        // curRemain -= 1;
+        if(curRemain == pointSets[curStamp.toString()].length){
+            getNextPointSet();
+        }
+    }
+
+    function inDic(dic, key){
+        for(var k in dic){
+            if(k == key){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function getPointSet(){
+        if(curStamp > endTimeStamp){
+            console.log('Finish');
+            // console.log(pointSets)
+            // console.log(heatmapOverlay)
+
+            initHeatmapAndMarker(startTimeStamp.toString());
+            document.getElementById('progress_bar').style.display = 'none';
+            // $('#map_container')
+            //     .dimmer('toggle')
+            // ;
+            
+            // initMarker(startTimeStamp.toString());
+            return;
+        }else{
+            if(inDic(pointSets, curStamp.toString()) && pointSets[curStamp.toString()].length != 0){
+                getNextPointSet();
+            }else{
+                $.ajax({
+                    url: 'http://202.120.60.31:3000/query/all/location/batch/time',
+                    type: 'get', //请求的方式
+                    data:{'timestamp':curStamp},
+                    error: function (data) {
+                        console.log('getPointSet请求失败');
+                    },
+                    success: function (data) {
+                        curRemain = data.length;
+                        // console.log(curStamp+' start');
+                        pointSets[curStamp.toString()] = new Array();
+                        // console.log(typeof(curStamp.toString()))
+                        
+                        var i = 0;
+                        while(i < data.length){
+                            var curPoints = [];
+                            while(curPoints.length < 10 && i < data.length){
+                                if(Date.parse(data[i]['collectTime'])/1000 < (curStamp-rottenSpan)){
+                                    console.log('rotten');
+                                    --curRemain;
+                                    ++i;
+                                }else{
+                                    curPoints.push(new BMap.Point(data[i]['longitude'], data[i]['latitude']));       
+                                    ++i;
+                                }
+                            }
+                            if(curPoints.length > 0){
+                                console.log('convert')
+                                var convertor = new BMap.Convertor();
+                                convertor.translate(curPoints, 1, 5, translateCallback);
+                            }else{
+                                if(curRemain == pointSets[curStamp.toString()].length){
+                                    getNextPointSet();
+                                }
+                            }
+                        }
+                        
+                    }
+                }) 
+            }
+        }
+    }
+
+    var markers = [];
+    var pt = null;
+    var markerClusterr;
+
+    function initMarker(curTimeStamp){
+        markers = [];
+        
+        for(var i = 0; i < pointSets[curTimeStamp].length; ++i){
+            markers.push(new BMap.Marker(pointSets[curTimeStamp][i]));
+        }
+        markers.push(new BMap.Marker(new BMap.Point(121.447176,31.033731)));
+        console.log(markers.length)
+        console.log(markers)
+        markerClusterer = new BMapLib.MarkerClusterer(map, {markers:markers});
+        if(markerOn == false){
+            markerClusterer.clearMarkers(markers);
+        }
+    }
+
+    function initHeatMap(curTimeStamp){
+        heatmapOverlay.setDataSet({data:pointSets[curTimeStamp],max:document.getElementById('range2').value});
+        heatmapOverlay.show();
+    }
+
+    function initHeatmapAndMarker(curTimeStamp){
+        console.log("initHeatmapAndMarker start");
+        if(markers.length != 0){
+            markerClusterer.clearMarkers(markers);
+        }
+        initMarker(curTimeStamp);
+        initHeatMap(curTimeStamp);
+    }
+
+    
+
+    function setMapData(){
+        // $('#map_container')
+        //     .dimmer('toggle')
+        // ;
+        setTimeSpan();
+        $('#progress_0')
+        .progress({
+            total: Math.floor((endTimeStamp-startTimeStamp)/curStep)+1,
+            text: {
+                active  : '已获取{value}组数据，共{total}组',
+                // success : '{total} Photos Uploaded!'
+            }
+        })
+        ;
+        document.getElementById('progress_bar').style.display = 'inline';
+        getPointSet();
+    }
+
+
+</script>
+
+<!-- 绘制地图 -->
+<script>
+    function isSupportCanvas(){
+        var elem = document.createElement('canvas');
+        return !!(elem.getContext && elem.getContext('2d'));
+    }
+
+    var map = new BMap.Map("map_container");          // 创建地图实例
+
+    map.centerAndZoom(new BMap.Point(121.447176,31.033731),16); //新行政楼
+
+    map.enableScrollWheelZoom(true);    //允许滚轮缩放地图
+    var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT});// 左上角，添加比例尺
+	var top_left_navigation = new BMap.NavigationControl();  //左上角，添加默认缩放平移控件
+	var top_right_navigation = new BMap.NavigationControl({anchor: BMAP_ANCHOR_TOP_RIGHT, type: BMAP_NAVIGATION_CONTROL_SMALL}); //右上角，仅包含平移和缩放按钮
+    // map.addControl(top_left_control);        
+	// map.addControl(top_left_navigation);     
+	map.addControl(top_right_navigation);
+    // map.setMapStyleV2({     
+    //     styleId: '17c84567c712a49ee687af01700e1d74'
+    // });
+
+    
+    if(!isSupportCanvas()){
+        alert('热力图目前只支持有canvas支持的浏览器,您所使用的浏览器不能使用热力图功能~')
+    }
+
+    var heatmapOverlay = new BMapLib.HeatmapOverlay({"radius":40});
+	map.addOverlay(heatmapOverlay);
+    // heatmapOverlay.hide();
+    
+    // setMapData();
+
+
+
+    </script>
+
+<script>
+    $('.ui.dropdown')
+        .dropdown()
+    ;
+
+    $('.ui.accordion')
+        .accordion()
+    ;
+
+</script>

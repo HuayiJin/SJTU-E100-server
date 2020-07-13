@@ -1,0 +1,18 @@
+document.writeln("<a class=\'item\' href=\'realtime_map.html\' >");
+document.writeln("            实时信息");
+document.writeln("        </a>");
+document.writeln("        <a class=\'item\' href=\'history_trace.html\' >");
+document.writeln("            历史轨迹信息");
+document.writeln("        </a>");
+document.writeln("        <a class=\'item\' href=\'honeyconb.html\' >");
+document.writeln("            车辆历史分布信息");
+document.writeln("        </a>");
+// document.writeln("        <a class=\'item\' href=\'time_trace.html\' >");
+// document.writeln("            历史动态信息");
+// document.writeln("        </a>");
+document.writeln("        <a class=\'item\' href=\'single_car.html\' >");
+document.writeln("            单车详细信息");
+document.writeln("        </a>");
+document.writeln("        <a class=\'item\' href=\'gather_info.html\' >");
+document.writeln("            历史统计信息");
+document.writeln("        </a>");
