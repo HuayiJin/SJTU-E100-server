@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>修改页面</title>
+</head>
+<body>
+<form action="/users/TEST/update" method="post">
+    <input type="hidden" value="{{datas[0].id}}" name="id">
+    时间：<input type="text" name="time" value="{{datas[0].time}}"><br>
+    车辆VIN：<input type="text" name="car_VIN" value="{{datas[0].car_VIN}}"><br>
+    <input type="submit" value="提交">
+</form>
+</body>
+</html>

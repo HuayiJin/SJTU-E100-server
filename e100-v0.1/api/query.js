@@ -130,6 +130,8 @@ exports.get_all_location_batch = function (req, res) {
         "select VIN, collectTime, longitude, latitude, angle from " + tb_LOC_BATCH +
         " WHERE addTime IN (select max(addTime) from " + tb_LOC_BATCH +
         " group by VIN);"
+    
+        //console.log(localsql)
 
     db(localsql, function (err, resdata) {
         if (err) {
@@ -145,17 +147,29 @@ exports.get_all_location_batch_time = function (req, res) {
     var timestamp = parseInt(Date.now() / 1000);
     if(req.query.timestamp) timestamp = req.query.timestamp;
 
+    /* 用了一个trick，collecttime太复杂，先用addtime再说
     var localsql = 
         "SELECT	VIN, collectTime, longitude, latitude, angle FROM " + tb_LOC_BATCH +
         " WHERE	ID IN (SELECT max( ID ) FROM " + tb_LOC_BATCH + 
         " WHERE	collectTime IN ( SELECT max( collectTime ) FROM " + tb_LOC_BATCH +
         " WHERE UNIX_TIMESTAMP( collectTime ) < " + timestamp +
         " GROUP BY VIN ) GROUP BY VIN );"
+    */
+
+   var localsql = 
+   "SELECT	VIN, collectTime, longitude, latitude, angle FROM " + tb_LOC_BATCH +
+   " WHERE	ID IN (SELECT max( ID ) FROM " + tb_LOC_BATCH + 
+   " WHERE	addTime IN ( SELECT max( addTime ) FROM " + tb_LOC_BATCH +
+   " WHERE UNIX_TIMESTAMP( addTime ) < " + timestamp +
+   " GROUP BY VIN ) GROUP BY VIN );"
+
+    //console.log(localsql)
 
     db(localsql, function (err, resdata) {
         if (err) {
             res.end("查询失败：", err)
         } else {
+            //console.log(resdata)
             res.status(200).send(resdata);
         }
     });
@@ -266,3 +280,30 @@ exports.get_single_route = function (req, res) {
         res.status(202).end("NO VIN in request")
     }
 }
+
+
+
+//2020年6月新增，请求某一时刻的所有车辆的位置
+/*
+exports.get_all_location_batch_time = function (req, res) {
+    var timestamp = parseInt(Date.now() / 1000);
+    if(req.query.timestamp) timestamp = req.query.timestamp;
+
+    var localsql = 
+        "SELECT	VIN, collectTime, longitude, latitude, angle FROM " + tb_LOC_BATCH +
+        " WHERE	ID IN (SELECT max( ID ) FROM " + tb_LOC_BATCH + 
+        " WHERE	collectTime IN ( SELECT max( collectTime ) FROM " + tb_LOC_BATCH +
+        " WHERE UNIX_TIMESTAMP( collectTime ) < " + timestamp +
+        " GROUP BY VIN ) GROUP BY VIN );"
+    console.log(localsql)
+
+    db(localsql, function (err, resdata) {
+        if (err) {
+            res.end("查询失败：", err)
+        } else {
+            console.log(resdata)
+            res.status(200).send(resdata);
+        }
+    });
+}
+*/

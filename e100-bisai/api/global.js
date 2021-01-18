@@ -1,0 +1,3 @@
+var dictionary=['create_time','longitude','latitude','vehicle_operating_mode','brake_pedal_status','accelerator_pedal_stroke','gear_position','key_status','driving_mode','velocity','motor_status','motor_torque','drive_motor_rpm','motor_controller_current','motor_controller_voltage','drive_motor_temperature','motor_controller_temperature','high_voltage_battery_current','total_battery_voltage','insulation_resistance_value','residual_energy','max_single_voltage','min_single_voltage','cumulative_mileage']
+
+exports.dictionary = dictionary

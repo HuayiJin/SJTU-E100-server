@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+</head>
+
+<body>
+    <form action="/users/TEST/search" method="post">
+        <td><a href="/users/TEST/add">新增</a></td>
+    </form>
+
+    <table>
+        <tr>
+            <th>车辆VIN</th>
+            <th>注册时间</th>
+            <th>车辆类型</th>
+            <th>储能装置种类</th>
+            <th>驱动电机类型</th>
+            <th>电机额定功率</th>
+            <th>电机额定转速</th>
+            <th>电机额定转矩</th>
+            <th>电机安装数量</th>
+            <th>电机布置位置</th>
+            <th>电机冷却方式</th>
+            <th>电动汽车续航里程</th>
+            <th>电动汽车最高时速</th>
+            <th>电池包数量</th>
+            <th>0号电池包信息</th>
+            <th>1号电池包信息</th>
+            <th>2号电池包信息</th>
+            <th>3号电池包信息</th>
+            <th>额外字段</th>
+            <th>操作</th>
+        </tr>
+        {% for item in datas %}
+        <tr>
+            <td>{{item.car_VIN}}</td>
+            <td>{{item.registration_time}}</td>
+            <td>{{item.vehicle_type}}</td>
+            <td>{{item.energy_storing_type}}</td>
+            <td>{{item.drive_motor_type}}</td>
+            <td>{{item.drive_motor_rated_power}}</td>
+            <td>{{item.drive_motor_rated_rpm}}</td>
+            <td>{{item.drive_motor_rated_torque}}</td>
+            <td>{{item.drive_motor_number}}</td>
+            <td>{{item.drive_motor_position}}</td>
+            <td>{{item.drive_motor_cooling_method}}</td>
+            <td>{{item.e_car_endurance_mileage}}</td>
+            <td>{{item.e_car_top_speed}}</td>
+            <td>{{item.power_battery_number}}</td>
+            <td>{{item.power_battery_info_0}}</td>
+            <td>{{item.power_battery_info_1}}</td>
+            <td>{{item.power_battery_info_2}}</td>
+            <td>{{item.power_battery_info_3}}</td>
+            <td>{{item.extra_field}}</td>
+
+            <td><a href="/users/TEST/del/{{item.id}}">删除</a></td>
+            <td><a href="/users/TEST/update/{{item.id}}">修改</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+
+</html>
